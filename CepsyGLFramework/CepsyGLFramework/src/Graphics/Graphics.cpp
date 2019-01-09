@@ -62,17 +62,17 @@ void Graphics::initialize()
 		wglMakeCurrent(render_device, mGLContext);
 	}
 	else
-		throw "Unsupported OpenGL verion 3.1, please update your drivers";
+		throw "Unsupported OpenGL verion 4.5, please update your drivers";
 }
 
 void Graphics::update()
 {
-	glGenBuffers(0, nullptr);
+
 }
 
 void Graphics::render()
 {
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	SwapBuffers(application.window().render_device());
 }
