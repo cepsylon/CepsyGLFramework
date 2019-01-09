@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application\Application.cpp" />
+    <ClCompile Include="src\Common\Base.cpp" />
+    <ClCompile Include="src\Common\Component.cpp" />
+    <ClCompile Include="src\Common\Entity.cpp" />
     <ClCompile Include="src\Common\Transform.cpp" />
     <ClCompile Include="src\Graphics\Graphics.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -27,6 +30,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application\Application.h" />
+    <ClInclude Include="src\Common\Base.h" />
+    <ClInclude Include="src\Common\Component.h" />
+    <ClInclude Include="src\Common\Entity.h" />
     <ClInclude Include="src\Common\Transform.h" />
     <ClInclude Include="src\Graphics\Graphics.h" />
     <ClInclude Include="src\Graphics\myGlew.h" />
