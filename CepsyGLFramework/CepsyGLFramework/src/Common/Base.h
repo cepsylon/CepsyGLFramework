@@ -2,10 +2,10 @@
 class Base
 {
 public:
-#ifdef _WIN32
-	unsigned __int32 ID() const;
-#else
+#ifdef _WIN64
 	unsigned __int64 ID() const;
+#else
+	unsigned __int32 ID() const;
 #endif
 
 private:

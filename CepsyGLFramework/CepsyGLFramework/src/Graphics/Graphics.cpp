@@ -1,11 +1,11 @@
 #include "Graphics.h"
 
 #include "Application/Application.h"
+#include "Camera.h"
+#include "Common/Entity.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-
-#include <iostream>
 
 void Graphics::initialize()
 {
@@ -74,10 +74,40 @@ void Graphics::render()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	// Render for each camera
+	for (auto camera : mCameras)
+	{
+		// Set viewport and pass camera matrices to GPU
+		camera->set();
+	}
+
 	SwapBuffers(application.window().render_device());
 }
 
 void Graphics::shutdown()
 {
 	wglDeleteContext(mGLContext);
+}
+
+void Graphics::update_camera_matrices(const glm::mat4 & projection, const glm::mat4 & view)
+{
+	// TODO: update buffer
+}
+
+void Graphics::add(Camera * camera)
+{
+	mCameras.emplace_back(camera);
+}
+
+void Graphics::remove(Camera * camera)
+{
+	for (std::vector<Camera *>::iterator it = mCameras.begin(); it != mCameras.end(); ++it)
+	{
+		if (*it == camera)
+		{
+			mCameras.erase(it);
+			break;
+		}
+	}
 }

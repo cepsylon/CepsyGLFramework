@@ -26,8 +26,14 @@ public:
 	T * add()
 	{
 		mComponents.emplace_back(std::make_unique<T>());
-		return static_cast<T *>(mComponents.back().get());
+		T * component = static_cast<T *>(mComponents.back().get());
+		component->set_owner(this);
+		return component;
 	}
+
+	// Transform gettors
+	const Transform & transform() const;
+	Transform & transform();
 
 private:
 	// Components

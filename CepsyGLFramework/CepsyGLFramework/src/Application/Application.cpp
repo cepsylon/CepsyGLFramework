@@ -53,3 +53,5 @@ void Application::set_is(bool is) { mRunning = is; }
 
 const Window & Application::window() const { return mWindow; }
 Window & Application::window() { return mWindow; }
+const Graphics & Application::graphics() const { return mGraphics; }
+Graphics & Application::graphics() { return mGraphics; }

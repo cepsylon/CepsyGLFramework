@@ -20,6 +20,10 @@ public:
 	const Window & window() const;
 	Window & window();
 
+	// Graphics gettors
+	const Graphics & graphics() const;
+	Graphics & graphics();
+
 private:
 	Window mWindow;
 	Graphics mGraphics;

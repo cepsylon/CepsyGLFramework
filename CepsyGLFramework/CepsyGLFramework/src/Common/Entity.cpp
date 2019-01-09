@@ -22,3 +22,6 @@ void Entity::shutdown()
 	for (auto & component : mComponents)
 		component->shutdown();
 }
+
+const Transform & Entity::transform() const { return mTransform; }
+Transform & Entity::transform() { return mTransform; }
