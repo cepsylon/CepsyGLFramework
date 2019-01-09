@@ -29,6 +29,7 @@ void Application::initialize(HINSTANCE__ * instance, int show)
 {
 	mRunning = true;
 	mWindow.initialize(instance, show, &message_handler);
+	mGraphics.initialize();
 }
 
 
@@ -37,11 +38,14 @@ void Application::run()
 	while (mRunning)
 	{
 		mWindow.update();
+		mGraphics.update();
+		mGraphics.render();
 	}
 }
 
 void Application::shutdown()
 {
+	mGraphics.shutdown();
 	mWindow.shutdown();
 }
 

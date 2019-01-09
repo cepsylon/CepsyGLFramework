@@ -5,6 +5,7 @@
 // Windows structs
 struct HWND__;
 struct HINSTANCE__;
+struct HDC__;
 
 class Window
 {
@@ -33,6 +34,8 @@ public:
 	int height() const;
 	// Handle of the window
 	HWND__ * handle() const;
+	// Render device
+	HDC__ * render_device() const;
 
 private:
 	// Gets the size of the window from the client size
@@ -49,6 +52,7 @@ private:
 	glm::ivec2 mPosition{ 0, 0 };
 	HINSTANCE__ * mInstance = nullptr;
 	HWND__ * mHandle = nullptr;
+	HDC__ * mRenderDevice = nullptr;
 	winproc mMessageHandler = nullptr;
 	const char * mName = "Framework";
 	long int mWindowStyle;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window/Window.h"
+#include "Graphics/Graphics.h"
 
 class Application
 {
@@ -21,6 +22,7 @@ public:
 
 private:
 	Window mWindow;
+	Graphics mGraphics;
 	bool mRunning = false;
 };
 

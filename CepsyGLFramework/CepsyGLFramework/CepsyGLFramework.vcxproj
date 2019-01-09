@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Application\Application.cpp" />
+    <ClCompile Include="src\Graphics\Graphics.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Window\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Application\Application.h" />
+    <ClInclude Include="src\Graphics\Graphics.h" />
+    <ClInclude Include="src\Graphics\myGlew.h" />
+    <ClInclude Include="src\Window\Window.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F46EA32F-BDDD-4F30-83A8-C94171D50289}</ProjectGuid>
@@ -70,12 +82,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin/$(Platform)/$(Configuration)/</OutDir>
-    <IntDir>$(SolutionDir)obj/$(Platform)/$(Configuration)/</IntDir>
+    <OutDir>$(ProjectDir)bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(ProjectDir)obj/$(Platform)/$(Configuration)/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)bin/$(Platform)/$(Configuration)/</OutDir>
-    <IntDir>$(SolutionDir)obj/$(Platform)/$(Configuration)/</IntDir>
+    <OutDir>$(ProjectDir)bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(ProjectDir)obj/$(Platform)/$(Configuration)/</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(ProjectDir)bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(ProjectDir)obj/$(Platform)/$(Configuration)/</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)bin/$(Platform)/$(Configuration)/</OutDir>
+    <IntDir>$(ProjectDir)obj/$(Platform)/$(Configuration)/</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -83,8 +103,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/;$(ProjectDir)extern/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src/;$(ProjectDir)extern/include/</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glew32sd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)extern/lib/$(Platform)/$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -92,8 +116,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/;$(ProjectDir)extern/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src/;$(ProjectDir)extern/include/</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glew32sd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)extern/lib/$(Platform)/$(Configuration)</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -103,11 +131,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/;$(ProjectDir)extern/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src/;$(ProjectDir)extern/include/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)extern/lib/$(Platform)/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -118,22 +148,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src/;$(ProjectDir)extern/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src/;$(ProjectDir)extern/include/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)extern/lib/$(Platform)/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Application\Application.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Window\Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Application\Application.h" />
-    <ClInclude Include="src\Window\Window.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

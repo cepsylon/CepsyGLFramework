@@ -30,6 +30,9 @@ void Window::initialize(HINSTANCE__ * instance, int show, winproc message_handle
 	{
 		ShowWindow(mHandle, show);
 		UpdateWindow(mHandle);
+
+		// Get render device from window
+		mRenderDevice = GetDC(mHandle);
 	}
 }
 
@@ -53,6 +56,7 @@ void Window::shutdown()
 int Window::width() const { return mClientSize.x; }
 int Window::height() const { return mClientSize.y; }
 HWND Window::handle() const { return mHandle; }
+HDC Window::render_device() const { return mRenderDevice; }
 
 void Window::compute_window_size_with_client_size()
 {
@@ -73,7 +77,7 @@ bool Window::register_class() const
 {
 	WNDCLASSEX window_class_extended;
 	window_class_extended.cbSize = sizeof(WNDCLASSEX);
-	window_class_extended.style = CS_HREDRAW | CS_VREDRAW;
+	window_class_extended.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	window_class_extended.lpfnWndProc = mMessageHandler; // Window procedure
 	window_class_extended.cbClsExtra = 0;
 	window_class_extended.cbWndExtra = 0;
