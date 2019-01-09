@@ -18,22 +18,30 @@ private:
 public:
 	Window(const char * name = "Framework");
 
+	// Creates the window
 	void initialize(HINSTANCE__ * instance, int show, winproc message_handler);
+
+	// Handle window messages
 	void update();
+
+	// Release the window
 	void shutdown();
 
-	void set_size(const glm::ivec2 & size);
-	void set_client_size(const glm::ivec2 & size);
-	void set_position(const glm::ivec2 & position);
-
+	// Width of the window
 	int width() const;
+	// Height of the window
 	int height() const;
+	// Handle of the window
 	HWND__ * handle() const;
 
 private:
+	// Gets the size of the window from the client size
 	void compute_window_size_with_client_size();
+	// Computes the centered position of the window
 	void compute_initial_position();
+	// Registers window class
 	bool register_class() const;
+	// Creates the window
 	bool create(HINSTANCE__ * instance, winproc message_handler);
 
 	glm::ivec2 mClientSize{ 1280, 720 };

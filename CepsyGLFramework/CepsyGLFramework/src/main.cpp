@@ -11,7 +11,7 @@ int CALLBACK WinMain(
 )
 {
 	application.initialize(hInstance, nCmdShow);
-	application.update();
+	application.run();
 	application.shutdown();
 	
 	return 0;

@@ -5,12 +5,17 @@
 class Application
 {
 public:
+	// Initialize all systems needed for the application
 	void initialize(HINSTANCE__ * instance, int show);
-	void update();
+	// Update the systems
+	void run();
+	// Shutdown the systems
 	void shutdown();
 
+	// Set if the application is running
 	void set_is(bool is);
 
+	// Window gettors
 	const Window & window() const;
 	Window & window();
 

@@ -32,7 +32,7 @@ void Application::initialize(HINSTANCE__ * instance, int show)
 }
 
 
-void Application::update()
+void Application::run()
 {
 	while (mRunning)
 	{

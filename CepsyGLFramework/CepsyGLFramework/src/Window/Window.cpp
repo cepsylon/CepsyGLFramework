@@ -12,6 +12,8 @@ Window::Window(const char * name)
 
 void Window::initialize(HINSTANCE__ * instance, int show, winproc message_handler)
 {
+	// TODO: Move this to a different class
+	// Allocate console
 	if (::AllocConsole())
 	{
 		FILE * fp;
@@ -23,6 +25,7 @@ void Window::initialize(HINSTANCE__ * instance, int show, winproc message_handle
 		SetConsoleTitle("Framework console");
 	}
 
+	// Create window
 	if (create(instance, message_handler))
 	{
 		ShowWindow(mHandle, show);
