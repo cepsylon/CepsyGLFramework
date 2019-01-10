@@ -92,7 +92,11 @@ void Graphics::shutdown()
 
 void Graphics::update_camera_matrices(const glm::mat4 & projection, const glm::mat4 & view)
 {
-	// TODO: update buffer
+	glm::mat4 matrices[2] = { projection, view };
+
+	// Update buffer
+	mCameraMatrixBuffer.bind();
+	mCameraMatrixBuffer.update(matrices, sizeof(matrices));
 }
 
 void Graphics::add(Camera * camera)

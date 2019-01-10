@@ -7,19 +7,23 @@
 // Buffer base, it is the one we want to use if we don't care about debugging
 // Interacts with the GPU, storing the vare minimum to work, does not keep
 // track of the data passed to the GPU
-class Buffer
+class BufferBase
 {
 public:
-	Buffer(GLenum type, unsigned size_in_bytes, void * data, GLenum usage);
-	~Buffer();
+	// Build empty buffer
+	BufferBase(GLenum type, GLenum usage);
+	// Build buffer with provided data
+	BufferBase(GLenum type, unsigned size_in_bytes, void * data, GLenum usage);
+	// Free OpenGL data
+	~BufferBase();
 
 	// No copies
-	Buffer(const Buffer &) = delete;
-	Buffer & operator=(const Buffer &) = delete;
+	BufferBase(const BufferBase &) = delete;
+	BufferBase & operator=(const BufferBase &) = delete;
 
 	// Only moves
-	Buffer(Buffer && rhs);
-	Buffer & operator=(Buffer && rhs);
+	BufferBase(BufferBase && rhs);
+	BufferBase & operator=(BufferBase && rhs);
 
 	// Binds buffer
 	void bind() const;
@@ -27,21 +31,30 @@ public:
 	// Only use with buffers allowed in glBindBufferBase function
 	void bind_base(unsigned index) const;
 
+	// Update buffer, should only be used if mUsage is DYNAMIC type
+	void update(void * data, unsigned bytes);
+
 	// Frees OpenGL data
 	void clear();
-private:
+protected:
 	GLenum mType;
 	GLenum mUsage;
 	GLuint mHandle = 0;
 	unsigned mSizeInBytes = 0;
 };
 
-template <typename T>
-class BufferDebug : public Buffer
+#ifdef _DEBUG
+template <typename T = float>
+class BufferDebug : public BufferBase
 {
 public:
+	BufferDebug(GLenum type, GLenum usage)
+		: BufferBase(type, usage)
+		, mData()
+	{ }
+
 	BufferDebug(GLenum type, unsigned count, T * data, GLenum usage)
-		: Buffer(type, sizeof(T) * count, data, usage)
+		: BufferBase(type, sizeof(T) * count, data, usage)
 		, mData(count)
 	{
 		std::memcpy(mData.data(), data, mSizeInBytes);
@@ -53,7 +66,7 @@ public:
 	
 	// Only moves
 	BufferDebug(BufferDebug && rhs)
-		: Buffer(rhs)
+		: BufferBase(rhs)
 		, mData(std::move(rhs.mData))
 	{	}
 	
@@ -61,7 +74,7 @@ public:
 	{
 		if (this != &rhs)
 		{
-			Buffer::operator=(rhs);
+			BufferBase::operator=(rhs);
 			mData = std::move(rhs.mData);
 		}
 		
@@ -71,3 +84,13 @@ public:
 private:
 	std::vector<T> mData; // For debugging purposes
 };
+
+template <typename T = float>
+using Buffer = BufferDebug<T>;
+
+//Buffer<float> make_buffer(GLenum type, GLenum usage);
+
+//Buffer<float> test{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW };
+#else
+using Buffer = BufferBase;
+#endif

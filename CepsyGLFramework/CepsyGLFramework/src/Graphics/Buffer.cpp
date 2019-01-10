@@ -1,6 +1,17 @@
 #include "Buffer.h"
 
-Buffer::Buffer(GLenum type, unsigned size_in_bytes, void * data, GLenum usage)
+#include <cstring>
+
+BufferBase::BufferBase(GLenum type, GLenum usage)
+	: mType(type)
+	, mUsage(usage)
+	, mHandle(0)
+	, mSizeInBytes(0)
+{
+	glGenBuffers(1, &mHandle);
+}
+
+BufferBase::BufferBase(GLenum type, unsigned size_in_bytes, void * data, GLenum usage)
 	: mType(type)
 	, mUsage(usage)
 	, mHandle(0)
@@ -12,24 +23,24 @@ Buffer::Buffer(GLenum type, unsigned size_in_bytes, void * data, GLenum usage)
 	glBufferData(mType, mSizeInBytes, data, mUsage);
 }
 
-Buffer::~Buffer()
+BufferBase::~BufferBase()
 {
 	// Free if needed
 	if(mHandle)
 		glDeleteBuffers(1, &mHandle);
 }
 
-Buffer::Buffer(Buffer && rhs)
+BufferBase::BufferBase(BufferBase && rhs)
 	: mType(rhs.mType)
 	, mUsage(rhs.mUsage)
 	, mHandle(rhs.mHandle)
 	, mSizeInBytes(rhs.mSizeInBytes)
 {
 	// Reset rhs
-	std::memcpy(&rhs, 0, sizeof(Buffer));
+	std::memcpy(&rhs, 0, sizeof(BufferBase));
 }
 
-Buffer & Buffer::operator=(Buffer && rhs)
+BufferBase & BufferBase::operator=(BufferBase && rhs)
 {
 	if (this != &rhs)
 	{
@@ -37,29 +48,42 @@ Buffer & Buffer::operator=(Buffer && rhs)
 			glDeleteBuffers(1, &mHandle);
 
 		// Copy and reset rhs
-		std::memcpy(this, &rhs, sizeof(Buffer));
-		std::memcpy(&rhs, 0, sizeof(Buffer));
+		std::memcpy(this, &rhs, sizeof(BufferBase));
+		std::memcpy(&rhs, 0, sizeof(BufferBase));
 	}
 
 	return *this;
 }
 
-void Buffer::bind() const
+void BufferBase::bind() const
 {
 	glBindBuffer(mType, mHandle);
 }
 
-void Buffer::bind_base(unsigned index) const
+void BufferBase::bind_base(unsigned index) const
 {
 	glBindBufferBase(mType, index, mHandle);
 }
 
-void Buffer::clear()
+void BufferBase::update(void * data, unsigned bytes)
+{
+	bind();
+	glBufferData(mType, bytes, data, mUsage);
+}
+
+void BufferBase::clear()
 {
 	if (mHandle)
 	{
 		// Free and reset
 		glDeleteBuffers(1, &mHandle);
-		std::memcpy(this, 0, sizeof(Buffer));
+		std::memcpy(this, 0, sizeof(BufferBase));
 	}
 }
+
+#ifdef _DEBUG
+Buffer<float> make_buffer(GLenum type, GLenum usage)
+{
+	return Buffer<float>{type, usage};
+}
+#endif

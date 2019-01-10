@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Buffer.h"
+
 #include "myGlew.h"
 
 #include <glm/mat4x4.hpp>
@@ -27,5 +29,6 @@ public:
 
 private:
 	std::vector<Camera *> mCameras;
+	BufferDebug mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW };
 	HGLRC__ * mGLContext = nullptr;
 };
