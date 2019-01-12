@@ -6,6 +6,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 Camera::Camera()
+	: mFieldOfViewY(glm::radians(60.0f))
+	, mRatio(mViewport.ratio())
+	, mFar(1000.0f)
+	, mNear(0.1f)
 {
 	application.graphics().add(this);
 }

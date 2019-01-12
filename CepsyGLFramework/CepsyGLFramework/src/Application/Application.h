@@ -2,6 +2,7 @@
 
 #include "Window/Window.h"
 #include "Graphics/Graphics.h"
+#include "Scene/Scene.h"
 
 class Application
 {
@@ -24,9 +25,14 @@ public:
 	const Graphics & graphics() const;
 	Graphics & graphics();
 
+	// Scene gettors
+	const Scene & scene() const;
+	Scene & scene();
+
 private:
 	Window mWindow;
 	Graphics mGraphics;
+	Scene mScene;
 	bool mRunning = false;
 };
 

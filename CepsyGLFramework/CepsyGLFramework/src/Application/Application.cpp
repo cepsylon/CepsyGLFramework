@@ -30,21 +30,26 @@ void Application::initialize(HINSTANCE__ * instance, int show)
 	mRunning = true;
 	mWindow.initialize(instance, show, &message_handler);
 	mGraphics.initialize();
+	mScene.initialize();
 }
-
 
 void Application::run()
 {
 	while (mRunning)
 	{
+		// Update everything
 		mWindow.update();
 		mGraphics.update();
+		mScene.update();
+
+		// Render
 		mGraphics.render();
 	}
 }
 
 void Application::shutdown()
 {
+	mScene.shutdown();
 	mGraphics.shutdown();
 	mWindow.shutdown();
 }
@@ -55,3 +60,5 @@ const Window & Application::window() const { return mWindow; }
 Window & Application::window() { return mWindow; }
 const Graphics & Application::graphics() const { return mGraphics; }
 Graphics & Application::graphics() { return mGraphics; }
+const Scene & Application::scene() const { return mScene; }
+Scene & Application::scene() { return mScene; }

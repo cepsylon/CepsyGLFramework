@@ -15,6 +15,8 @@ public:
 	// Sets the viewport and clears if needed
 	void set() const;
 
+	float ratio() const;
+
 	glm::vec4 mClearColor{ 1.0f, 1.0f, 1.0f, 1.0f };	// Clear color
 	glm::vec2 mSize{ 1.0f, 1.0f };	// Size of the viewport normalized
 	glm::vec2 mPosition{ 0.0f, 0.0f }; // Position of the viewport in normalized coordinates

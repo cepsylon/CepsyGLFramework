@@ -21,3 +21,10 @@ void Viewport::set() const
 	if (mClearMask)
 		glClear(mClearMask);
 }
+
+float Viewport::ratio() const
+{
+	const Window & window = application.window();
+	glm::vec2 size{ mSize.x * window.width(), mSize.y * window.height() };
+	return size.x / size.y;
+}
