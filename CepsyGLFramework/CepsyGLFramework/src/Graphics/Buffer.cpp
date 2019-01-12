@@ -2,8 +2,8 @@
 
 #include <cstring>
 
-BufferBase::BufferBase(GLenum type, GLenum usage)
-	: mType(type)
+BufferBase::BufferBase(GLenum target, GLenum usage)
+	: mTarget(target)
 	, mUsage(usage)
 	, mHandle(0)
 	, mSizeInBytes(0)
@@ -11,16 +11,16 @@ BufferBase::BufferBase(GLenum type, GLenum usage)
 	glGenBuffers(1, &mHandle);
 }
 
-BufferBase::BufferBase(GLenum type, unsigned size_in_bytes, void * data, GLenum usage)
-	: mType(type)
+BufferBase::BufferBase(GLenum target, unsigned size_in_bytes, void * data, GLenum usage)
+	: mTarget(target)
 	, mUsage(usage)
 	, mHandle(0)
 	, mSizeInBytes(size_in_bytes)
 {
 	// Create the buffer and fill it
 	glGenBuffers(1, &mHandle);
-	glBindBuffer(mType, mHandle);
-	glBufferData(mType, mSizeInBytes, data, mUsage);
+	glBindBuffer(mTarget, mHandle);
+	glBufferData(mTarget, mSizeInBytes, data, mUsage);
 }
 
 BufferBase::~BufferBase()
@@ -31,13 +31,13 @@ BufferBase::~BufferBase()
 }
 
 BufferBase::BufferBase(BufferBase && rhs)
-	: mType(rhs.mType)
+	: mTarget(rhs.mTarget)
 	, mUsage(rhs.mUsage)
 	, mHandle(rhs.mHandle)
 	, mSizeInBytes(rhs.mSizeInBytes)
 {
 	// Reset rhs
-	std::memcpy(&rhs, 0, sizeof(BufferBase));
+	std::memset(&rhs, 0, sizeof(BufferBase));
 }
 
 BufferBase & BufferBase::operator=(BufferBase && rhs)
@@ -49,7 +49,7 @@ BufferBase & BufferBase::operator=(BufferBase && rhs)
 
 		// Copy and reset rhs
 		std::memcpy(this, &rhs, sizeof(BufferBase));
-		std::memcpy(&rhs, 0, sizeof(BufferBase));
+		std::memset(&rhs, 0, sizeof(BufferBase));
 	}
 
 	return *this;
@@ -57,18 +57,19 @@ BufferBase & BufferBase::operator=(BufferBase && rhs)
 
 void BufferBase::bind() const
 {
-	glBindBuffer(mType, mHandle);
+	glBindBuffer(mTarget, mHandle);
 }
 
 void BufferBase::bind_base(unsigned index) const
 {
-	glBindBufferBase(mType, index, mHandle);
+	glBindBufferBase(mTarget, index, mHandle);
 }
 
 void BufferBase::update(void * data, unsigned bytes)
 {
 	bind();
-	glBufferData(mType, bytes, data, mUsage);
+	glBufferData(mTarget, bytes, nullptr, mUsage);
+	glBufferData(mTarget, bytes, data, mUsage);
 }
 
 void BufferBase::clear()
@@ -77,13 +78,6 @@ void BufferBase::clear()
 	{
 		// Free and reset
 		glDeleteBuffers(1, &mHandle);
-		std::memcpy(this, 0, sizeof(BufferBase));
+		std::memset(this, 0, sizeof(BufferBase));
 	}
 }
-
-#ifdef _DEBUG
-Buffer<float> make_buffer(GLenum type, GLenum usage)
-{
-	return Buffer<float>{type, usage};
-}
-#endif

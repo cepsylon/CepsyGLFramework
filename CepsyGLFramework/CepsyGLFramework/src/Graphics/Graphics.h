@@ -29,6 +29,6 @@ public:
 
 private:
 	std::vector<Camera *> mCameras;
-	BufferDebug mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW };
+	BufferF32 mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW };
 	HGLRC__ * mGLContext = nullptr;
 };
