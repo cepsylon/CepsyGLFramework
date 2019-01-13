@@ -3,11 +3,11 @@
 #include "Base.h"
 
 #include "Transform.h"
+#include "Component.h"
 
 #include <memory>
 #include <vector>
 
-class Component;
 
 class Entity : public Base
 {

@@ -1,7 +1,5 @@
 #include "Space.h"
 
-#include "Common/Entity.h"
-#include "Common/Component.h"
 
 void Space::initialize()
 {

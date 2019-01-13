@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Common/Entity.h"
+
 #include <vector>
 #include <memory>
-
-class Entity;
 
 class Space
 {

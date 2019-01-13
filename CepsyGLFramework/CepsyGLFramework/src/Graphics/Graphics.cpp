@@ -63,6 +63,9 @@ void Graphics::initialize()
 	}
 	else
 		throw "Unsupported OpenGL verion 4.5, please update your drivers";
+
+	// Create camera matrix buffer
+	mCameraMatrixBuffer.generate();
 }
 
 void Graphics::update()

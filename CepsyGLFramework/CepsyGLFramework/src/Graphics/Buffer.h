@@ -10,10 +10,8 @@
 class BufferBase
 {
 public:
-	// Build empty buffer
+	// Constructor does not generate GPU buffer, only initializes buffer description
 	BufferBase(GLenum target, GLenum usage);
-	// Build buffer with provided data
-	BufferBase(GLenum target, unsigned size_in_bytes, void * data, GLenum usage);
 	// Free OpenGL data
 	~BufferBase();
 
@@ -24,6 +22,17 @@ public:
 	// Only moves
 	BufferBase(BufferBase && rhs);
 	BufferBase & operator=(BufferBase && rhs);
+
+	// Generates empty buffer
+#ifdef _DEBUG
+	virtual
+#endif
+	void generate();
+	// Generates buffer with the data passed
+#ifdef _DEBUG
+	virtual
+#endif
+	void generate(void * data, unsigned size_in_bytes);
 
 	// Binds buffer
 	void bind() const;
@@ -40,7 +49,6 @@ protected:
 	GLenum mTarget;
 	GLenum mUsage;
 	GLuint mHandle = 0;
-	unsigned mSizeInBytes = 0;
 };
 
 #ifdef _DEBUG
@@ -52,13 +60,6 @@ public:
 		: BufferBase(type, usage)
 		, mData()
 	{ }
-
-	Buffer(GLenum type, unsigned count, T * data, GLenum usage)
-		: BufferBase(type, sizeof(T) * count, data, usage)
-		, mData(count)
-	{
-		std::memcpy(mData.data(), data, mSizeInBytes);
-	}
 	
 	// No copies
 	Buffer(const Buffer &) = delete;
@@ -79,6 +80,21 @@ public:
 		}
 		
 		return *this;
+	}
+
+	// Due to having an overload of the same function, we neeed to create this overload too
+	// although it will only do what the base class does
+	void generate() override
+	{
+		BufferBase::generate();
+	}
+
+	void generate(void * data, unsigned size_in_bytes) override
+	{
+		// Copy debug data and generate the buffer
+		mData.resize(size_in_bytes / sizeof(T));
+		std::memcpy(mData.data(), data, size_in_bytes);
+		BufferBase::generate(data, size_in_bytes);
 	}
 
 private:

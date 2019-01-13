@@ -6,22 +6,7 @@ BufferBase::BufferBase(GLenum target, GLenum usage)
 	: mTarget(target)
 	, mUsage(usage)
 	, mHandle(0)
-	, mSizeInBytes(0)
-{
-	glGenBuffers(1, &mHandle);
-}
-
-BufferBase::BufferBase(GLenum target, unsigned size_in_bytes, void * data, GLenum usage)
-	: mTarget(target)
-	, mUsage(usage)
-	, mHandle(0)
-	, mSizeInBytes(size_in_bytes)
-{
-	// Create the buffer and fill it
-	glGenBuffers(1, &mHandle);
-	glBindBuffer(mTarget, mHandle);
-	glBufferData(mTarget, mSizeInBytes, data, mUsage);
-}
+{ }
 
 BufferBase::~BufferBase()
 {
@@ -34,7 +19,6 @@ BufferBase::BufferBase(BufferBase && rhs)
 	: mTarget(rhs.mTarget)
 	, mUsage(rhs.mUsage)
 	, mHandle(rhs.mHandle)
-	, mSizeInBytes(rhs.mSizeInBytes)
 {
 	// Reset rhs
 	std::memset(&rhs, 0, sizeof(BufferBase));
@@ -53,6 +37,18 @@ BufferBase & BufferBase::operator=(BufferBase && rhs)
 	}
 
 	return *this;
+}
+
+void BufferBase::generate()
+{
+	glGenBuffers(1, &mHandle);
+}
+
+void BufferBase::generate(void * data, unsigned size_in_bytes)
+{
+	generate();
+	glBindBuffer(mTarget, mHandle);
+	glBufferData(mTarget, size_in_bytes, data, mUsage);
 }
 
 void BufferBase::bind() const

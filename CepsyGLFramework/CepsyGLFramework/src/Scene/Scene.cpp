@@ -1,14 +1,12 @@
 #include "Scene.h"
 
-#include "Space.h"
-
 void Scene::initialize()
 {
 	//TODO actually loading things from file
 
 	// For now
 	// Create an empty space
-	mSpaces.emplace_back(Space{});
+	mSpaces.emplace_back(std::make_unique<Space>());
 }
 
 void Scene::update()
