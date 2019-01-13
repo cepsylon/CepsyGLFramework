@@ -31,6 +31,7 @@
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\Graphics.cpp" />
     <ClCompile Include="src\Graphics\Viewport.cpp" />
+    <ClCompile Include="src\GUI\GUI.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\RTTI\RTTI.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="src\Graphics\Graphics.h" />
     <ClInclude Include="src\Graphics\myGlew.h" />
     <ClInclude Include="src\Graphics\Viewport.h" />
+    <ClInclude Include="src\GUI\GUI.h" />
     <ClInclude Include="src\RTTI\RTTI.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\Space.h" />

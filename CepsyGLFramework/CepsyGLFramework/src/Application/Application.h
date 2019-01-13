@@ -2,6 +2,7 @@
 
 #include "Window/Window.h"
 #include "Graphics/Graphics.h"
+#include "GUI/GUI.h"
 #include "Scene/Scene.h"
 
 class Application
@@ -32,6 +33,7 @@ public:
 private:
 	Window mWindow;
 	Graphics mGraphics;
+	GUI mGUI;
 	Scene mScene;
 	bool mRunning = false;
 };

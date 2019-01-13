@@ -15,8 +15,10 @@ class Graphics
 public:
 	void initialize();
 	void update();
-	void render();
+	void render() const;
 	void shutdown();
+
+	void present() const;
 
 	// Updates camera matrices
 	void update_camera_matrices(const glm::mat4 & projection, const glm::mat4 & view);

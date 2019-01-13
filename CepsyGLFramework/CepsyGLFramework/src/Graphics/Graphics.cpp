@@ -73,7 +73,7 @@ void Graphics::update()
 
 }
 
-void Graphics::render()
+void Graphics::render() const
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -84,13 +84,17 @@ void Graphics::render()
 		// Set viewport and pass camera matrices to GPU
 		camera->set();
 	}
-
-	SwapBuffers(application.window().render_device());
 }
 
 void Graphics::shutdown()
 {
 	wglDeleteContext(mGLContext);
+}
+
+void Graphics::present() const
+{
+	// Swap buffers
+	SwapBuffers(application.window().render_device());
 }
 
 void Graphics::update_camera_matrices(const glm::mat4 & projection, const glm::mat4 & view)
