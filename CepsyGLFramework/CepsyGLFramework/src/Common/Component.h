@@ -7,6 +7,8 @@ class Entity;
 class Component : public Base
 {
 public:
+	virtual ~Component() {}
+
 	// Initialize
 	virtual void initialize() = 0;
 
@@ -15,6 +17,9 @@ public:
 
 	// Shutdown
 	virtual void shutdown() = 0;
+
+	// Outputs to gui
+	virtual void to_gui() = 0;
 
 	// Gets owner
 	Entity & owner();

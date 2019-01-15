@@ -4,6 +4,7 @@
 #include "Common/Entity.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <imgui/imgui.h>
 
 Camera::Camera()
 	: mFieldOfViewY(glm::radians(60.0f))
@@ -34,6 +35,29 @@ void Camera::shutdown()
 
 }
 
+void Camera::to_gui()
+{
+	if (ImGui::TreeNode("Viewport"))
+	{
+		mViewport.to_gui();
+		ImGui::TreePop();
+	}
+	ImGui::Combo("Projection", &mProjectionMode, "Perspective\0Orthogonal\0");
+	if (mProjectionMode == Perspective)
+	{
+		ImGui::SliderAngle("Field Of View Y", &mFieldOfViewY, 0.0f, 90.0f);
+		ImGui::InputFloat("Near", &mNear);
+		ImGui::InputFloat("Far", &mFar);
+	}
+	else
+	{
+		ImGui::InputFloat("Left", &mLeft);
+		ImGui::InputFloat("Right", &mRight);
+		ImGui::InputFloat("Bottom", &mBottom);
+		ImGui::InputFloat("Top", &mTop);
+	}
+}
+
 void Camera::set() const
 {
 	// Set viewport
@@ -45,7 +69,7 @@ void Camera::set() const
 
 glm::mat4 Camera::projection() const
 {
-	if (mIsPerspective)
+	if (mProjectionMode == Perspective)
 		return glm::perspective(mFieldOfViewY, mRatio, mNear, mFar);
 	else
 		return glm::ortho(mLeft, mRight, mBottom, mTop);

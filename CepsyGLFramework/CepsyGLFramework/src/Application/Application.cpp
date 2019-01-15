@@ -94,13 +94,7 @@ void Application::run()
 		mScene.update();
 
 		// Here goes gui
-		ImGui::Begin("test");
-		ImGui::Text("Hi from window\n");
-		static float test = 1.0f;
-		ImGui::DragFloat("Test float", &test);
-		static char buffer[256] = { 0 };
-		ImGui::InputText("Test Text", buffer, 256);
-		ImGui::End();
+		mScene.to_gui();
 
 		// Render
 		mGraphics.render();

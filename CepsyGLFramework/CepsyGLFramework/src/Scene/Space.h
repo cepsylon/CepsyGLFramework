@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Common/Base.h"
 #include "Common/Entity.h"
 
 #include <vector>
 #include <memory>
 
-class Space
+class Space : public Base
 {
 public:
 	// Initialize all entities
@@ -14,6 +15,9 @@ public:
 	void update();
 	// Shutdown all entities
 	void shutdown();
+
+	// Outputs to gui
+	void to_gui();
 
 	// Add already built entity
 	void add(std::unique_ptr<Entity> && entity);

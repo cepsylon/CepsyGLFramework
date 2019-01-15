@@ -2,6 +2,8 @@
 
 #include "Component.h"
 
+#include <imgui/imgui.h>
+
 void Entity::initialize()
 {
 	// Initialize all component
@@ -21,6 +23,26 @@ void Entity::shutdown()
 	// Shutdown all components
 	for (auto & component : mComponents)
 		component->shutdown();
+}
+
+void Entity::to_gui()
+{
+	// Transform to gui
+	if (ImGui::TreeNode("Transform"))
+	{
+		mTransform.to_gui();
+		ImGui::TreePop();
+	}
+
+	// Components to gui
+	for (auto & component : mComponents)
+	{
+		if (ImGui::TreeNode(component->class_name()))
+		{
+			component->to_gui();
+			ImGui::TreePop();
+		}
+	}
 }
 
 const Transform & Entity::transform() const { return mTransform; }

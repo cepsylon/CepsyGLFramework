@@ -15,6 +15,9 @@ public:
 	// Saves the current scene
 	void shutdown();
 
+	// Outputs scene to gui
+	void to_gui();
+
 private:
 	std::vector<std::unique_ptr<Space>> mSpaces;
 };

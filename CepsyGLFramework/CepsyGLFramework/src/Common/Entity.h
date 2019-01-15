@@ -21,6 +21,9 @@ public:
 	// Shutdowns all components
 	void shutdown();
 
+	// Outputs to gui
+	void to_gui();
+
 	// Adds default constructed component
 	template <typename T>
 	T * add()

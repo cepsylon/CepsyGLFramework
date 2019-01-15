@@ -2,6 +2,8 @@
 
 #include "Application/Application.h"
 
+#include <imgui/imgui.h>
+
 void Viewport::set() const
 {
 	// Compute size and position in window space
@@ -27,4 +29,13 @@ float Viewport::ratio() const
 	const Window & window = application.window();
 	glm::vec2 size{ mSize.x * window.width(), mSize.y * window.height() };
 	return size.x / size.y;
+}
+
+void Viewport::to_gui()
+{
+	ImGui::InputFloat2("Position", &mPosition[0]);
+	ImGui::InputFloat2("Size", &mSize[0]);
+	ImGui::PushItemWidth(150.0f);
+	ImGui::ColorEdit4("Clear color", &mClearColor[0]);
+	ImGui::PopItemWidth();
 }
