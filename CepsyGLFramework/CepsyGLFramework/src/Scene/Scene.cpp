@@ -39,7 +39,7 @@ void Scene::shutdown()
 void Scene::to_gui()
 {
 	ImGui::Begin("Scene");
-	ImGui::PushItemWidth(100.0f);
+	ImGui::PushItemWidth(150.0f);
 	for (auto & space : mSpaces)
 	{
 		if (ImGui::TreeNode(space->name().c_str()))

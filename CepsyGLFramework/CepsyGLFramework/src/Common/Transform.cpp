@@ -2,11 +2,22 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <imgui/imgui.h>
+
 Transform::Transform(const Transform & rhs)
 	: mRotation(rhs.mRotation)
 	, mTranslation(rhs.mTranslation)
 	, mScale(rhs.mScale)
 { }
+
+void Transform::to_gui()
+{
+	ImGui::InputFloat3("Position", &mTranslation[0]);
+	ImGui::InputFloat3("Scale", &mScale[0]);
+	glm::vec3 degrees = glm::eulerAngles(mRotation);
+	if (ImGui::InputFloat3("Rotation", &degrees[0]))
+		mRotation = glm::quat{ degrees };
+}
 
 glm::quat Transform::rotation() const {	return mRotation; }
 glm::vec3 Transform::position() const { return mTranslation; }

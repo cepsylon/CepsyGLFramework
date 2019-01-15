@@ -10,6 +10,9 @@ public:
 	Transform() = default;
 	Transform(const Transform & rhs);
 
+	// Output to gui
+	void to_gui();
+
 	// Gettors
 	glm::quat rotation() const;
 	glm::vec3 position() const;

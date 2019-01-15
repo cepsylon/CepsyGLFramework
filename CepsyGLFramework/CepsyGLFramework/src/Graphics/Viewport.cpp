@@ -35,7 +35,5 @@ void Viewport::to_gui()
 {
 	ImGui::InputFloat2("Position", &mPosition[0]);
 	ImGui::InputFloat2("Size", &mSize[0]);
-	ImGui::PushItemWidth(150.0f);
 	ImGui::ColorEdit4("Clear color", &mClearColor[0]);
-	ImGui::PopItemWidth();
 }
