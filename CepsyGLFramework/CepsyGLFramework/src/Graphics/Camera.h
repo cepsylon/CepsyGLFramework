@@ -8,6 +8,8 @@
 class Camera : public Component
 {
 public:
+	RTTI_H;
+
 	Camera();
 	~Camera();
 

@@ -4,6 +4,8 @@
 
 #include <imgui/imgui.h>
 
+RTTI_I(Entity, Base);
+
 void Entity::initialize()
 {
 	// Initialize all component

@@ -12,6 +12,8 @@
 class Entity : public Base
 {
 public:
+	RTTI_H;
+
 	// Initializes all components
 	void initialize();
 

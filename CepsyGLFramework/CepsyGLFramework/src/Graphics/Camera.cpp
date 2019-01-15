@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <imgui/imgui.h>
 
+RTTI_I(Camera, Component);
+
 Camera::Camera()
 	: mFieldOfViewY(glm::radians(60.0f))
 	, mRatio(mViewport.ratio())

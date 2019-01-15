@@ -1,5 +1,7 @@
 #include "Component.h"
 
+RTTI_I(Component, Base);
+
 Entity & Component::owner()
 {
 	return *mOwner;

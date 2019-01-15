@@ -7,6 +7,8 @@ class Entity;
 class Component : public Base
 {
 public:
+	RTTI_H;
+
 	virtual ~Component() {}
 
 	// Initialize
