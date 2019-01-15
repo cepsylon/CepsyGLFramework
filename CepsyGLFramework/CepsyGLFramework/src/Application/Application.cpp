@@ -7,6 +7,8 @@
 #include <Windows.h>
 #endif
 
+#include "Graphics/Mesh.h"
+
 Application application;
 
 namespace
@@ -81,6 +83,9 @@ void Application::initialize(HINSTANCE__ * instance, int show)
 	mGraphics.initialize();
 	mGUI.initialize();
 	mScene.initialize();
+
+	Mesh test;
+	test.load("data/meshes/box.fbx");
 }
 
 void Application::run()
