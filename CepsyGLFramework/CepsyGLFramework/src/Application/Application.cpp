@@ -85,7 +85,7 @@ void Application::initialize(HINSTANCE__ * instance, int show)
 	mScene.initialize();
 
 	FBXImporter importer;
-	importer.load("data/meshes/xbot.fbx");
+	importer.load("data/meshes/box.fbx");
 }
 
 void Application::run()
