@@ -7,7 +7,7 @@
 #include <Windows.h>
 #endif
 
-#include "Graphics/Mesh.h"
+#include "Resources/Importers/FBXImporter.h"
 
 Application application;
 
@@ -84,8 +84,8 @@ void Application::initialize(HINSTANCE__ * instance, int show)
 	mGUI.initialize();
 	mScene.initialize();
 
-	Mesh test;
-	test.load("data/meshes/box.fbx");
+	FBXImporter importer;
+	importer.load("data/meshes/xbot.fbx");
 }
 
 void Application::run()
