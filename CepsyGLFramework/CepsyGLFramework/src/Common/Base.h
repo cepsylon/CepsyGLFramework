@@ -9,6 +9,20 @@ class Base
 public:
 	RTTI_H;
 
+	Base() = default;
+
+	// Constructor with the name
+	Base(const char * name);
+	Base(const std::string & name);
+
+	// Copies
+	Base(const Base & rhs);
+	Base & operator=(const Base & rhs);
+
+	// Moves
+	Base(Base && rhs);
+	Base & operator=(Base && rhs);
+
 #ifdef _WIN64
 	unsigned __int64 ID() const;
 #else
