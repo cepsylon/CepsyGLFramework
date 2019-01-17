@@ -60,34 +60,6 @@ void FBXImporter::import(FbxNode * node) const
 		import(node->GetChild(i));
 }
 
-void DisplayControlsPoints(FbxMesh* pMesh)
-{
-	int i, lControlPointsCount = pMesh->GetControlPointsCount();
-	FbxVector4* lControlPoints = pMesh->GetControlPoints();
-
-	printf("    Control Points\n");
-
-	for (i = 0; i < lControlPointsCount; i++)
-	{
-		printf("        Control Point %d\n", i);
-		printf("            Coordinates: %f, %f, %f\n", lControlPoints[i][0], lControlPoints[i][1], lControlPoints[i][2]);
-
-		for (int j = 0; j < pMesh->GetElementNormalCount(); j++)
-		{
-			FbxGeometryElementNormal* leNormals = pMesh->GetElementNormal(j);
-			if (leNormals->GetMappingMode() == FbxGeometryElement::eByControlPoint)
-			{
-				char header[100];
-				FBXSDK_sprintf(header, 100, "            Normal Vector: ");
-				if (leNormals->GetReferenceMode() == FbxGeometryElement::eDirect)
-					printf("%s%f, %f, %f\n", header, leNormals->GetDirectArray().GetAt(i)[0], leNormals->GetDirectArray().GetAt(i)[1], leNormals->GetDirectArray().GetAt(i)[2]);
-			}
-		}
-	}
-
-	printf("\n");
-}
-
 void FBXImporter::import(FbxNodeAttribute * attribute) const
 {
 	if (!attribute)
@@ -112,8 +84,6 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute) const
 
 	// Load mesh
 	Mesh loaded_mesh = MeshImporter::load(mesh);
-
-	DisplayControlsPoints(mesh);
 }
 
 #ifdef _DEBUG

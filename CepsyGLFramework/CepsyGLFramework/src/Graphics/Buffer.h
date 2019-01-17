@@ -67,7 +67,7 @@ public:
 	
 	// Only moves
 	Buffer(Buffer && rhs)
-		: BufferBase(rhs)
+		: BufferBase(std::move(rhs))
 		, mData(std::move(rhs.mData))
 	{	}
 	
@@ -75,7 +75,7 @@ public:
 	{
 		if (this != &rhs)
 		{
-			BufferBase::operator=(rhs);
+			BufferBase::operator=(std::move(rhs));
 			mData = std::move(rhs.mData);
 		}
 		

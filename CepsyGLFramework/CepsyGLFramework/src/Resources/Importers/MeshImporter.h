@@ -12,7 +12,7 @@ struct Vertex
 	{
 		bool operator==(const Instance & rhs) const;
 
-		std::vector<int *> mIndices; // Indices that reference the current instance of the Vertex
+		std::vector<int> mIndices; // Indices that reference the current instance of the Vertex
 		int mNormalIndex = -1;
 		int mUVIndex = -1;
 	};
