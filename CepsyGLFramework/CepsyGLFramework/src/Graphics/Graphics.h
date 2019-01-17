@@ -3,6 +3,10 @@
 #include "Buffer.h"
 
 #include "myGlew.h"
+// TODO: move to resources
+#include "Program.h"
+#include <memory>
+//------------------------------
 
 #include <glm/mat4x4.hpp>
 #include <vector>
@@ -33,4 +37,5 @@ private:
 	std::vector<Camera *> mCameras;
 	BufferF32 mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW };
 	HGLRC__ * mGLContext = nullptr;
+	std::unique_ptr<Program> mProgram = nullptr;
 };

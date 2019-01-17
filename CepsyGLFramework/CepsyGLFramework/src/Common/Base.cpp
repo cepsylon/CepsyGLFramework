@@ -29,7 +29,7 @@ Base::Base(Base && rhs)
 Base & Base::operator=(Base && rhs)
 {
 	if (this != &rhs)
-		mName = std::move(mName);
+		mName = std::move(rhs.mName);
 
 	return *this;
 }

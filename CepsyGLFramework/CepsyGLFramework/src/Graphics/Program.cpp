@@ -8,7 +8,7 @@
 std::string get_name_from_path(const std::string & path)
 {
 	int start = path.find_last_of("/");
-	start = start == std::string::npos ? 0 : start;
+	start = start == std::string::npos ? 0 : start + 1;
 	return path.substr(start, path.size() - start);
 }
 

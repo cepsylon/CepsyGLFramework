@@ -66,6 +66,13 @@ void Graphics::initialize()
 
 	// Create camera matrix buffer
 	mCameraMatrixBuffer.generate();
+
+	// TODO: move to resoureces
+	std::vector<Shader> shaders(2);
+	shaders[0] = Shader{ "./data/shaders/basic.v" };
+	shaders[1] = Shader{ "./data/shaders/basic.f" };
+	mProgram = std::make_unique<Program>(shaders);
+	//-------------------------
 }
 
 void Graphics::update()
@@ -83,6 +90,8 @@ void Graphics::render() const
 	{
 		// Set viewport and pass camera matrices to GPU
 		camera->set();
+
+		mProgram->bind();
 	}
 }
 
