@@ -1,13 +1,16 @@
 #pragma once
 
-#include <string>
+#include "Graphics/Mesh.h"
 
 #include <fbxsdk/fbxsdk.h>
+
+#include <vector>
+#include <string>
 
 class Importer
 {
 public:
-	virtual void load(const std::string & path) const = 0;
+	virtual void load(const std::string & path) = 0;
 
 protected:
 };
@@ -15,12 +18,12 @@ protected:
 class FBXImporter : public Importer
 {
 public:
-	void load(const std::string & path) const override;
+	void load(const std::string & path) override;
 
 private:
-	void import(FbxNode * node) const;
-	void import(FbxNodeAttribute * attribute) const;
-	void import_mesh(FbxNodeAttribute * attribute) const;
+	void import(FbxNode * node);
+	void import(FbxNodeAttribute * attribute);
+	void import_mesh(FbxNodeAttribute * attribute);
 
 #ifdef _DEBUG
 	static void print_scene(FbxScene * scene);
@@ -29,4 +32,6 @@ private:
 	static std::string attribute_type(FbxNodeAttribute::EType type);
 	static void print_tabs(int count);
 #endif
+
+	std::vector<Mesh> mMeshes;
 };

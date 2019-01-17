@@ -105,8 +105,7 @@ void Graphics::render() const
 		mProgram->set_uniform("model", model);
 		mProgram->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
 
-		mMesh->bind();
-		mMesh->draw();
+		mModel->draw();
 	}
 }
 

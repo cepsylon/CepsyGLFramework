@@ -11,7 +11,7 @@
 #include "Application/Application.h"
 //------------------------------
 
-void FBXImporter::load(const std::string & path) const
+void FBXImporter::load(const std::string & path)
 {
 	// Create new SDK manager
 	FbxManager * fbx_manager = FbxManager::Create();
@@ -34,11 +34,6 @@ void FBXImporter::load(const std::string & path) const
 	FbxScene * scene = FbxScene::Create(fbx_manager, "Scene");
 	importer->Import(scene);
 
-#ifdef _DEBUG
-	// Print the layout of the file we are importing for debugging purposes
-	//print_scene(scene);
-#endif
-
 	// Import all nodes
 	FbxNode * root = scene->GetRootNode();
 	if (root)
@@ -50,9 +45,12 @@ void FBXImporter::load(const std::string & path) const
 	// Free everything
 	importer->Destroy();
 	fbx_manager->Destroy();
+
+	// Create the model
+	application.graphics().mModel = std::make_unique<Model>(std::move(mMeshes));
 }
 
-void FBXImporter::import(FbxNode * node) const
+void FBXImporter::import(FbxNode * node)
 {
 	// Import all attributes to the node
 	for (int i = 0; i < node->GetNodeAttributeCount(); ++i)
@@ -63,7 +61,7 @@ void FBXImporter::import(FbxNode * node) const
 		import(node->GetChild(i));
 }
 
-void FBXImporter::import(FbxNodeAttribute * attribute) const
+void FBXImporter::import(FbxNodeAttribute * attribute)
 {
 	if (!attribute)
 		return;
@@ -80,13 +78,13 @@ void FBXImporter::import(FbxNodeAttribute * attribute) const
 	}
 }
 
-void FBXImporter::import_mesh(FbxNodeAttribute * attribute) const
+void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 {
 	// We already know it's a mesh, so we can cast
 	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
 
 	// Load mesh
-	application.graphics().mMesh = std::make_unique<Mesh>(MeshImporter::load(mesh));
+	mMeshes.emplace_back(MeshImporter::load(mesh));
 }
 
 #ifdef _DEBUG
