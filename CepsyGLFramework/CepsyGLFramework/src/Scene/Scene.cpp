@@ -17,6 +17,7 @@ void Scene::initialize()
 	// Add camera to space
 	std::unique_ptr<Entity> camera = std::make_unique<Entity>();
 	camera->set_name("Camera");
+	camera->transform().set_position(glm::vec3{ 0.0f, 0.0f, 5.0f });
 	camera->add<Camera>();
 	mSpaces.back()->add(std::move(camera));
 }

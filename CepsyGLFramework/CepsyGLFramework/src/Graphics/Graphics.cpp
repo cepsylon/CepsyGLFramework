@@ -65,7 +65,10 @@ void Graphics::initialize()
 		throw "Unsupported OpenGL verion 4.5, please update your drivers";
 
 	// Create camera matrix buffer and bind it
-	mCameraMatrixBuffer.generate();
+	// NOTE: we need to fill the buffer with dummy matrices before binding
+	// to use debug utility since the buffer is not actually created until
+	// we pass data to it. We use dummy data, will be overwritten later
+	mCameraMatrixBuffer.generate(&mCameraMatrixBuffer, sizeof(float));
 	mCameraMatrixBuffer.bind_base(0);
 
 	// TODO: move to resoureces
