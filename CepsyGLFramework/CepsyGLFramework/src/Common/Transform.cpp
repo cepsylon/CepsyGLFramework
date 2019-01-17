@@ -14,9 +14,9 @@ void Transform::to_gui()
 {
 	ImGui::InputFloat3("Position", &mTranslation[0]);
 	ImGui::InputFloat3("Scale", &mScale[0]);
-	glm::vec3 degrees = glm::eulerAngles(mRotation);
+	glm::vec3 degrees = glm::degrees(glm::eulerAngles(mRotation));
 	if (ImGui::InputFloat3("Rotation", &degrees[0]))
-		mRotation = glm::quat{ degrees };
+		mRotation = glm::quat{ glm::radians(degrees) };
 }
 
 glm::quat Transform::rotation() const {	return mRotation; }

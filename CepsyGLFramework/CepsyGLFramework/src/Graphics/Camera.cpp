@@ -79,6 +79,16 @@ glm::mat4 Camera::projection() const
 
 glm::mat4 Camera::view() const
 {
-	// Camera's rotation inverse, compute quaternion inverse first
-	return glm::mat4_cast(glm::inverse(owner().transform().rotation()));
+	// Quaternion inverse
+	glm::quat rotation = owner().transform().rotation();
+	float divisor = glm::dot(rotation, rotation);
+	if (divisor != 0.0f)
+		rotation = glm::conjugate(rotation) / divisor;
+
+	// Compute view matrix
+	glm::mat4 view = glm::mat4_cast(rotation);
+	view[3][0] = -owner().transform().position().x;
+	view[3][1] = -owner().transform().position().y;
+	view[3][2] = -owner().transform().position().z;
+	return view;
 }

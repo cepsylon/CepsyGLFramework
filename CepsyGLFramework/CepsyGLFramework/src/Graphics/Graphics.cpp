@@ -64,8 +64,9 @@ void Graphics::initialize()
 	else
 		throw "Unsupported OpenGL verion 4.5, please update your drivers";
 
-	// Create camera matrix buffer
+	// Create camera matrix buffer and bind it
 	mCameraMatrixBuffer.generate();
+	mCameraMatrixBuffer.bind_base(0);
 
 	// TODO: move to resoureces
 	std::vector<Shader> shaders(2);
