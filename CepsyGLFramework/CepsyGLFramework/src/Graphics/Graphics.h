@@ -5,6 +5,7 @@
 #include "myGlew.h"
 // TODO: move to resources
 #include "Program.h"
+#include "Mesh.h"
 #include <memory>
 //------------------------------
 
@@ -33,9 +34,10 @@ public:
 	// Removes a camera to render with
 	void remove(Camera * camera);
 
+	std::unique_ptr<Mesh> mMesh = nullptr;
 private:
 	std::vector<Camera *> mCameras;
-	BufferF32 mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW };
+	BufferF32 mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
 	HGLRC__ * mGLContext = nullptr;
 	std::unique_ptr<Program> mProgram = nullptr;
 };

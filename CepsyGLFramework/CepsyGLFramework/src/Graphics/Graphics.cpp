@@ -91,7 +91,13 @@ void Graphics::render() const
 		// Set viewport and pass camera matrices to GPU
 		camera->set();
 
+		// Test
 		mProgram->bind();
+		mProgram->set_uniform("model", glm::mat4{ 1.0f });
+		mProgram->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
+
+		mMesh->bind();
+		mMesh->draw();
 	}
 }
 

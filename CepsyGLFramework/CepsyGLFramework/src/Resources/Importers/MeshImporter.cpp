@@ -120,15 +120,15 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 		{
 			// Position
 			vertex_data[offset++] = static_cast<float>(mesh->GetControlPointAt(i)[0]);
-			vertex_data[offset++] = static_cast<float>(mesh->GetControlPointAt(i)[2]);
 			vertex_data[offset++] = static_cast<float>(mesh->GetControlPointAt(i)[1]);
+			vertex_data[offset++] = static_cast<float>(mesh->GetControlPointAt(i)[2]);
 
 			const Vertex::Instance instance = vertices_to_be_duplicated[i].mInstances[j];
 
 			// Normal
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementNormal()->GetDirectArray().GetAt(instance.mNormalIndex)[0]);
-			vertex_data[offset++] = static_cast<float>(mesh->GetElementNormal()->GetDirectArray().GetAt(instance.mNormalIndex)[2]);
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementNormal()->GetDirectArray().GetAt(instance.mNormalIndex)[1]);
+			vertex_data[offset++] = static_cast<float>(mesh->GetElementNormal()->GetDirectArray().GetAt(instance.mNormalIndex)[2]);
 
 			// UV
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementUV()->GetDirectArray().GetAt(instance.mUVIndex)[0]);
@@ -141,9 +141,9 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 	}
 
 	// Once data is parsed, we need to create the mesh
-	BufferF32 buffer_data{ GL_ARRAY_BUFFER, GL_STATIC_DRAW };
+	BufferF32 buffer_data{ GL_ARRAY_BUFFER, GL_STATIC_DRAW, GL_FLOAT };
 	buffer_data.generate(vertex_data.data(), vertex_data.size() * sizeof(float));
-	BufferI32 buffer_indices{ GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW };
+	BufferI32 buffer_indices{ GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, GL_UNSIGNED_INT };
 	buffer_indices.generate(indices.data(), indices.size() * sizeof(int));
 
 	return Mesh{ std::move(buffer_data), std::move(buffer_indices) };

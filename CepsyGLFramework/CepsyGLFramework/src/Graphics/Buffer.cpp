@@ -1,10 +1,12 @@
 #include "Buffer.h"
 
 #include <cstring>
+#include <map>
 
-BufferBase::BufferBase(GLenum target, GLenum usage)
+BufferBase::BufferBase(GLenum target, GLenum usage, GLenum type)
 	: mTarget(target)
 	, mUsage(usage)
+	, mType(type)
 	, mHandle(0)
 { }
 
@@ -18,6 +20,7 @@ BufferBase::~BufferBase()
 BufferBase::BufferBase(BufferBase && rhs)
 	: mTarget(rhs.mTarget)
 	, mUsage(rhs.mUsage)
+	, mType(rhs.mType)
 	, mHandle(rhs.mHandle)
 {
 	// Reset rhs
@@ -76,4 +79,22 @@ void BufferBase::clear()
 		glDeleteBuffers(1, &mHandle);
 		std::memset(this, 0, sizeof(BufferBase));
 	}
+}
+
+unsigned BufferBase::count() const
+{
+	static std::map<GLenum, unsigned> types{
+		{ GL_FLOAT, sizeof(float) },
+		{ GL_UNSIGNED_INT, sizeof(unsigned) }
+	};
+
+	auto it = types.find(mType);
+	if (it == types.end())
+		throw "Wrong type for buffer\n";
+
+	int buffer_size = 0;
+	bind();
+	glGetBufferParameteriv(mTarget, GL_BUFFER_SIZE, &buffer_size);
+
+	return buffer_size / it->second;
 }

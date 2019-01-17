@@ -18,7 +18,13 @@ public:
 	Mesh(Mesh && rhs);
 	Mesh & operator=(Mesh && rhs);
 
+	// Bind for rendering
+	void bind() const;
+	// Draw call
+	void draw() const;
+
 private:
 	BufferF32 mVertices;
 	BufferI32 mIndices;
+	GLuint mID = 0;
 };

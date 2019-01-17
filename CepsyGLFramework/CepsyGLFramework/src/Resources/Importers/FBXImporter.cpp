@@ -7,6 +7,9 @@
 #include <glm/vec3.hpp>
 
 #include <vector>
+// TODO: move to resources
+#include "Application/Application.h"
+//------------------------------
 
 void FBXImporter::load(const std::string & path) const
 {
@@ -83,7 +86,7 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute) const
 	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
 
 	// Load mesh
-	Mesh loaded_mesh = MeshImporter::load(mesh);
+	application.graphics().mMesh = std::make_unique<Mesh>(MeshImporter::load(mesh));
 }
 
 #ifdef _DEBUG

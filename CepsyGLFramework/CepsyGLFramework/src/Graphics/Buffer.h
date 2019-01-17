@@ -11,7 +11,7 @@ class BufferBase
 {
 public:
 	// Constructor does not generate GPU buffer, only initializes buffer description
-	BufferBase(GLenum target, GLenum usage);
+	BufferBase(GLenum target, GLenum usage, GLenum type);
 	// Free OpenGL data
 	~BufferBase();
 
@@ -45,9 +45,13 @@ public:
 
 	// Frees OpenGL data
 	void clear();
+
+	// Returns element count
+	unsigned count() const;
 protected:
 	GLenum mTarget;
 	GLenum mUsage;
+	GLenum mType;
 	GLuint mHandle = 0;
 };
 
@@ -56,8 +60,8 @@ template <typename T>
 class Buffer : public BufferBase
 {
 public:
-	Buffer(GLenum type, GLenum usage)
-		: BufferBase(type, usage)
+	Buffer(GLenum target, GLenum usage, GLenum type)
+		: BufferBase(target, usage, type)
 		, mData()
 	{ }
 	
