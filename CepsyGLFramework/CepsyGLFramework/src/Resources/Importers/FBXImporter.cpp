@@ -36,7 +36,7 @@ void FBXImporter::load(const std::string & path) const
 
 #ifdef _DEBUG
 	// Print the layout of the file we are importing for debugging purposes
-	print_scene(scene);
+	//print_scene(scene);
 #endif
 
 	// Import all nodes

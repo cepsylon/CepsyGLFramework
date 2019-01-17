@@ -3,116 +3,75 @@
 #include "Graphics/Buffer.h"
 #include "Graphics/Mesh.h"
 
-bool Vertex::Instance::operator==(const Instance & rhs) const
+bool MeshImporter::Vertex::Instance::operator==(const Instance & rhs) const
 {
 	return mNormalIndex == rhs.mNormalIndex && mUVIndex == rhs.mUVIndex;
 }
 
-int Vertex::find(const Instance & rhs) const
+int MeshImporter::Vertex::find(const Instance & rhs) const
 {
 	for (unsigned i = 0; i < mInstances.size(); ++i)
 	{
 		if (mInstances[i] == rhs)
 			return i;
 	}
-
 	return -1;
 }
 
 
 Mesh MeshImporter::load(FbxMesh * mesh)
 {
-	// Indices, we assume that all will be triangles at the beginning
-	// TODO: Check polygons are triangles and update the container as needed
 	// TODO: Support more or less than just positions normals and uvs
+
+	// For triangulating if needed later
 	int polygon_count = mesh->GetPolygonCount();
-	std::vector<int> indices;
-	indices.reserve(polygon_count * 3);
+	std::vector<Polygon> polygons(polygon_count);
 
 	// Container to filter all vertices so we don't generate duplicates
 	std::vector<Vertex> vertices_to_be_duplicated(mesh->GetControlPointsCount());
 	unsigned vertex_count = 0;
+	unsigned current_index = 0;
 
-	int normal_size = mesh->GetElementNormal()->GetDirectArray().GetCount();
-	int uv_size = mesh->GetElementUV()->GetDirectArray().GetCount();
-
+	// Read all vertices and polygons
 	for (int i = 0; i < polygon_count; ++i)
 	{
-		// Triangulate
-		for (int j = 2; j < mesh->GetPolygonSize(i); ++j)
+		// Read polygon
+		Polygon & polygon = polygons[i];
+		int polygon_size = mesh->GetPolygonSize(i);
+		polygon.mIndices.reserve(polygon_size);
+		for (int j = 0; j < polygon_size; ++j)
 		{
-			// Triangle fan
-			int v0_index = 0;
-			int v1_index = j - 1;
-			int v2_index = j;
-			int control_point_index = mesh->GetPolygonVertex(i, v0_index);
-			int vertex_index = indices.size();
+			// Control point index will be used to index container for duplicates
+			int control_point_index = mesh->GetPolygonVertex(i, j);
 
-			// V0
-			// Add index
-			indices.emplace_back(control_point_index);
+			// Add index to polygon
+			polygon.mIndices.emplace_back(control_point_index);
 
-			// Check if we already added the vertex instance
-			Vertex::Instance instance = fill_instance(mesh, i, v0_index, vertex_index);
+			// Check if we need to create a duplicated vertex in the same position due to different
+			// normals, uvs, etc
+			Vertex::Instance instance = fill_instance(mesh, i, j, current_index);
 			int index = vertices_to_be_duplicated[control_point_index].find(instance);
 
 			// Add new instance for the vertex
 			if (index != -1)
-				vertices_to_be_duplicated[control_point_index].mInstances[index].mIndices.emplace_back(vertex_index);
+				vertices_to_be_duplicated[control_point_index].mInstances[index].mIndices.emplace_back(&polygon.mIndices.back());
 			else
 			{
+				// We neeed to create a vertex for this configuration
 				vertices_to_be_duplicated[control_point_index].mInstances.emplace_back(instance);
-				vertices_to_be_duplicated[control_point_index].mInstances.back().mIndices.emplace_back(vertex_index);
+				vertices_to_be_duplicated[control_point_index].mInstances.back().mIndices.emplace_back(&polygon.mIndices.back());
 				vertex_count++;
 			}
 
-			// V1
-			// Add index
-			control_point_index = mesh->GetPolygonVertex(i, v1_index);
-			vertex_index = indices.size();
-			indices.emplace_back(control_point_index);
-
-			// Check if we already added the vertex instance
-			instance = fill_instance(mesh, i, v1_index, vertex_index);
-			index = vertices_to_be_duplicated[control_point_index].find(instance);
-
-			// Add new instance for the vertex
-			if (index != -1)
-				vertices_to_be_duplicated[control_point_index].mInstances[index].mIndices.emplace_back(vertex_index);
-			else
-			{
-				vertices_to_be_duplicated[control_point_index].mInstances.emplace_back(instance);
-				vertices_to_be_duplicated[control_point_index].mInstances.back().mIndices.emplace_back(vertex_index);
-				vertex_count++;
-			}
-
-			// V2
-			// Add index
-			control_point_index = mesh->GetPolygonVertex(i, v2_index);
-			vertex_index = indices.size();
-			indices.emplace_back(control_point_index);
-
-			// Check if we already added the vertex instance
-			instance = fill_instance(mesh, i, v2_index, vertex_index);
-			index = vertices_to_be_duplicated[control_point_index].find(instance);
-
-			// Add new instance for the vertex
-			if (index != -1)
-				vertices_to_be_duplicated[control_point_index].mInstances[index].mIndices.emplace_back(vertex_index);
-			else
-			{
-				vertices_to_be_duplicated[control_point_index].mInstances.emplace_back(instance);
-				vertices_to_be_duplicated[control_point_index].mInstances.back().mIndices.emplace_back(vertex_index);
-				vertex_count++;
-			}
+			current_index++;
 		}
 	}
 
-	// Create vertices
+	// Vertex data
 	std::vector<float> vertex_data(vertex_count * 8);
 
 	// Duplicate vertices
-	unsigned current_index = 0;
+	current_index = 0;
 	unsigned offset = 0;
 	for (unsigned i = 0; i < vertices_to_be_duplicated.size(); ++i)
 	{
@@ -123,7 +82,7 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 			vertex_data[offset++] = static_cast<float>(mesh->GetControlPointAt(i)[1]);
 			vertex_data[offset++] = static_cast<float>(mesh->GetControlPointAt(i)[2]);
 
-			const Vertex::Instance instance = vertices_to_be_duplicated[i].mInstances[j];
+			const Vertex::Instance & instance = vertices_to_be_duplicated[i].mInstances[j];
 
 			// Normal
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementNormal()->GetDirectArray().GetAt(instance.mNormalIndex)[0]);
@@ -134,13 +93,29 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementUV()->GetDirectArray().GetAt(instance.mUVIndex)[0]);
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementUV()->GetDirectArray().GetAt(instance.mUVIndex)[1]);
 
-			// Update indices
-			for (auto index_index : instance.mIndices)
-				indices[index_index] = current_index;
+			// Update indices that were refering to this instance to index the newly created vertex
+			for (auto index : instance.mIndices)
+				*index = current_index;
 		}
 	}
 
-	// Once data is parsed, we need to create the mesh
+	// Triangulate
+	std::vector<int> indices;
+	for (const auto & polygon : polygons)
+	{
+		int v0_index = polygon.mIndices[0];
+		for (unsigned i = 2; i < polygon.mIndices.size(); ++i)
+		{
+			int v1_index = polygon.mIndices[i];
+			int v2_index = polygon.mIndices[i - 1];
+
+			indices.emplace_back(v0_index);
+			indices.emplace_back(v1_index);
+			indices.emplace_back(v2_index);
+		}
+	}
+
+	// Create the mesh
 	BufferF32 buffer_data{ GL_ARRAY_BUFFER, GL_STATIC_DRAW, GL_FLOAT };
 	buffer_data.generate(vertex_data.data(), vertex_data.size() * sizeof(float));
 	BufferI32 buffer_indices{ GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, GL_UNSIGNED_INT };
@@ -149,7 +124,7 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 	return Mesh{ std::move(buffer_data), std::move(buffer_indices) };
 }
 
-Vertex::Instance MeshImporter::fill_instance(FbxMesh * mesh, int polygon, int polygon_vertex, int vertex_count)
+MeshImporter::Vertex::Instance MeshImporter::fill_instance(FbxMesh * mesh, int polygon, int polygon_vertex, int vertex_count)
 {
 	Vertex::Instance instance;
 	int control_point_index = mesh->GetPolygonVertex(polygon, polygon_vertex);

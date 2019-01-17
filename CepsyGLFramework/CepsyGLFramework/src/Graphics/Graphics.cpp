@@ -77,6 +77,9 @@ void Graphics::initialize()
 	shaders[1] = Shader{ "./data/shaders/basic.f" };
 	mProgram = std::make_unique<Program>(shaders);
 	//-------------------------
+
+	// Enable depth testing, for now
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Graphics::update()
@@ -97,7 +100,9 @@ void Graphics::render() const
 
 		// Test
 		mProgram->bind();
-		mProgram->set_uniform("model", glm::mat4{ 1.0f });
+		glm::mat4 model = glm::mat4{ 0.01f };
+		model[3][3] = 1.0f;
+		mProgram->set_uniform("model", model);
 		mProgram->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
 
 		mMesh->bind();
