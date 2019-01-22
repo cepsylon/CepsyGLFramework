@@ -1,5 +1,7 @@
 #include "Model.h"
 
+RTTI_I(Model, Base);
+
 Model::Model(std::vector<Mesh> && meshes)
 	: mMeshes(std::move(meshes))
 { }

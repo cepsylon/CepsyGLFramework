@@ -100,12 +100,13 @@ void Graphics::render() const
 
 		// Test
 		mProgram->bind();
-		glm::mat4 model = glm::mat4{ 0.01f };
-		model[3][3] = 1.0f;
-		mProgram->set_uniform("model", model);
+		glm::mat4 model_matrix = glm::mat4{ 0.01f };
+		model_matrix[3][3] = 1.0f;
+		mProgram->set_uniform("model", model_matrix);
 		mProgram->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
 
-		mModel->draw();
+		Model * model = application.resources().get<Model>("xbot");
+		model->draw();
 	}
 }
 

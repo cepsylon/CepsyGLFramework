@@ -10,6 +10,8 @@
 class Model : public Base
 {
 public:
+	RTTI_H;
+
 	Model(std::vector<Mesh> && meshes);
 
 	// No copies

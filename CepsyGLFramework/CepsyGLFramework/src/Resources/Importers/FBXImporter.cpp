@@ -1,5 +1,6 @@
 #include "FBXImporter.h"
 
+#include "Application/Application.h"
 #include "MeshImporter.h"
 #include "Graphics/Mesh.h"
 
@@ -7,9 +8,6 @@
 #include <glm/vec3.hpp>
 
 #include <vector>
-// TODO: move to resources
-#include "Application/Application.h"
-//------------------------------
 
 void FBXImporter::load(const std::string & path)
 {
@@ -47,7 +45,7 @@ void FBXImporter::load(const std::string & path)
 	fbx_manager->Destroy();
 
 	// Create the model
-	application.graphics().mModel = std::make_unique<Model>(std::move(mMeshes));
+	application.resources().create<Model>("xbot", std::move(mMeshes));
 }
 
 void FBXImporter::import(FbxNode * node)

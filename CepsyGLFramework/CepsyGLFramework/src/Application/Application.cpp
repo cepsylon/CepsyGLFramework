@@ -7,8 +7,6 @@
 #include <Windows.h>
 #endif
 
-#include "Resources/Importers/FBXImporter.h"
-
 Application application;
 
 namespace
@@ -83,9 +81,7 @@ void Application::initialize(HINSTANCE__ * instance, int show)
 	mGraphics.initialize();
 	mGUI.initialize();
 	mScene.initialize();
-
-	FBXImporter importer;
-	importer.load("data/meshes/xbot.fbx");
+	mResources.initialize();
 }
 
 void Application::run()
@@ -110,6 +106,7 @@ void Application::run()
 
 void Application::shutdown()
 {
+	mResources.shutdown();
 	mScene.shutdown();
 	mGUI.shutdown();
 	mGraphics.shutdown();
@@ -124,3 +121,5 @@ const Graphics & Application::graphics() const { return mGraphics; }
 Graphics & Application::graphics() { return mGraphics; }
 const Scene & Application::scene() const { return mScene; }
 Scene & Application::scene() { return mScene; }
+const Resources & Application::resources() const { return mResources; }
+Resources & Application::resources() { return mResources; }

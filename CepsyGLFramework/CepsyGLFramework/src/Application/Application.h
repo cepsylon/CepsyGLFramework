@@ -4,6 +4,7 @@
 #include "Graphics/Graphics.h"
 #include "GUI/GUI.h"
 #include "Scene/Scene.h"
+#include "Resources/Resources.h"
 
 class Application
 {
@@ -30,11 +31,16 @@ public:
 	const Scene & scene() const;
 	Scene & scene();
 
+	// Resources gettors
+	const Resources & resources() const;
+	Resources & resources();
+
 private:
 	Window mWindow;
 	Graphics mGraphics;
 	GUI mGUI;
 	Scene mScene;
+	Resources mResources;
 	bool mRunning = false;
 };
 
