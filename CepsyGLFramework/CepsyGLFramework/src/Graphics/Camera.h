@@ -11,7 +11,7 @@ public:
 	RTTI_H;
 
 	Camera();
-	~Camera();
+	virtual ~Camera();
 
 	// Initialize
 	void initialize() override;

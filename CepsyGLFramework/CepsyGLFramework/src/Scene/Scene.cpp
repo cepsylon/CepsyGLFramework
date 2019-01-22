@@ -3,7 +3,7 @@
 #include <imgui/imgui.h>
 
 // This will be removed soon
-#include "Graphics/Camera.h"
+#include "Editor/EditorCamera.h"
 
 void Scene::initialize()
 {
@@ -16,9 +16,9 @@ void Scene::initialize()
 
 	// Add camera to space
 	std::unique_ptr<Entity> camera = std::make_unique<Entity>();
-	camera->set_name("Camera");
+	camera->set_name("EditorCamera");
 	camera->transform().set_position(glm::vec3{ 0.0f, 0.0f, 5.0f });
-	camera->add<Camera>();
+	camera->add<EditorCamera>();
 	mSpaces.back()->add(std::move(camera));
 }
 
