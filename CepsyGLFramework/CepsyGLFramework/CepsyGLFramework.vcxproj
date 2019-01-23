@@ -34,6 +34,7 @@
     <ClCompile Include="src\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Graphics\Model.cpp" />
     <ClCompile Include="src\Graphics\Program.cpp" />
+    <ClCompile Include="src\Graphics\Renderable.cpp" />
     <ClCompile Include="src\Graphics\Viewport.cpp" />
     <ClCompile Include="src\GUI\GUI.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -65,6 +66,7 @@
     <ClInclude Include="src\Graphics\Model.h" />
     <ClInclude Include="src\Graphics\myGlew.h" />
     <ClInclude Include="src\Graphics\Program.h" />
+    <ClInclude Include="src\Graphics\Renderable.h" />
     <ClInclude Include="src\Graphics\Viewport.h" />
     <ClInclude Include="src\GUI\GUI.h" />
     <ClInclude Include="src\Resources\BaseResource.h" />

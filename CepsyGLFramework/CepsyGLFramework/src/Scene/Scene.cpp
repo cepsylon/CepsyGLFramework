@@ -3,6 +3,9 @@
 #include <imgui/imgui.h>
 
 // This will be removed soon
+#include "Graphics/Renderable.h"
+#include "Graphics/Program.h"
+#include "Graphics/Model.h"
 #include "Editor/EditorCamera.h"
 
 void Scene::initialize()
@@ -20,6 +23,15 @@ void Scene::initialize()
 	camera->transform().set_position(glm::vec3{ 0.0f, 0.0f, 5.0f });
 	camera->add<EditorCamera>();
 	mSpaces.back()->add(std::move(camera));
+
+	// Create object
+	std::unique_ptr<Entity> xbot = std::make_unique<Entity>();
+	xbot->set_name("XBot");
+	xbot->transform().set_scale(glm::vec3{ 0.01f });
+	Renderable * renderable = xbot->add<Renderable>();
+	renderable->set_program("basic");
+	renderable->set_model("xbot");
+	mSpaces.back()->add(std::move(xbot));
 }
 
 void Scene::update()

@@ -4,12 +4,6 @@
 
 #include <imgui/imgui.h>
 
-Transform::Transform(const Transform & rhs)
-	: mRotation(rhs.mRotation)
-	, mTranslation(rhs.mTranslation)
-	, mScale(rhs.mScale)
-{ }
-
 void Transform::to_gui()
 {
 	ImGui::InputFloat3("Position", &mTranslation[0]);

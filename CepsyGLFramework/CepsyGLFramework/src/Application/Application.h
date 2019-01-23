@@ -38,9 +38,9 @@ public:
 private:
 	Window mWindow;
 	Graphics mGraphics;
+	Resources mResources;
 	GUI mGUI;
 	Scene mScene;
-	Resources mResources;
 	bool mRunning = false;
 };
 

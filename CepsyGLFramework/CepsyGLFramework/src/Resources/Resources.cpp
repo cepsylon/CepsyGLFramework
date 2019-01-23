@@ -2,6 +2,7 @@
 
 #include "Importers/FBXImporter.h"
 #include "Graphics/Model.h"
+#include "Graphics/Program.h"
 #include "Application/Application.h"
 
 void Resources::initialize()
@@ -13,9 +14,6 @@ void Resources::initialize()
 	shaders[0] = Shader{ "./data/shaders/basic.v" };
 	shaders[1] = Shader{ "./data/shaders/basic.f" };
 	create<Program>("basic", shaders);
-
-	int a;
-	a = 2;
 }
 
 void Resources::shutdown()

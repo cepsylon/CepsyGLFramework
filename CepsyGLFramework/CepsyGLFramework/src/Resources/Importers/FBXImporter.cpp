@@ -1,8 +1,9 @@
 #include "FBXImporter.h"
 
-#include "Application/Application.h"
 #include "MeshImporter.h"
+#include "Application/Application.h"
 #include "Graphics/Mesh.h"
+#include "Graphics/Model.h"
 
 #include <fbxsdk/fbxsdk.h>
 #include <glm/vec3.hpp>

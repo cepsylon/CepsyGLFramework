@@ -7,9 +7,6 @@
 class Transform
 {
 public:
-	Transform() = default;
-	Transform(const Transform & rhs);
-
 	// Output to gui
 	void to_gui();
 
@@ -30,7 +27,7 @@ public:
 	glm::mat4 model() const;
 
 private:
-	glm::quat mRotation;
-	glm::vec3 mTranslation;
-	glm::vec3 mScale;
+	glm::quat mRotation{ 0.0f, 0.0f, 0.0f, 0.0f };
+	glm::vec3 mTranslation{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 mScale{ 1.0f, 1.0f, 1.0f };
 };

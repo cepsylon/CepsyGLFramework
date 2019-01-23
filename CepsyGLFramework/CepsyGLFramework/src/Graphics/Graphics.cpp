@@ -1,7 +1,10 @@
 #include "Graphics.h"
 
-#include "Application/Application.h"
 #include "Camera.h"
+#include "Program.h"
+#include "Model.h"
+#include "Renderable.h"
+#include "Application/Application.h"
 #include "Common/Entity.h"
 
 #define WIN32_LEAN_AND_MEAN
@@ -91,16 +94,27 @@ void Graphics::render() const
 		// Set viewport and pass camera matrices to GPU
 		camera->set();
 
-		// Test
-		Program * program = application.resources().get<Program>("basic");
-		program->bind();
-		glm::mat4 model_matrix = glm::mat4{ 0.01f };
-		model_matrix[3][3] = 1.0f;
-		program->set_uniform("model", model_matrix);
-		program->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
+		// Render everything
+		for (const auto & program_model : mRenderables)
+		{
+			// Bind program
+			const Program * program = program_model.first;
+			program->bind();
+			program->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
 
-		Model * model = application.resources().get<Model>("xbot");
-		model->draw();
+			for (const auto & model_renderable : program_model.second)
+			{
+				const Model * model = model_renderable.first;
+				// Should bing the model here
+
+				// Draw all renderables
+				for (const auto & renderable : model_renderable.second)
+				{
+					program->set_uniform("model", renderable->owner().transform().model());
+					model->draw();
+				}
+			}
+		}
 	}
 }
 
@@ -129,6 +143,14 @@ void Graphics::add(Camera * camera)
 	mCameras.emplace_back(camera);
 }
 
+void Graphics::add(Renderable * renderable)
+{
+	if (renderable->program() == nullptr || renderable->model() == nullptr)
+		mUnableToDrawRenderables.emplace_back(renderable);
+	else
+		mRenderables[renderable->program()][renderable->model()].emplace_back(renderable);
+}
+
 void Graphics::remove(Camera * camera)
 {
 	for (std::vector<Camera *>::iterator it = mCameras.begin(); it != mCameras.end(); ++it)
@@ -136,6 +158,20 @@ void Graphics::remove(Camera * camera)
 		if (*it == camera)
 		{
 			mCameras.erase(it);
+			break;
+		}
+	}
+}
+
+void Graphics::remove(Renderable * renderable)
+{
+	std::vector<Renderable *> & renderables = renderable->program() == nullptr || renderable->model() == nullptr ? mUnableToDrawRenderables : mRenderables[renderable->program()][renderable->model()];
+	for (unsigned i = 0; i < renderables.size(); ++i)
+	{
+		if (renderables[i] == renderable)
+		{
+			renderables[i] = renderables.back();
+			renderables.pop_back();
 			break;
 		}
 	}
