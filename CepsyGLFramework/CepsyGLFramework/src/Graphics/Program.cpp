@@ -4,6 +4,8 @@
 #include <iostream>
 #include <map>
 
+RTTI_I(Program, Base);
+
 // This will be done by the importer once we have one
 std::string get_name_from_path(const std::string & path)
 {

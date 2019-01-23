@@ -38,5 +38,4 @@ private:
 	std::vector<Camera *> mCameras;
 	BufferF32 mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
 	HGLRC__ * mGLContext = nullptr;
-	std::unique_ptr<Program> mProgram = nullptr;
 };

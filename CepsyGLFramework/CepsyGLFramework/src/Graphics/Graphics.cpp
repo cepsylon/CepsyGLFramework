@@ -71,13 +71,6 @@ void Graphics::initialize()
 	mCameraMatrixBuffer.generate(&mCameraMatrixBuffer, sizeof(float));
 	mCameraMatrixBuffer.bind_base(0);
 
-	// TODO: move to resoureces
-	std::vector<Shader> shaders(2);
-	shaders[0] = Shader{ "./data/shaders/basic.v" };
-	shaders[1] = Shader{ "./data/shaders/basic.f" };
-	mProgram = std::make_unique<Program>(shaders);
-	//-------------------------
-
 	// Enable depth testing, for now
 	glEnable(GL_DEPTH_TEST);
 }
@@ -99,11 +92,12 @@ void Graphics::render() const
 		camera->set();
 
 		// Test
-		mProgram->bind();
+		Program * program = application.resources().get<Program>("basic");
+		program->bind();
 		glm::mat4 model_matrix = glm::mat4{ 0.01f };
 		model_matrix[3][3] = 1.0f;
-		mProgram->set_uniform("model", model_matrix);
-		mProgram->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
+		program->set_uniform("model", model_matrix);
+		program->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
 
 		Model * model = application.resources().get<Model>("xbot");
 		model->draw();
