@@ -100,7 +100,7 @@ void Graphics::render() const
 			// Bind program
 			const Program * program = program_model.first;
 			program->bind();
-			program->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
+			program->set_uniform("light_direction", glm::vec3{ 0.0f, 1.0f, 1.0f });
 
 			for (const auto & model_renderable : program_model.second)
 			{
@@ -111,7 +111,7 @@ void Graphics::render() const
 				for (const auto & renderable : model_renderable.second)
 				{
 					program->set_uniform("model", renderable->owner().transform().model());
-					model->draw();
+					model->draw(program);
 				}
 			}
 		}

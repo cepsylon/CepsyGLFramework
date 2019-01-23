@@ -6,12 +6,15 @@ in vec2 f_uv;
 
 // Uniforms
 uniform vec3 light_direction;
+uniform vec3 ambient;
+uniform vec3 diffuse;
+uniform vec3 specular;
 
 // Outputs to buffer
 out vec4 out_color;
 
 void main()
 {
-	float diffuse = dot(normalize(f_normal), light_direction);
-	out_color = vec4(diffuse, diffuse, diffuse, 1.0f);
+	float d = dot(normalize(f_normal), normalize(light_direction));
+	out_color = vec4(diffuse * d + specular * d, 1.0f);
 }

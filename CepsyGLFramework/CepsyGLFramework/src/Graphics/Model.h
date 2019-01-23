@@ -2,17 +2,19 @@
 
 #include "Common/Base.h"
 #include "Mesh.h"
+#include "Material.h"
 
 #include <vector>
 
+class Program;
+
 // Collection of meshes and materials
-// TODO: materials
 class Model : public Base
 {
 public:
 	RTTI_H;
 
-	Model(std::vector<Mesh> && meshes);
+	Model(std::vector<Mesh> && meshes, std::vector<Material> && materials);
 
 	// No copies
 	Model(const Model &) = delete;
@@ -23,7 +25,8 @@ public:
 	Model & operator=(Model && rhs);
 
 	// Draws model
-	void draw() const;
+	void draw(const Program * program) const;
 private:
 	std::vector<Mesh> mMeshes;
+	std::vector<Material> mMaterials;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graphics/Mesh.h"
+#include "Graphics/Material.h"
 
 #include <fbxsdk/fbxsdk.h>
 
@@ -34,4 +35,5 @@ private:
 #endif
 
 	std::vector<Mesh> mMeshes;
+	std::vector<Material> mMaterials;
 };

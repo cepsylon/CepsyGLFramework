@@ -33,7 +33,7 @@ public:
 	{
 		auto & resources = mResources[&T::type()];
 		std::unique_ptr<ResourceHandle<T>> value = std::make_unique<ResourceHandle<T>>(std::forward<VA>(arguments)...);
-		auto pair = resources.insert(std::make_pair(key, std::move(value)));
+		resources.insert(std::make_pair(key, std::move(value)));
 	}
 
 private:

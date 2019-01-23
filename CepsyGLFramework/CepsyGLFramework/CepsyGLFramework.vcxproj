@@ -31,6 +31,7 @@
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\Graphics.cpp" />
+    <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Graphics\Model.cpp" />
     <ClCompile Include="src\Graphics\Program.cpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="src\GUI\GUI.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Resources\Importers\FBXImporter.cpp" />
+    <ClCompile Include="src\Resources\Importers\MaterialImporter.cpp" />
     <ClCompile Include="src\Resources\Importers\MeshImporter.cpp" />
     <ClCompile Include="src\Resources\Resources.cpp" />
     <ClCompile Include="src\RTTI\RTTI.cpp" />
@@ -62,6 +64,7 @@
     <ClInclude Include="src\Graphics\Buffer.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
     <ClInclude Include="src\Graphics\Graphics.h" />
+    <ClInclude Include="src\Graphics\Material.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\Model.h" />
     <ClInclude Include="src\Graphics\myGlew.h" />
@@ -71,6 +74,7 @@
     <ClInclude Include="src\GUI\GUI.h" />
     <ClInclude Include="src\Resources\BaseResource.h" />
     <ClInclude Include="src\Resources\Importers\FBXImporter.h" />
+    <ClInclude Include="src\Resources\Importers\MaterialImporter.h" />
     <ClInclude Include="src\Resources\Importers\MeshImporter.h" />
     <ClInclude Include="src\Resources\Resources.h" />
     <ClInclude Include="src\RTTI\RTTI.h" />

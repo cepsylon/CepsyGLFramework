@@ -29,6 +29,11 @@ public:
 		: mResource(std::move(rhs.mResource))
 	{ }
 
+	template <typename... VA>
+	ResourceHandle(VA &&... arguments)
+		: mResource(std::forward<VA>(arguments)...)
+	{ }
+
 	ResourceHandle & operator==(const ResourceHandle<T> & rhs)
 	{
 		if (this != &rhs)

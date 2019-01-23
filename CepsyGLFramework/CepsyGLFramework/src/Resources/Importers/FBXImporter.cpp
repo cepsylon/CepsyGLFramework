@@ -1,8 +1,8 @@
 #include "FBXImporter.h"
 
 #include "MeshImporter.h"
+#include "MaterialImporter.h"
 #include "Application/Application.h"
-#include "Graphics/Mesh.h"
 #include "Graphics/Model.h"
 
 #include <fbxsdk/fbxsdk.h>
@@ -46,7 +46,7 @@ void FBXImporter::load(const std::string & path)
 	fbx_manager->Destroy();
 
 	// Create the model
-	application.resources().create<Model>("xbot", std::move(mMeshes));
+	application.resources().create<Model>("xbot", std::move(mMeshes), std::move(mMaterials));
 }
 
 void FBXImporter::import(FbxNode * node)
@@ -79,29 +79,17 @@ void FBXImporter::import(FbxNodeAttribute * attribute)
 
 void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 {
-	// We already know it's a mesh, so we can cast
-	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
-	FbxNode * material_node = mesh->GetNode();
-	int count = material_node->GetMaterialCount();
-	FbxPropertyT<FbxDouble3> double3;
-	FbxPropertyT<FbxDouble> double1;
-	for (int i = 0; i < count; ++i)
-	{
-		FbxSurfaceMaterial * material = material_node->GetMaterial(i);
-		const char * name = material->GetName();
-		const FbxImplementation * implementation = GetImplementation(material, FBXSDK_IMPLEMENTATION_HLSL);
-		if (material->GetClassId().Is(FbxSurfacePhong::ClassId))
-		{
-			double3 = static_cast<FbxSurfacePhong *>(material)->Ambient;
-		}
-		else if (material->GetClassId().Is(FbxSurfaceLambert::ClassId))
-		{
-			double3 = static_cast<FbxSurfaceLambert *>(material)->Ambient;
-		}
-	}
-
 	// Load mesh
+	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
 	mMeshes.emplace_back(MeshImporter::load(mesh));
+
+	// Check for materials and load
+	FbxNode * material_node = mesh->GetNode();
+	if (material_node)
+	{
+		for (int i = 0; i < material_node->GetMaterialCount(); ++i)
+			mMaterials.emplace_back(MaterialImporter::load(material_node->GetMaterial(i)));
+	}
 }
 
 #ifdef _DEBUG
