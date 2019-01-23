@@ -81,6 +81,24 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 {
 	// We already know it's a mesh, so we can cast
 	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
+	FbxNode * material_node = mesh->GetNode();
+	int count = material_node->GetMaterialCount();
+	FbxPropertyT<FbxDouble3> double3;
+	FbxPropertyT<FbxDouble> double1;
+	for (int i = 0; i < count; ++i)
+	{
+		FbxSurfaceMaterial * material = material_node->GetMaterial(i);
+		const char * name = material->GetName();
+		const FbxImplementation * implementation = GetImplementation(material, FBXSDK_IMPLEMENTATION_HLSL);
+		if (material->GetClassId().Is(FbxSurfacePhong::ClassId))
+		{
+			double3 = static_cast<FbxSurfacePhong *>(material)->Ambient;
+		}
+		else if (material->GetClassId().Is(FbxSurfaceLambert::ClassId))
+		{
+			double3 = static_cast<FbxSurfaceLambert *>(material)->Ambient;
+		}
+	}
 
 	// Load mesh
 	mMeshes.emplace_back(MeshImporter::load(mesh));
