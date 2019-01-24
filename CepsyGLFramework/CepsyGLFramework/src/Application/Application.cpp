@@ -67,9 +67,12 @@ namespace
 			application.set_is(false);
 			PostQuitMessage(0);
 			return 0;
+			// Window resizing
+		case WM_SIZE:
+			application.window().set_client_size(LOWORD(lParam), HIWORD(lParam));
+			return 0;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
-			return 0;
 		}
 	}
 }

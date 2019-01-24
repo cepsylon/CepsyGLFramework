@@ -37,6 +37,9 @@ public:
 	// Render device
 	HDC__ * render_device() const;
 
+	// Update window client size
+	void set_client_size(int width, int height);
+
 private:
 	// Gets the size of the window from the client size
 	void compute_window_size_with_client_size();

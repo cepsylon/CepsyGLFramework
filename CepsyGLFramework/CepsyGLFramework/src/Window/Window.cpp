@@ -58,6 +58,12 @@ int Window::height() const { return mClientSize.y; }
 HWND Window::handle() const { return mHandle; }
 HDC Window::render_device() const { return mRenderDevice; }
 
+void Window::set_client_size(int width, int height)
+{
+	mClientSize = glm::ivec2{ width, height };
+	compute_window_size_with_client_size();
+}
+
 void Window::compute_window_size_with_client_size()
 {
 	RECT rect{ 0, 0, mClientSize.x, mClientSize.y };
