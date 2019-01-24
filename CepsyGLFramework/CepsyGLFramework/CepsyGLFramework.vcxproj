@@ -30,6 +30,7 @@
     <ClCompile Include="src\Editor\EditorCamera.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
+    <ClCompile Include="src\Graphics\Framebuffer.cpp" />
     <ClCompile Include="src\Graphics\Graphics.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="src\Editor\EditorCamera.h" />
     <ClInclude Include="src\Graphics\Buffer.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
+    <ClInclude Include="src\Graphics\Framebuffer.h" />
     <ClInclude Include="src\Graphics\Graphics.h" />
     <ClInclude Include="src\Graphics\Material.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />

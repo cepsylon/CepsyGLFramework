@@ -36,12 +36,16 @@ public:
 		void set(GLenum target) const;
 
 		glm::vec4 mColor{ 0.0f };
-		GLenum mWrapMode[3] = { WrapMode::REPEAT };
-		GLenum mFilterMode[2] = { FilterMode::NEAREST };
+		GLenum mWrapMode[3] = { WrapMode::REPEAT };	// U, V, W
+		GLenum mFilterMode[2] = { FilterMode::NEAREST };	// Min, Max
 		GLuint mMipLevel = 0;
 	};
 
+	// Load texture from file
 	Texture(const std::string & path);
+	// Custom texture with no data
+	Texture(GLenum target, GLenum format, int width, int height);
+	// Free OpenGL data
 	~Texture();
 
 	// No copy
@@ -52,17 +56,23 @@ public:
 	Texture(Texture && rhs);
 	Texture & operator=(Texture && rhs);
 
+	// Creates mipmap, don't forget to change filter mode afterwards to mipmap
+	void generate_mipmap() const;
 
 	// Frees and clears
 	void clear();
 	
+	// Sampler gettors
+	Sampler & sampler();
+	const Sampler & sampler() const;
+
 private:
 	// Get format from component count
 	static GLenum format(int component_count);
 
 	// Free OpenGL data
 	// It's const, but it actually frees data under mTextureID
-	// No longer usable
+	// mTextureID no longer usable after freeing
 	void free() const;
 
 	Sampler mSampler;

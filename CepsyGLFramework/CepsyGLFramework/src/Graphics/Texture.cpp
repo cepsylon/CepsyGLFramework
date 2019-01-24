@@ -35,6 +35,19 @@ Texture::Texture(const std::string & path)
 	stbi_image_free(data);
 }
 
+Texture::Texture(GLenum target, GLenum format, int width, int height)
+	: mSize(width, height)
+	, mTarget(target)
+{
+	// Generate empty texture
+	glGenTextures(1, &mTextureID);
+	glBindTexture(mTarget, mTextureID);
+	glTexImage2D(mTarget, 0, format, mSize.x, mSize.y, 0, 0, 0, nullptr);
+
+	// Sampling parameters
+	mSampler.set(mTarget);
+}
+
 Texture::~Texture()
 {
 	free();
@@ -64,11 +77,19 @@ Texture & Texture::operator=(Texture && rhs)
 	return *this;
 }
 
+void Texture::generate_mipmap() const
+{
+	glGenerateMipmap(mTarget);
+}
+
 void Texture::clear()
 {
 	free();
 	mTextureID = 0;
 }
+
+Texture::Sampler & Texture::sampler() { return mSampler; }
+const Texture::Sampler & Texture::sampler() const { return mSampler; }
 
 GLenum Texture::format(int component_count)
 {
