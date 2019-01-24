@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseResource.h"
+#include "ResourceHandle.h"
 #include "RTTI/RTTI.h"
 
 #include <string>
