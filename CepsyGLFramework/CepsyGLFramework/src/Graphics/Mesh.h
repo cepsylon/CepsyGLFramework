@@ -3,11 +3,22 @@
 #include "Buffer.h"
 
 #include <string>
+#include <vector>
 
 class Mesh
 {
 public:
-	Mesh(BufferF32 && vertices, BufferI32 && indices);
+	struct Layout
+	{
+		struct SizeOffset
+		{
+			unsigned mSize = 0, mOffset = 0; // Size in element count, offset in bytes
+		};
+		unsigned mStride = 0; // In bytes
+		std::vector<SizeOffset> mIndexOffset;
+	};
+
+	Mesh(BufferF32 && vertices, BufferI32 && indices, const Layout & layout);
 	~Mesh();
 
 	// No copy

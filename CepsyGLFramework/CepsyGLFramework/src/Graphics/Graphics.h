@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Buffer.h"
+#include "Mesh.h"
+#include "Framebuffer.h"
 
 #include "myGlew.h"
 
@@ -37,10 +39,19 @@ public:
 	// Remove renderable
 	void remove(Renderable * renderable);
 
+	struct Debug
+	{
+		static GLenum get_error();
+		static void print_error();
+	};
+
 private:
 	std::vector<Camera *> mCameras;
 	std::vector<Renderable *> mUnableToDrawRenderables;
 	std::unordered_map<Program *, std::unordered_map<Model *, std::vector<Renderable *>>> mRenderables;
+	Framebuffer mFramebuffer;
 	BufferF32 mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
 	HGLRC__ * mGLContext = nullptr;
+	mutable Program * mPostProcess = nullptr;
+	std::unique_ptr<Mesh> mPlane = nullptr;
 };

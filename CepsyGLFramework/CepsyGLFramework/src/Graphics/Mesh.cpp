@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(BufferF32 && vertices, BufferI32 && indices)
+Mesh::Mesh(BufferF32 && vertices, BufferI32 && indices, const Layout & layout)
 	: mVertices(std::move(vertices))
 	, mIndices(std::move(indices))
 {
@@ -12,12 +12,11 @@ Mesh::Mesh(BufferF32 && vertices, BufferI32 && indices)
 	mVertices.bind();
 	
 	// Set input assembler layout
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(0));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	for (unsigned i = 0; i < layout.mIndexOffset.size(); ++i)
+	{
+		glEnableVertexAttribArray(i);
+		glVertexAttribPointer(i, layout.mIndexOffset[i].mSize, mVertices.type(), GL_FALSE, layout.mStride, (void*)(layout.mIndexOffset[i].mOffset));
+	}
 
 	mIndices.bind();
 }

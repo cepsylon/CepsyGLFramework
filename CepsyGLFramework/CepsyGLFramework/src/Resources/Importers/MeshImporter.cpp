@@ -121,7 +121,11 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 	BufferI32 buffer_indices{ GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, GL_UNSIGNED_INT };
 	buffer_indices.generate(indices.data(), indices.size() * sizeof(int));
 
-	return Mesh{ std::move(buffer_data), std::move(buffer_indices) };
+	unsigned stride = 8 * sizeof(float);
+	Mesh::Layout::SizeOffset positions{ 3, 0 };
+	Mesh::Layout::SizeOffset normals{ 3, 3 * sizeof(float) };
+	Mesh::Layout::SizeOffset uvs{ 2, 6 * sizeof(float) };
+	return Mesh{ std::move(buffer_data), std::move(buffer_indices), Mesh::Layout{ stride, { positions, normals, uvs } } };
 }
 
 MeshImporter::Vertex::Instance MeshImporter::fill_instance(FbxMesh * mesh, int polygon, int polygon_vertex, int vertex_count)

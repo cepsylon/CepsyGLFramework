@@ -36,10 +36,13 @@ public:
 		void set(GLenum target) const;
 
 		glm::vec4 mColor{ 0.0f };
-		GLenum mWrapMode[3] = { WrapMode::REPEAT };	// U, V, W
-		GLenum mFilterMode[2] = { FilterMode::NEAREST };	// Min, Max
+		GLenum mWrapMode[3] = { WrapMode::REPEAT, WrapMode::REPEAT, WrapMode::REPEAT };	// U, V, W
+		GLenum mFilterMode[2] = { FilterMode::NEAREST, FilterMode::NEAREST };	// Min, Max
 		GLuint mMipLevel = 0;
 	};
+
+	// Activates texture slot
+	static void slot(int slot_index);
 
 	// Load texture from file
 	Texture(const std::string & path);
@@ -59,12 +62,18 @@ public:
 	// Creates mipmap, don't forget to change filter mode afterwards to mipmap
 	void generate_mipmap() const;
 
+	// Binds current texture to active slot
+	void bind() const;
+
 	// Frees and clears
 	void clear();
 	
 	// Sampler gettors
 	Sampler & sampler();
 	const Sampler & sampler() const;
+
+	// Texture ID gettor
+	int textureID() const;
 
 private:
 	// Get format from component count

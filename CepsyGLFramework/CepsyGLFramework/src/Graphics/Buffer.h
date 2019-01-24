@@ -46,6 +46,9 @@ public:
 	// Frees OpenGL data
 	void clear();
 
+	// Type gettor
+	GLenum type() const;
+
 	// Returns element count
 	unsigned count() const;
 protected:

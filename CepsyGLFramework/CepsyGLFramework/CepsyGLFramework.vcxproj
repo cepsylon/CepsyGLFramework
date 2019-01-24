@@ -89,6 +89,8 @@
   <ItemGroup>
     <None Include="data\shaders\basic.f" />
     <None Include="data\shaders\basic.v" />
+    <None Include="data\shaders\to_back.f" />
+    <None Include="data\shaders\to_back.v" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

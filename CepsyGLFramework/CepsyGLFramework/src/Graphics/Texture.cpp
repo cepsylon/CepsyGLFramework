@@ -3,6 +3,11 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
+void Texture::slot(int slot_index)
+{
+	glActiveTexture(GL_TEXTURE0 + slot_index);
+}
+
 void Texture::Sampler::set(GLenum target) const
 {
 	// Wrap mode
@@ -42,7 +47,7 @@ Texture::Texture(GLenum target, GLenum format, int width, int height)
 	// Generate empty texture
 	glGenTextures(1, &mTextureID);
 	glBindTexture(mTarget, mTextureID);
-	glTexImage2D(mTarget, 0, format, mSize.x, mSize.y, 0, 0, 0, nullptr);
+	glTexImage2D(mTarget, mSampler.mMipLevel, format, mSize.x, mSize.y, 0, format, GL_UNSIGNED_BYTE, nullptr);
 
 	// Sampling parameters
 	mSampler.set(mTarget);
@@ -82,6 +87,11 @@ void Texture::generate_mipmap() const
 	glGenerateMipmap(mTarget);
 }
 
+void Texture::bind() const
+{
+	glBindTexture(mTarget, mTextureID);
+}
+
 void Texture::clear()
 {
 	free();
@@ -90,6 +100,7 @@ void Texture::clear()
 
 Texture::Sampler & Texture::sampler() { return mSampler; }
 const Texture::Sampler & Texture::sampler() const { return mSampler; }
+int Texture::textureID() const { return mTextureID; }
 
 GLenum Texture::format(int component_count)
 {
