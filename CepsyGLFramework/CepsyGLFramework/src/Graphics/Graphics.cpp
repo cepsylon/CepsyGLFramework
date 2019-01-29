@@ -189,6 +189,8 @@ void Graphics::render() const
 
 	// Post process
 	Framebuffer::bind_back();
+	glViewport(0, 0, application.window().width(), application.window().height());
+	glScissor(0, 0, application.window().width(), application.window().height());
 
 	// For now, render framebuffer to back buffer
 	if (mPostProcess == nullptr)
@@ -263,3 +265,13 @@ void Graphics::remove(Renderable * renderable)
 		}
 	}
 }
+
+void Graphics::set_dimension(const glm::ivec2 & dimension)
+{ 
+	mDimension = dimension;
+
+	// Resize textures
+	mFramebuffer.resize(dimension);
+}
+const glm::ivec2 & Graphics::dimension() const { return mDimension; }
+bool Graphics::IsDimensionClientSize() const { return mDimensionIsClientSize; }

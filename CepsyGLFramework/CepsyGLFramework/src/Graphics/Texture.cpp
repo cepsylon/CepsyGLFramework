@@ -26,12 +26,12 @@ Texture::Texture(const std::string & path)
 	// Load texture
 	int component_count;
 	unsigned char * data = stbi_load(path.c_str(), &mSize.x, &mSize.y, &component_count, 0);
-	GLenum data_format = format(component_count);
+	mFormat = format(component_count);
 
 	// Generate texture
 	glGenTextures(1, &mTextureID);
-	glBindTexture(mTarget, mTextureID);
-	glTexImage2D(mTarget, mSampler.mMipLevel, data_format, mSize.x, mSize.y, 0, data_format, GL_UNSIGNED_BYTE, data);
+	bind();
+	glTexImage2D(mTarget, mSampler.mMipLevel, mFormat, mSize.x, mSize.y, 0, mFormat, GL_UNSIGNED_BYTE, data);
 
 	// Sampling parameters
 	mSampler.set(mTarget);
@@ -43,11 +43,12 @@ Texture::Texture(const std::string & path)
 Texture::Texture(GLenum target, GLenum format, int width, int height)
 	: mSize(width, height)
 	, mTarget(target)
+	, mFormat(format)
 {
 	// Generate empty texture
 	glGenTextures(1, &mTextureID);
-	glBindTexture(mTarget, mTextureID);
-	glTexImage2D(mTarget, mSampler.mMipLevel, format, mSize.x, mSize.y, 0, format, GL_UNSIGNED_BYTE, nullptr);
+	bind();
+	glTexImage2D(mTarget, mSampler.mMipLevel, mFormat, mSize.x, mSize.y, 0, mFormat, GL_UNSIGNED_BYTE, nullptr);
 
 	// Sampling parameters
 	mSampler.set(mTarget);
@@ -90,6 +91,14 @@ void Texture::generate_mipmap() const
 void Texture::bind() const
 {
 	glBindTexture(mTarget, mTextureID);
+}
+#include "Graphics.h"
+void Texture::resize(const glm::ivec2 & dimension)
+{
+	mSize = dimension;
+	bind();
+	glTexImage2D(mTarget, mSampler.mMipLevel, mFormat, mSize.x, mSize.y, 0, mFormat, GL_UNSIGNED_BYTE, nullptr);
+	Graphics::Debug::print_error();
 }
 
 void Texture::clear()

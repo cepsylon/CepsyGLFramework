@@ -6,6 +6,7 @@
 
 #include "myGlew.h"
 
+#include <glm/vec2.hpp>
 #include <glm/mat4x4.hpp>
 #include <vector>
 #include <unordered_map>
@@ -39,6 +40,14 @@ public:
 	// Remove renderable
 	void remove(Renderable * renderable);
 
+	// Sets draw dimension
+	void set_dimension(const glm::ivec2 & dimension);
+	// Gets draw dimension
+	const glm::ivec2 & dimension() const;
+
+	// Tells if the dimension of the render texture is the same size as the window
+	bool IsDimensionClientSize() const;
+
 	struct Debug
 	{
 		static GLenum get_error();
@@ -54,4 +63,6 @@ private:
 	HGLRC__ * mGLContext = nullptr;
 	mutable Program * mPostProcess = nullptr;
 	std::unique_ptr<Mesh> mPlane = nullptr;
+	glm::ivec2 mDimension{ 1280, 720 };
+	bool mDimensionIsClientSize = true;
 };

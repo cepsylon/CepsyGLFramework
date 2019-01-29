@@ -2,6 +2,8 @@
 
 #include "Texture.h"
 
+#include <glm/vec2.hpp>
+
 #include <vector>
 
 class Framebuffer
@@ -40,6 +42,9 @@ public:
 
 	// Bind framebuffer to be rendered
 	void bind() const;
+
+	// Resize draw textures
+	void resize(const glm::ivec2 & dimension);
 
 	// Get layer, aka binded texture
 	const Texture * layer(int index) const;

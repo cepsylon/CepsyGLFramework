@@ -79,6 +79,12 @@ void Framebuffer::bind() const
 	glBindFramebuffer(GL_FRAMEBUFFER, mFramebufferID);
 }
 
+void Framebuffer::resize(const glm::ivec2 & dimension)
+{
+	for (auto & texture : mTextures)
+		texture.resize(dimension);
+}
+
 const Texture * Framebuffer::layer(int index) const { return &mTextures[index]; }
 
 void Framebuffer::free() const

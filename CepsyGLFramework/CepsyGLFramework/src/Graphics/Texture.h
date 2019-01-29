@@ -65,6 +65,9 @@ public:
 	// Binds current texture to active slot
 	void bind() const;
 
+	// Resizes texture, loses all data, only used for framebuffer textures
+	void resize(const glm::ivec2 & dimension);
+
 	// Frees and clears
 	void clear();
 	
@@ -87,5 +90,6 @@ private:
 	Sampler mSampler;
 	glm::ivec2 mSize;
 	GLenum mTarget = GL_TEXTURE_2D;
+	GLenum mFormat = GL_RGBA;
 	GLuint mTextureID = 0;
 };

@@ -7,9 +7,10 @@
 void Viewport::set() const
 {
 	// Compute size and position in window space
-	const Window & window = application.window();
-	glm::ivec2 size{ mSize.x * window.width(), mSize.y * window.height() };
-	glm::ivec2 position{ mPosition.x * window.width(), mPosition.y * window.height() };
+	const Graphics & graphics = application.graphics();
+	const glm::ivec2 & dimension = graphics.dimension();
+	glm::ivec2 size{ mSize.x * dimension.x, mSize.y * dimension.y };
+	glm::ivec2 position{ mPosition.x * dimension.x, mPosition.y * dimension.y };
 
 	// Set viewport and scissor
 	glViewport(position.x, position.y, size.x, size.y);
@@ -26,8 +27,8 @@ void Viewport::set() const
 
 float Viewport::ratio() const
 {
-	const Window & window = application.window();
-	glm::vec2 size{ mSize.x * window.width(), mSize.y * window.height() };
+	const Graphics & graphics = application.graphics();
+	glm::vec2 size{ mSize.x * graphics.dimension().x, mSize.y * graphics.dimension().y };
 	return size.x / size.y;
 }
 

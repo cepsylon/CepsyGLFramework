@@ -69,8 +69,13 @@ namespace
 			return 0;
 			// Window resizing
 		case WM_SIZE:
-			application.window().set_client_size(LOWORD(lParam), HIWORD(lParam));
+		{
+			int width = LOWORD(lParam), height = HIWORD(lParam);
+			application.window().set_client_size(width, height);
+			if (application.graphics().IsDimensionClientSize())
+				application.graphics().set_dimension(glm::ivec2{ width, height });
 			return 0;
+		}
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
