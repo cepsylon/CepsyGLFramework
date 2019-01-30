@@ -51,6 +51,11 @@ void FBXImporter::load(const std::string & path)
 
 void FBXImporter::import(FbxNode * node)
 {
+	FbxDouble3 position = node->LclTranslation.Get();
+	FbxDouble3 scale = node->LclScaling.Get();
+	FbxDouble3 rotation = node->LclRotation.Get();
+	printf("\nName: %s\n", node->GetName());
+	printf("Position: %f, %f, %f\nScale: %f, %f, %f\nRotation: %f, %f, %f\n", position[0], position[1], position[2], scale[0], scale[1], scale[2], rotation[0], rotation[1], rotation[2]);
 	// Import all attributes to the node
 	for (int i = 0; i < node->GetNodeAttributeCount(); ++i)
 		import(node->GetNodeAttributeByIndex(i));
@@ -72,6 +77,9 @@ void FBXImporter::import(FbxNodeAttribute * attribute)
 	case FbxNodeAttribute::eMesh:
 		import_mesh(attribute);
 		break;
+	case FbxNodeAttribute::eSkeleton:
+		import_skeleton(attribute);
+		break;
 	default:
 		break;
 	}
@@ -82,6 +90,28 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 	// Load mesh
 	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
 	mMeshes.emplace_back(MeshImporter::load(mesh));
+	for (unsigned i = 0; i < mesh->GetDeformerCount(); ++i)
+	{
+		FbxDeformer * deformer = mesh->GetDeformer(i);
+		switch (deformer->GetDeformerType())
+		{
+		case FbxDeformer::eSkin:
+		{
+			printf("Has skin\n");
+			FbxSkin * skin = static_cast<FbxSkin *>(deformer);
+			//skin->
+			break;
+		}
+		case FbxDeformer::eBlendShape:
+			printf("Has blend shape\n");
+			break;
+		case FbxDeformer::eVertexCache:
+			printf("Has vertex cache\n");
+			break;
+		default:
+			break;
+		}
+	}
 
 	// Check for materials and load
 	FbxNode * material_node = mesh->GetNode();
@@ -90,6 +120,28 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 		for (int i = 0; i < material_node->GetMaterialCount(); ++i)
 			mMaterials.emplace_back(MaterialImporter::load(material_node->GetMaterial(i)));
 	}
+}
+
+void FBXImporter::import_skeleton(FbxNodeAttribute * attribute)
+{
+	FbxSkeleton * skeleton = static_cast<FbxSkeleton *>(attribute);
+	if (skeleton->IsSkeletonRoot())
+	{
+		// Create previous skeleton if any
+		if (mBones.empty() == false)
+			application.resources().create<Skeleton>("test_skeleton", std::move(mBones));
+	}
+	else
+
+
+	// Create the bone
+	FbxDouble3 position = attribute->GetNode()->LclTranslation.Get();
+	FbxDouble3 rotation = attribute->GetNode()->LclRotation.Get();
+
+	mBones.emplace_back(Skeleton::Bone{
+		glm::vec3{ position[0], position[1], position[2] },
+		glm::vec3{ rotation[0], rotation[1], rotation[2] }
+		});
 }
 
 #ifdef _DEBUG

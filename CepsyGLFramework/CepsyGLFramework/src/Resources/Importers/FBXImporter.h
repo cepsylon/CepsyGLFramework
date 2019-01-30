@@ -2,6 +2,7 @@
 
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
+#include "Graphics/Skeleton.h"
 
 #include <fbxsdk/fbxsdk.h>
 
@@ -25,6 +26,7 @@ private:
 	void import(FbxNode * node);
 	void import(FbxNodeAttribute * attribute);
 	void import_mesh(FbxNodeAttribute * attribute);
+	void import_skeleton(FbxNodeAttribute * attribute);
 
 #ifdef _DEBUG
 	static void print_scene(FbxScene * scene);
@@ -36,4 +38,5 @@ private:
 
 	std::vector<Mesh> mMeshes;
 	std::vector<Material> mMaterials;
+	std::vector<Skeleton::Bone> mBones;
 };
