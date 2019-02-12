@@ -4,6 +4,10 @@
 #include "Model.h"
 #include "Application/Application.h"
 
+#include <imgui/imgui.h>
+
+RTTI_I(Renderable, Component);
+
 Renderable::Renderable()
 {
 	application.graphics().add(this);
@@ -31,7 +35,9 @@ void Renderable::shutdown()
 
 void Renderable::to_gui()
 {
-
+	ImGui::Checkbox("Visible", &mVisible);
+	//mProgram->to_gui();
+	mModel->to_gui();
 }
 
 Program * Renderable::program() const { return mProgram; }

@@ -24,6 +24,10 @@ public:
 	Model(Model && rhs);
 	Model & operator=(Model && rhs);
 
+	// To gui
+	// TODO: may need to move this elsewhere
+	virtual void to_gui();
+
 	// Draws model
 	virtual void draw(const Program * program) const;
 protected:

@@ -28,6 +28,16 @@ public:
 		return nullptr;
 	}
 
+	template <typename T>
+	const std::unordered_map<std::string, std::unique_ptr<ResourceHandleBase>> * get() const
+	{
+		const auto & it = mResources.find(&T::type());
+		if (it != mResources.end())
+			return &it->second;
+
+		return nullptr;
+	}
+
 	template <typename T, typename... VA>
 	void create(const std::string & key, VA &&... arguments)
 	{

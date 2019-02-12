@@ -8,6 +8,8 @@ class Program;
 class Renderable : public Component
 {
 public:
+	RTTI_H;
+
 	Renderable();
 	virtual ~Renderable();
 
@@ -31,4 +33,5 @@ public:
 private:
 	Model * mModel = nullptr;
 	Program * mProgram = nullptr;
+	bool mVisible = true;
 };

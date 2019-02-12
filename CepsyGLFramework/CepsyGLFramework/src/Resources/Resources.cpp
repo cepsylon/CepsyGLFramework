@@ -8,7 +8,8 @@
 void Resources::initialize()
 {
 	FBXImporter importer;
-	importer.load("data/meshes/xbot.fbx");
+	importer.load("./data/meshes/xbot.fbx");
+	importer.load("./data/meshes/box.fbx");
 
 	// Basic
 	std::vector<Shader> shaders(2);

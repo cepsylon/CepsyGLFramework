@@ -47,10 +47,13 @@ void FBXImporter::load(const std::string & path)
 	fbx_manager->Destroy();
 
 	// Create the model
+	unsigned start = path.find_last_of("/") + 1;
+	unsigned end = path.find_last_of(".");
+	std::string name = path.substr(start, end - start);
 	if (mSkeleton.empty())
-		application.resources().create<Model>("xbot", std::move(mMeshes), std::move(mMaterials));
+		application.resources().create<Model>(name, std::move(mMeshes), std::move(mMaterials));
 	else
-		application.resources().create<SkeletalModel>("xbot", std::move(mMeshes), std::move(mMaterials), std::move(mSkeleton));
+		application.resources().create<SkeletalModel>(name, std::move(mMeshes), std::move(mMaterials), std::move(mSkeleton));
 }
 
 void FBXImporter::import(FbxNode * node)
