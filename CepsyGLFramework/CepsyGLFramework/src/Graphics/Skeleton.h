@@ -3,6 +3,7 @@
 #include "Common/Base.h"
 #include "Common/Transform.h"
 
+#include <glm/mat4x4.hpp>
 #include <vector>
 #include <string>
 
@@ -15,13 +16,19 @@ public:
 	{
 		std::vector<unsigned> mChildrenIndices;
 		std::string mName;
+		glm::quat mRotation;
 		glm::vec3 mPosition;
-		glm::vec3 mRotation;
 	};
 
 	Skeleton() = default;
 	Skeleton(std::vector<Bone> && bones);
 
+	bool empty() const;
+
+	void debug_draw() const;
+
 private:
+	void debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 & parent_position, int index) const;
+
 	std::vector<Bone> mBones;
 };

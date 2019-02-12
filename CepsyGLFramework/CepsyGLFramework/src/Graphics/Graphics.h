@@ -3,8 +3,8 @@
 #include "Buffer.h"
 #include "Mesh.h"
 #include "Framebuffer.h"
+#include "GraphicsDebug.h"
 
-#include "myGlew.h"
 
 #include <glm/vec2.hpp>
 #include <glm/mat4x4.hpp>
@@ -17,7 +17,7 @@ class Program;
 class Model;
 class Renderable;
 
-class Graphics
+class Graphics : public GraphicsDebug
 {
 public:
 	void initialize();
@@ -47,12 +47,6 @@ public:
 
 	// Tells if the dimension of the render texture is the same size as the window
 	bool IsDimensionClientSize() const;
-
-	struct Debug
-	{
-		static GLenum get_error();
-		static void print_error();
-	};
 
 private:
 	std::vector<Camera *> mCameras;

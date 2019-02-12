@@ -45,6 +45,7 @@ class Program : public Base
 {
 public:
 	RTTI_H;
+	Program() = default;
 
 	// Shaders need to be in order, vertex->tc->te->geometry->fragment
 	Program(const std::vector<Shader> & shaders);

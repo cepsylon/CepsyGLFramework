@@ -10,47 +10,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
-GLenum Graphics::Debug::get_error()
-{
-	return glGetError();
-}
-
-void Graphics::Debug::print_error()
-{
-	GLenum error;
-	do
-	{
-		error = get_error();
-		switch (error)
-		{
-		case GL_NO_ERROR:
-			break;
-		case GL_INVALID_ENUM:
-			printf("Error: %s\n", "An unacceptable value is specified for an enumerated argument.");
-			break;
-		case GL_INVALID_VALUE:
-			printf("Error: %s\n", "A numeric argument is out of range.");
-			break;
-		case GL_INVALID_OPERATION:
-			printf("Error: %s\n", "The specified operation is not allowed in the current state.");
-			break;
-		case GL_INVALID_FRAMEBUFFER_OPERATION:
-			printf("Error: %s\n", "The framebuffer object is not complete.");
-			break;
-		case GL_OUT_OF_MEMORY:
-			printf("Error: %s\n", "There is not enough memory left to execute the command.");
-			break;
-		case GL_STACK_UNDERFLOW:
-			printf("Error: %s\n", "An attempt has been made to perform an operation that would cause an internal stack to underflow.");
-			break;
-		case GL_STACK_OVERFLOW:
-			printf("Error: %s\n", "An attempt has been made to perform an operation that would cause an internal stack to overflow.");
-			break;
-		}
-	} while (error != GL_NO_ERROR);
-}
-
-
 void Graphics::initialize()
 {
 	// Description for the pixel format of the framebuffer
@@ -107,6 +66,8 @@ void Graphics::initialize()
 	}
 	else
 		throw "Unsupported OpenGL verion 4.5, please update your drivers";
+
+	debug().initialize();
 
 	// Create camera matrix buffer and bind it
 	// NOTE: we need to fill the buffer with dummy matrices before binding

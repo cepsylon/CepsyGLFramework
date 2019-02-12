@@ -4,6 +4,7 @@
 #include "MaterialImporter.h"
 #include "Application/Application.h"
 #include "Graphics/Model.h"
+#include "Graphics/SkeletalModel.h"
 
 #include <fbxsdk/fbxsdk.h>
 #include <glm/vec3.hpp>
@@ -46,7 +47,10 @@ void FBXImporter::load(const std::string & path)
 	fbx_manager->Destroy();
 
 	// Create the model
-	application.resources().create<Model>("xbot", std::move(mMeshes), std::move(mMaterials));
+	if (mSkeleton.empty())
+		application.resources().create<Model>("xbot", std::move(mMeshes), std::move(mMaterials));
+	else
+		application.resources().create<SkeletalModel>("xbot", std::move(mMeshes), std::move(mMaterials), std::move(mSkeleton));
 }
 
 void FBXImporter::import(FbxNode * node)

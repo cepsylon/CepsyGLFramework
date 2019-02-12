@@ -25,8 +25,8 @@ public:
 	Model & operator=(Model && rhs);
 
 	// Draws model
-	void draw(const Program * program) const;
-private:
+	virtual void draw(const Program * program) const;
+protected:
 	std::vector<Mesh> mMeshes;
 	std::vector<Material> mMaterials;
 };

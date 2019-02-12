@@ -40,4 +40,5 @@ private:
 
 	std::vector<Mesh> mMeshes;
 	std::vector<Material> mMaterials;
+	Skeleton mSkeleton;
 };
