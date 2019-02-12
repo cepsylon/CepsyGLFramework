@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <imgui/imgui.h>
 
+#include "Application/Application.h"
+
 RTTI_I(Camera, Component);
 
 Camera::Camera()

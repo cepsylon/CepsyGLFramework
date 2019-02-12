@@ -111,7 +111,7 @@ void Graphics::initialize()
 
 void Graphics::update()
 {
-
+	debug().update();
 }
 
 void Graphics::render() const
@@ -147,6 +147,8 @@ void Graphics::render() const
 			}
 		}
 	}
+
+	debug().render();
 
 	// Post process
 	Framebuffer::bind_back();

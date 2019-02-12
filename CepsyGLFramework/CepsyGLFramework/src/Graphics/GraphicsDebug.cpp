@@ -45,25 +45,46 @@ void GraphicsDebug::Debug::print_error()
 void GraphicsDebug::Debug::initialize()
 {
 	// Create debug buffer
-	mLineBuffer.generate();
+	glGenVertexArrays(1, &mVAO);
+	glBindVertexArray(mVAO);
+	mLineBuffer.generate(&mVAO, sizeof(GLuint));
+	glEnableVertexAttribArray(0);
+	const GLuint stride = sizeof(glm::vec3) + sizeof(glm::vec4);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void *>(sizeof(glm::vec3)));
+	glBindVertexArray(0);
+
 	std::vector<Shader> shaders(2);
-	shaders[0] = Shader{ "line.v" };
-	shaders[1] = Shader{ "line.f" };
+	shaders[0] = Shader{ "./data/shaders/line.v" };
+	shaders[1] = Shader{ "./data/shaders/line.f" };
 	mLineProgram = Program{ shaders };
 }
 
 void GraphicsDebug::Debug::draw_line(const glm::vec3 & start, const glm::vec3 & end, const glm::vec4 & color)
 {
-	mLines.emplace_back(DebugLine{ color, start, end });
+	mLines.emplace_back(DebugLine{ start, color, end, color });
 }
 
-void GraphicsDebug::Debug::render()
+void GraphicsDebug::Debug::update()
 {
-	mLineProgram.bind();
+	mLineCount = mLines.size();
+	if (mLineCount)
+	{
+		glBindVertexArray(mVAO);
+		mLineBuffer.update(mLines.data(), mLineCount * sizeof(DebugLine));
+		mLines.clear();
+	}
+}
 
-	glBindVertexArray(0);
-	mLineBuffer.update(mLines.data(), mLines.size() * sizeof(DebugLine));
-	glDrawArrays(GL_LINES, 0, mLines.size());
+void GraphicsDebug::Debug::render() const
+{
+	if (mLineCount)
+	{
+		mLineProgram.bind();
+		glBindVertexArray(mVAO);
+		glDrawArrays(GL_LINES, 0, mLineCount * 2);
+	}
 }
 
 GraphicsDebug::Debug & GraphicsDebug::debug() { return mDebugData; }

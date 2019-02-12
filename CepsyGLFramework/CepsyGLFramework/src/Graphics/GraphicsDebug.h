@@ -22,18 +22,22 @@ public:
 		void initialize();
 		void draw_line(const glm::vec3 & start, const glm::vec3 & end, const glm::vec4 & color);
 
-		void render();
+		void update();
+		void render() const;
 
 	private:
 		struct DebugLine
 		{
-			glm::vec4 mColor;
 			glm::vec3 mStart;
+			glm::vec4 mColorStart;
 			glm::vec3 mEnd;
+			glm::vec4 mColorEnd;
 		};
 		std::vector<DebugLine> mLines;
 		BufferF32 mLineBuffer{ GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
 		Program mLineProgram;
+		GLuint mVAO = 0;
+		int mLineCount = 0;
 	};
 
 	Debug & debug();
