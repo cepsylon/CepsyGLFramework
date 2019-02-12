@@ -78,7 +78,11 @@ void FBXImporter::import(FbxNodeAttribute * attribute)
 		import_mesh(attribute);
 		break;
 	case FbxNodeAttribute::eSkeleton:
-		import_skeleton(attribute);
+	{
+		FbxSkeleton * skeleton = static_cast<FbxSkeleton *>(attribute);
+		if(skeleton->IsSkeletonRoot())
+			import_skeleton(skeleton);
+	}
 		break;
 	default:
 		break;
@@ -90,7 +94,7 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 	// Load mesh
 	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
 	mMeshes.emplace_back(MeshImporter::load(mesh));
-	for (unsigned i = 0; i < mesh->GetDeformerCount(); ++i)
+	for (int i = 0; i < mesh->GetDeformerCount(); ++i)
 	{
 		FbxDeformer * deformer = mesh->GetDeformer(i);
 		switch (deformer->GetDeformerType())
@@ -122,26 +126,42 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 	}
 }
 
-void FBXImporter::import_skeleton(FbxNodeAttribute * attribute)
+void FBXImporter::import_skeleton(FbxSkeleton * skeleton)
 {
-	FbxSkeleton * skeleton = static_cast<FbxSkeleton *>(attribute);
-	if (skeleton->IsSkeletonRoot())
-	{
-		// Create previous skeleton if any
-		if (mBones.empty() == false)
-			application.resources().create<Skeleton>("test_skeleton", std::move(mBones));
-	}
-	else
+	std::vector<Skeleton::Bone> bones;
+	import_bones_rec(skeleton, -1, bones);
+	Skeleton test{ std::move(bones) };
+}
 
+void FBXImporter::import_bones_rec(FbxSkeleton * skeleton_node, int parent_index, std::vector<Skeleton::Bone> & bones)
+{
+	// Add child to parent
+	int next_parent_index = bones.size();
+	if (parent_index != -1)
+		bones[parent_index].mChildrenIndices.emplace_back(next_parent_index);
 
-	// Create the bone
-	FbxDouble3 position = attribute->GetNode()->LclTranslation.Get();
-	FbxDouble3 rotation = attribute->GetNode()->LclRotation.Get();
-
-	mBones.emplace_back(Skeleton::Bone{
+	// Add child
+	FbxNode * node = skeleton_node->GetNode();
+	FbxDouble3 position = node->LclTranslation.Get();
+	FbxDouble3 rotation = node->LclRotation.Get();
+	bones.emplace_back(Skeleton::Bone{ {}, node->GetName(),
 		glm::vec3{ position[0], position[1], position[2] },
 		glm::vec3{ rotation[0], rotation[1], rotation[2] }
-		});
+	});
+
+	// Import children
+	for (int i = 0; i < node->GetChildCount(); ++i)
+	{
+		for (int j = 0; j < node->GetNodeAttributeCount(); ++j)
+		{
+			FbxNodeAttribute * attribute = node->GetChild(i)->GetNodeAttributeByIndex(j);
+			if (attribute->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+			{
+				import_bones_rec(static_cast<FbxSkeleton *>(attribute), next_parent_index, bones);
+				break;
+			}
+		}
+	}
 }
 
 #ifdef _DEBUG

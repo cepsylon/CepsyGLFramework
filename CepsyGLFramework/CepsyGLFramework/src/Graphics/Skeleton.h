@@ -4,6 +4,7 @@
 #include "Common/Transform.h"
 
 #include <vector>
+#include <string>
 
 class Skeleton : public Base
 {
@@ -12,9 +13,10 @@ public:
 
 	struct Bone
 	{
+		std::vector<unsigned> mChildrenIndices;
+		std::string mName;
 		glm::vec3 mPosition;
 		glm::vec3 mRotation;
-		std::vector<unsigned> mChildrenIndices;
 	};
 
 	Skeleton() = default;

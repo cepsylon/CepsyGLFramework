@@ -26,7 +26,9 @@ private:
 	void import(FbxNode * node);
 	void import(FbxNodeAttribute * attribute);
 	void import_mesh(FbxNodeAttribute * attribute);
-	void import_skeleton(FbxNodeAttribute * attribute);
+	void import_skeleton(FbxSkeleton * skeleton);
+
+	static void import_bones_rec(FbxSkeleton * skeleton_node, int parent_index, std::vector<Skeleton::Bone> & bones);
 
 #ifdef _DEBUG
 	static void print_scene(FbxScene * scene);
@@ -38,5 +40,4 @@ private:
 
 	std::vector<Mesh> mMeshes;
 	std::vector<Material> mMaterials;
-	std::vector<Skeleton::Bone> mBones;
 };
