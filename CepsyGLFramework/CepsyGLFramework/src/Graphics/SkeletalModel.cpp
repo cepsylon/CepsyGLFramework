@@ -23,11 +23,10 @@ SkeletalModel & SkeletalModel::operator=(SkeletalModel && rhs)
 
 void SkeletalModel::draw(const Program * program) const
 {
-	// Draw debug skeleton
-	mSkeleton.debug_draw();
-
 	// Set skeleton
 
 	// Draw call
-	Model::draw(program);
+	//Model::draw(program);
 }
+
+const Skeleton & SkeletalModel::skeleton() const { return mSkeleton; }

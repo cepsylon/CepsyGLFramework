@@ -18,6 +18,9 @@ public:
 	SkeletalModel & operator=(SkeletalModel && rhs);
 
 	void draw(const Program * program) const override;
+
+	const Skeleton & skeleton() const;
+
 private:
 	Skeleton mSkeleton;
 };

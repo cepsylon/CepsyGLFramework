@@ -14,6 +14,8 @@ public:
 
 	struct Bone
 	{
+		glm::mat4 matrix() const;
+
 		std::vector<unsigned> mChildrenIndices;
 		std::string mName;
 		glm::quat mRotation;
@@ -25,7 +27,7 @@ public:
 
 	bool empty() const;
 
-	void debug_draw() const;
+	void debug_draw(const glm::mat4 & model_matrix) const;
 
 private:
 	void debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 & parent_position, int index) const;

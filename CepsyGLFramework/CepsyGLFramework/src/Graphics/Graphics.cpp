@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Program.h"
 #include "Model.h"
+#include "SkeletalModel.h"
 #include "Renderable.h"
 #include "Application/Application.h"
 #include "Common/Entity.h"
@@ -119,6 +120,8 @@ void Graphics::render() const
 	// Bind own framebuffer
 	mFramebuffer.bind();
 
+	std::vector<Renderable *> renderables_with_skeleton;
+
 	// Render for each camera
 	for (auto camera : mCameras)
 	{
@@ -136,7 +139,9 @@ void Graphics::render() const
 			for (const auto & model_renderable : program_model.second)
 			{
 				const Model * model = model_renderable.first;
-				// Should bing the model here
+
+				if (model->type() == SkeletalModel::type())
+					std::copy(model_renderable.second.begin(), model_renderable.second.end(), std::back_inserter(renderables_with_skeleton));
 
 				// Draw all renderables
 				for (const auto & renderable : model_renderable.second)
@@ -147,6 +152,10 @@ void Graphics::render() const
 			}
 		}
 	}
+
+	// Debug rendering for skeletons
+	for (const auto & renderable : renderables_with_skeleton)
+		static_cast<SkeletalModel *>(renderable->model())->skeleton().debug_draw(renderable->owner().transform().model());
 
 	debug().render();
 

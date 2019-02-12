@@ -55,11 +55,6 @@ void FBXImporter::load(const std::string & path)
 
 void FBXImporter::import(FbxNode * node)
 {
-	FbxDouble3 position = node->LclTranslation.Get();
-	FbxDouble3 scale = node->LclScaling.Get();
-	FbxDouble3 rotation = node->LclRotation.Get();
-	printf("\nName: %s\n", node->GetName());
-	printf("Position: %f, %f, %f\nScale: %f, %f, %f\nRotation: %f, %f, %f\n", position[0], position[1], position[2], scale[0], scale[1], scale[2], rotation[0], rotation[1], rotation[2]);
 	// Import all attributes to the node
 	for (int i = 0; i < node->GetNodeAttributeCount(); ++i)
 		import(node->GetNodeAttributeByIndex(i));
@@ -134,7 +129,7 @@ void FBXImporter::import_skeleton(FbxSkeleton * skeleton)
 {
 	std::vector<Skeleton::Bone> bones;
 	import_bones_rec(skeleton, -1, bones);
-	Skeleton test{ std::move(bones) };
+	mSkeleton = Skeleton{ std::move(bones) };
 }
 
 void FBXImporter::import_bones_rec(FbxSkeleton * skeleton_node, int parent_index, std::vector<Skeleton::Bone> & bones)
@@ -149,8 +144,8 @@ void FBXImporter::import_bones_rec(FbxSkeleton * skeleton_node, int parent_index
 	FbxDouble3 position = node->LclTranslation.Get();
 	FbxDouble3 rotation = node->LclRotation.Get();
 	bones.emplace_back(Skeleton::Bone{ {}, node->GetName(),
-		glm::vec3{ position[0], position[1], position[2] },
-		glm::vec3{ rotation[0], rotation[1], rotation[2] }
+		glm::vec3{ rotation[0], rotation[1], rotation[2] },
+		glm::vec3{ position[0], position[1], position[2] }
 	});
 
 	// Import children
