@@ -39,3 +39,14 @@ void Skeleton::debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 &
 	for (const auto & child_index : mBones[index].mChildrenIndices)
 		debug_draw_rec(child_matrix, bone_position, child_index);
 }
+
+int Skeleton::find(const std::string & bone_name) const
+{
+	for (unsigned i = 0; i < mBones.size(); ++i)
+	{
+		if (mBones[i].mName == bone_name)
+			return static_cast<int>(i);
+	}
+
+	return -1;
+}

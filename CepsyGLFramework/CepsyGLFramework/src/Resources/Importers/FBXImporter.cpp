@@ -95,7 +95,7 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 {
 	// Load mesh
 	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
-	mMeshes.emplace_back(MeshImporter::load(mesh));
+	mMeshes.emplace_back(MeshImporter::load(mesh, mSkeleton));
 
 	// Check for materials and load
 	FbxNode * material_node = mesh->GetNode();

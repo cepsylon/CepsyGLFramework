@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Graphics/Skeleton.h"
+
 #include <fbxsdk/fbxsdk.h>
 
 #include <vector>
@@ -10,7 +12,7 @@ class Mesh;
 class MeshImporter
 {
 public:
-	static Mesh load(fbxsdk::FbxMesh * mesh);
+	static Mesh load(fbxsdk::FbxMesh * mesh, const Skeleton & skeleton);
 
 private:
 	// Helper structure to filter vertices
@@ -27,7 +29,8 @@ private:
 
 		int find(const Instance & rhs) const;
 
-		//std::vector<IndexWeight> 
+		std::vector<int> mIndices;
+		std::vector<float> mWeights;
 		std::vector<Instance> mInstances; // Duplicates that will be needed in the same vertex position
 	};
 

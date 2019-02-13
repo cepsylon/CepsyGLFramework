@@ -19,7 +19,7 @@ int MeshImporter::Vertex::find(const Instance & rhs) const
 }
 
 
-Mesh MeshImporter::load(FbxMesh * mesh)
+Mesh MeshImporter::load(FbxMesh * mesh, const Skeleton & skeleton)
 {
 	// TODO: Support more or less than just positions normals and uvs
 
@@ -67,7 +67,7 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 		}
 	}
 
-	// Import skin
+	// Import skin if we have a skeleton
 	int skin_count = mesh->GetDeformerCount(FbxDeformer::eSkin);
 	for (int skin_index = 0; skin_index < skin_count; ++skin_index)
 	{
@@ -77,22 +77,9 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 		for (int cluster_index = 0; cluster_index < cluster_count; ++cluster_index)
 		{
 			FbxCluster * cluster = skin->GetCluster(cluster_index);
-			FbxAMatrix transform;
-			FbxAMatrix transform_link;
-			FbxAMatrix transform_associate_model;
-			cluster->GetTransformMatrix(transform);
-			cluster->GetTransformLinkMatrix(transform_link);
-			cluster->GetTransformAssociateModelMatrix(transform_associate_model);
-
-			// Get name
-			FbxNode * link = cluster->GetLink();
-			std::string link_name;
-			if (link)
-				link_name = link->GetName();
-			std::string associate_model_name;
-			FbxNode * associate_model = cluster->GetAssociateModel();
-			if (associate_model)
-				associate_model_name = associate_model->GetName();
+			int bone_index = skeleton.find(cluster->GetLink()->GetName());
+			if (bone_index == -1)
+				continue;
 
 			// Weights and indices
 			int * indices = cluster->GetControlPointIndices();
@@ -100,16 +87,15 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 			int index_weight_count = cluster->GetControlPointIndicesCount();
 			for (int i = 0; i < index_weight_count; ++i)
 			{
-				//vertices_to_be_duplicated[indices[i]].
-				int index = indices[i];
-				double weight = weights[i];
-				//printf("Index: %d, Weight: %f\n", index, weight);
+				vertices_to_be_duplicated[indices[i]].mIndices.emplace_back(bone_index);
+				vertices_to_be_duplicated[indices[i]].mWeights.emplace_back(static_cast<float>(weights[i]));
 			}
 		}
 	}
 
 	// Vertex data
-	std::vector<float> vertex_data(vertex_count * 8);
+	int floats_in_vertex = 16;
+	std::vector<float> vertex_data(vertex_count * floats_in_vertex);
 
 	// Duplicate vertices
 	current_index = 0;
@@ -133,6 +119,20 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 			// UV
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementUV()->GetDirectArray().GetAt(instance.mUVIndex)[0]);
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementUV()->GetDirectArray().GetAt(instance.mUVIndex)[1]);
+
+			// Indices
+			unsigned bones_added = 0;
+			while (bones_added < vertices_to_be_duplicated[i].mIndices.size())
+				vertex_data[offset++] = static_cast<float>(vertices_to_be_duplicated[i].mIndices[bones_added++]);
+			while (bones_added++ < 4)
+				vertex_data[offset++] = 0.0f;
+			
+			// Weights
+			bones_added = 0;
+			while (bones_added < vertices_to_be_duplicated[i].mWeights.size())
+				vertex_data[offset++] = vertices_to_be_duplicated[i].mWeights[bones_added++];
+			while (bones_added++ < 4)
+				vertex_data[offset++] = 0.0f;
 
 			// Update indices that were refering to this instance to index the newly created vertex
 			for (auto index : instance.mIndices)
@@ -162,11 +162,13 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 	BufferI32 buffer_indices{ GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, GL_UNSIGNED_INT };
 	buffer_indices.generate(indices.data(), indices.size() * sizeof(int));
 
-	unsigned stride = 8 * sizeof(float);
+	unsigned stride = floats_in_vertex * sizeof(float);
 	Mesh::Layout::SizeOffset positions{ 3, 0 };
 	Mesh::Layout::SizeOffset normals{ 3, 3 * sizeof(float) };
 	Mesh::Layout::SizeOffset uvs{ 2, 6 * sizeof(float) };
-	return Mesh{ std::move(buffer_data), std::move(buffer_indices), Mesh::Layout{ stride, { positions, normals, uvs } } };
+	Mesh::Layout::SizeOffset indices_layout{ 4, 8 * sizeof(float) };
+	Mesh::Layout::SizeOffset weights_layout{ 4, 12 * sizeof(float) };
+	return Mesh{ std::move(buffer_data), std::move(buffer_indices), Mesh::Layout{ stride, { positions, normals, uvs, indices_layout, weights_layout } } };
 }
 
 MeshImporter::Vertex::Instance MeshImporter::fill_instance(FbxMesh * mesh, int polygon, int polygon_vertex, int vertex_count)
