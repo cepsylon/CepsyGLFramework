@@ -115,17 +115,27 @@ void FBXImporter::import_skeleton(FbxSkeleton * skeleton)
 
 void FBXImporter::import_bones_rec(FbxSkeleton * skeleton_node, int parent_index, std::vector<Skeleton::Bone> & bones)
 {
-	// Add child to parent
-	int next_parent_index = bones.size();
-	if (parent_index != -1)
-		bones[parent_index].mChildrenIndices.emplace_back(next_parent_index);
-
-	// Add child
 	FbxNode * node = skeleton_node->GetNode();
 	FbxDouble3 position = node->LclTranslation.Get();
 	FbxDouble3 rotation = node->LclRotation.Get();
-	bones.emplace_back(Skeleton::Bone{ {}, node->GetName(),
-		glm::vec3{ rotation[0], rotation[1], rotation[2] },
+	glm::quat quaternion = glm::vec3{ rotation[0], rotation[1], rotation[2] };
+	glm::mat4 bind_matrix = glm::mat4_cast(quaternion);
+	bind_matrix[3][0] = static_cast<float>(position[0]);
+	bind_matrix[3][1] = static_cast<float>(position[1]);
+	bind_matrix[3][2] = static_cast<float>(position[2]);
+
+	// Add child to parent
+	int next_parent_index = bones.size();
+	if (parent_index != -1)
+	{
+		bones[parent_index].mChildrenIndices.emplace_back(next_parent_index);
+		bind_matrix = bones[parent_index].matrix() * bind_matrix;
+	}
+
+	// Add child
+	bind_matrix = glm::inverse(bind_matrix);
+	bones.emplace_back(Skeleton::Bone{ bind_matrix, {}, node->GetName(),
+		quaternion,
 		glm::vec3{ position[0], position[1], position[2] }
 	});
 

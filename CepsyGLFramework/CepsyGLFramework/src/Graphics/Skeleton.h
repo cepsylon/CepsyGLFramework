@@ -16,6 +16,7 @@ public:
 	{
 		glm::mat4 matrix() const;
 
+		glm::mat4 mBindMatrix;
 		std::vector<unsigned> mChildrenIndices;
 		std::string mName;
 		glm::quat mRotation;
