@@ -146,8 +146,11 @@ void Graphics::render() const
 				// Draw all renderables
 				for (const auto & renderable : model_renderable.second)
 				{
-					program->set_uniform("model", renderable->owner().transform().model());
-					model->draw(program);
+					if (renderable->is_visible())
+					{
+						program->set_uniform("model", renderable->owner().transform().model());
+						model->draw(program);
+					}
 				}
 			}
 		}

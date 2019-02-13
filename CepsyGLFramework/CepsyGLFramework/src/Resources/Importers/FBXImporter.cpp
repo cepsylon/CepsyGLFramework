@@ -96,28 +96,6 @@ void FBXImporter::import_mesh(FbxNodeAttribute * attribute)
 	// Load mesh
 	FbxMesh * mesh = static_cast<FbxMesh *>(attribute);
 	mMeshes.emplace_back(MeshImporter::load(mesh));
-	for (int i = 0; i < mesh->GetDeformerCount(); ++i)
-	{
-		FbxDeformer * deformer = mesh->GetDeformer(i);
-		switch (deformer->GetDeformerType())
-		{
-		case FbxDeformer::eSkin:
-		{
-			printf("Has skin\n");
-			FbxSkin * skin = static_cast<FbxSkin *>(deformer);
-			//skin->
-			break;
-		}
-		case FbxDeformer::eBlendShape:
-			printf("Has blend shape\n");
-			break;
-		case FbxDeformer::eVertexCache:
-			printf("Has vertex cache\n");
-			break;
-		default:
-			break;
-		}
-	}
 
 	// Check for materials and load
 	FbxNode * material_node = mesh->GetNode();

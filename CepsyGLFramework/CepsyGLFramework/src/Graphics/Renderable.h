@@ -25,6 +25,7 @@ public:
 	// Gettors
 	Program * program() const;
 	Model * model() const;
+	bool is_visible() const;
 
 	// Settors
 	void set_program(const std::string & name);

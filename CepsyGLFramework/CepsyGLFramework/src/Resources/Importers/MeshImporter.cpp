@@ -67,6 +67,47 @@ Mesh MeshImporter::load(FbxMesh * mesh)
 		}
 	}
 
+	// Import skin
+	int skin_count = mesh->GetDeformerCount(FbxDeformer::eSkin);
+	for (int skin_index = 0; skin_index < skin_count; ++skin_index)
+	{
+		FbxSkin * skin = reinterpret_cast<FbxSkin *>(mesh->GetDeformer(skin_index, FbxDeformer::eSkin));
+		
+		int cluster_count = skin->GetClusterCount();
+		for (int cluster_index = 0; cluster_index < cluster_count; ++cluster_index)
+		{
+			FbxCluster * cluster = skin->GetCluster(cluster_index);
+			FbxAMatrix transform;
+			FbxAMatrix transform_link;
+			FbxAMatrix transform_associate_model;
+			cluster->GetTransformMatrix(transform);
+			cluster->GetTransformLinkMatrix(transform_link);
+			cluster->GetTransformAssociateModelMatrix(transform_associate_model);
+
+			// Get name
+			FbxNode * link = cluster->GetLink();
+			std::string link_name;
+			if (link)
+				link_name = link->GetName();
+			std::string associate_model_name;
+			FbxNode * associate_model = cluster->GetAssociateModel();
+			if (associate_model)
+				associate_model_name = associate_model->GetName();
+
+			// Weights and indices
+			int * indices = cluster->GetControlPointIndices();
+			double * weights = cluster->GetControlPointWeights();
+			int index_weight_count = cluster->GetControlPointIndicesCount();
+			for (int i = 0; i < index_weight_count; ++i)
+			{
+				//vertices_to_be_duplicated[indices[i]].
+				int index = indices[i];
+				double weight = weights[i];
+				//printf("Index: %d, Weight: %f\n", index, weight);
+			}
+		}
+	}
+
 	// Vertex data
 	std::vector<float> vertex_data(vertex_count * 8);
 

@@ -42,6 +42,7 @@ void Renderable::to_gui()
 
 Program * Renderable::program() const { return mProgram; }
 Model * Renderable::model() const { return mModel; }
+bool Renderable::is_visible() const { return mVisible; }
 
 void Renderable::set_program(const std::string & name)
 {

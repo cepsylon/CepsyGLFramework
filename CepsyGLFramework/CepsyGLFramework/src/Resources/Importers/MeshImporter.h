@@ -27,6 +27,7 @@ private:
 
 		int find(const Instance & rhs) const;
 
+		//std::vector<IndexWeight> 
 		std::vector<Instance> mInstances; // Duplicates that will be needed in the same vertex position
 	};
 

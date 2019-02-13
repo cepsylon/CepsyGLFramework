@@ -26,7 +26,7 @@ void SkeletalModel::draw(const Program * program) const
 	// Set skeleton
 
 	// Draw call
-	//Model::draw(program);
+	Model::draw(program);
 }
 
 const Skeleton & SkeletalModel::skeleton() const { return mSkeleton; }
