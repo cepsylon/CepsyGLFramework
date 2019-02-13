@@ -113,6 +113,10 @@ void Graphics::initialize()
 void Graphics::update()
 {
 	debug().update();
+
+	auto & skeletal_meshes = application.resources().get<SkeletalModel>();
+	for (auto & pair : skeletal_meshes)
+		static_cast<SkeletalModel *>(pair.second->get())->skeleton().update();
 }
 
 void Graphics::render() const

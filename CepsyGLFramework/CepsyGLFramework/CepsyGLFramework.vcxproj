@@ -97,6 +97,7 @@
     <None Include="data\shaders\basic.v" />
     <None Include="data\shaders\line.f" />
     <None Include="data\shaders\line.v" />
+    <None Include="data\shaders\skinning.v" />
     <None Include="data\shaders\to_back.f" />
     <None Include="data\shaders\to_back.v" />
   </ItemGroup>

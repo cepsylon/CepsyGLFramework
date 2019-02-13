@@ -23,10 +23,9 @@ SkeletalModel & SkeletalModel::operator=(SkeletalModel && rhs)
 
 void SkeletalModel::draw(const Program * program) const
 {
-	// Set skeleton
-
-	// Draw call
+	mSkeleton.bind();
 	Model::draw(program);
 }
 
 const Skeleton & SkeletalModel::skeleton() const { return mSkeleton; }
+Skeleton & SkeletalModel::skeleton() { return mSkeleton; }

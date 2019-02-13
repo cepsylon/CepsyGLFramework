@@ -29,7 +29,7 @@ void Scene::initialize()
 	xbot->set_name("XBot");
 	xbot->transform().set_scale(glm::vec3{ 0.01f });
 	Renderable * renderable = xbot->add<Renderable>();
-	renderable->set_program("basic");
+	renderable->set_program("skinning");
 	renderable->set_model("xbot");
 	mSpaces.back()->add(std::move(xbot));
 }

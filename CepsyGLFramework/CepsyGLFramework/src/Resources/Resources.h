@@ -29,13 +29,23 @@ public:
 	}
 
 	template <typename T>
-	const std::unordered_map<std::string, std::unique_ptr<ResourceHandleBase>> * get() const
+	const std::unordered_map<std::string, std::unique_ptr<ResourceHandleBase>> & get() const
 	{
 		const auto & it = mResources.find(&T::type());
 		if (it != mResources.end())
-			return &it->second;
+			return it->second;
 
-		return nullptr;
+		throw "Resource map not found\n";
+	}
+
+	template <typename T>
+	std::unordered_map<std::string, std::unique_ptr<ResourceHandleBase>> & get()
+	{
+		const auto & it = mResources.find(&T::type());
+		if (it != mResources.end())
+			return it->second;
+
+		throw "Resource map not found\n";
 	}
 
 	template <typename T, typename... VA>

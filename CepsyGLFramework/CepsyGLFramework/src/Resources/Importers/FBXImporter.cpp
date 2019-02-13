@@ -110,6 +110,8 @@ void FBXImporter::import_skeleton(FbxSkeleton * skeleton)
 {
 	std::vector<Skeleton::Bone> bones;
 	import_bones_rec(skeleton, -1, bones);
+	for (auto & bone : bones)
+		bone.mBindMatrix = glm::inverse(bone.mBindMatrix);
 	mSkeleton = Skeleton{ std::move(bones) };
 }
 
@@ -129,11 +131,10 @@ void FBXImporter::import_bones_rec(FbxSkeleton * skeleton_node, int parent_index
 	if (parent_index != -1)
 	{
 		bones[parent_index].mChildrenIndices.emplace_back(next_parent_index);
-		bind_matrix = bones[parent_index].matrix() * bind_matrix;
+		bind_matrix = bones[parent_index].mBindMatrix * bind_matrix;
 	}
 
 	// Add child
-	bind_matrix = glm::inverse(bind_matrix);
 	bones.emplace_back(Skeleton::Bone{ bind_matrix, {}, node->GetName(),
 		quaternion,
 		glm::vec3{ position[0], position[1], position[2] }

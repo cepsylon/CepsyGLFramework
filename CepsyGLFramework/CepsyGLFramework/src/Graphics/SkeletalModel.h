@@ -19,7 +19,9 @@ public:
 
 	void draw(const Program * program) const override;
 
+	// Gettors
 	const Skeleton & skeleton() const;
+	Skeleton & skeleton();
 
 private:
 	Skeleton mSkeleton;
