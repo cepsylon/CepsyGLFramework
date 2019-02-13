@@ -121,14 +121,16 @@ Mesh MeshImporter::load(FbxMesh * mesh, const Skeleton & skeleton)
 			vertex_data[offset++] = static_cast<float>(mesh->GetElementUV()->GetDirectArray().GetAt(instance.mUVIndex)[1]);
 
 			// Indices
-			unsigned bones_added = 0;
-			while (bones_added < vertices_to_be_duplicated[i].mIndices.size())
-				vertex_data[offset++] = static_cast<float>(vertices_to_be_duplicated[i].mIndices[bones_added++]);
-			while (bones_added++ < 4)
-				vertex_data[offset++] = 0.0f;
+			std::vector<int> bone_indices;
+			while (bone_indices.size() < vertices_to_be_duplicated[i].mIndices.size())
+				bone_indices.emplace_back(vertices_to_be_duplicated[i].mIndices[bone_indices.size()]);
+			while (bone_indices.size() < 4)
+				bone_indices.emplace_back(0);
+			std::memcpy(vertex_data.data() + offset, bone_indices.data(), 4 * sizeof(int));
+			offset += 4;
 			
 			// Weights
-			bones_added = 0;
+			unsigned bones_added = 0;
 			while (bones_added < vertices_to_be_duplicated[i].mWeights.size())
 				vertex_data[offset++] = vertices_to_be_duplicated[i].mWeights[bones_added++];
 			while (bones_added++ < 4)
