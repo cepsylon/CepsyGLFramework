@@ -44,6 +44,7 @@
     <ClCompile Include="src\Graphics\Viewport.cpp" />
     <ClCompile Include="src\GUI\GUI.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Resources\Importers\AnimationImporter.cpp" />
     <ClCompile Include="src\Resources\Importers\FBXImporter.cpp" />
     <ClCompile Include="src\Resources\Importers\MaterialImporter.cpp" />
     <ClCompile Include="src\Resources\Importers\MeshImporter.cpp" />
@@ -82,6 +83,7 @@
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Viewport.h" />
     <ClInclude Include="src\GUI\GUI.h" />
+    <ClInclude Include="src\Resources\Importers\AnimationImporter.h" />
     <ClInclude Include="src\Resources\ResourceHandle.h" />
     <ClInclude Include="src\Resources\Importers\FBXImporter.h" />
     <ClInclude Include="src\Resources\Importers\MaterialImporter.h" />
