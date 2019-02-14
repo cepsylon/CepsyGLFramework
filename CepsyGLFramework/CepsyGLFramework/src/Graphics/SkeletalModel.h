@@ -7,6 +7,8 @@
 class SkeletalModel : public Model
 {
 public:
+	RTTI_H;
+
 	SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, Skeleton && skeleton);
 
 	// No copies

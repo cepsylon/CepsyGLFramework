@@ -107,3 +107,5 @@ void Skeleton::debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 &
 	for (const auto & child_index : mBones[index].mChildrenIndices)
 		debug_draw_rec(child_matrix, bone_position, child_index);
 }
+
+int Skeleton::bone_count() const { return mBones.size(); }

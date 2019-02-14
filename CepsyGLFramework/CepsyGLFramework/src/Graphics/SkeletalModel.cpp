@@ -1,5 +1,7 @@
 #include "SkeletalModel.h"
 
+RTTI_I(SkeletalModel, Model);
+
 SkeletalModel::SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, Skeleton && skeleton)
 	: Model(std::move(meshes), std::move(materials))
 	, mSkeleton(std::move(skeleton))
