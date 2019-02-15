@@ -1,6 +1,10 @@
 #include "Skeleton.h"
 
+#include "Animation.h"
 #include "Application/Application.h"
+#include "imgui/imgui.h"
+
+#include <glm/glm.hpp>
 
 RTTI_I(Skeleton, Base);
 
@@ -39,6 +43,41 @@ bool Skeleton::empty() const { return mBones.empty(); }
 
 void Skeleton::update()
 {
+	static float time = 0.0f;
+	static int prev_index = 0;
+	static int index = 1;
+	const Animation & animation = *application.resources().get<Animation>("idle");
+
+	time += ImGui::GetIO().DeltaTime;
+
+	if (animation.duration() < time)
+	{
+		time -= animation.duration();
+		prev_index = index;
+		index = 0;
+	}
+
+	while (time > animation[0].mRotation[index].mTime)
+	{
+		prev_index = index;
+		index++;
+	}
+
+	for (unsigned i = 0; i < mBones.size(); ++i)
+	{
+		bool rot = animation[i].mRotation.empty() == false;
+		bool pos = animation[i].mTranslation.empty() == false;
+		if (rot == false && pos == false)
+			continue;
+
+		float t = index == 0u ? time / animation[i].mRotation[index].mTime :
+			(time - animation[i].mRotation[prev_index].mTime) / (animation[i].mRotation[index].mTime - animation[i].mRotation[prev_index].mTime);
+		if(pos)
+			mBones[i].mPosition = glm::mix(animation[i].mTranslation[prev_index].mTranslation, animation[i].mTranslation[index].mTranslation, t);
+		if (rot)
+			mBones[i].mRotation = glm::slerp(animation[i].mRotation[prev_index].mRotation, animation[i].mRotation[index].mRotation, t);
+	}
+
 	// Update buffer
 	std::vector<glm::mat4> bone_matrices = get_bone_matrices();
 	mBuffer.update(bone_matrices.data(), bone_matrices.size() * sizeof(glm::mat4));
@@ -52,9 +91,9 @@ void Skeleton::bind() const
 void Skeleton::debug_draw(const glm::mat4 & model_matrix) const
 {
 	glm::vec4 bone_position = model_matrix * glm::vec4{ mBones.front().mPosition, 1.0f };
-	glm::mat4 child_matrix = model_matrix * mBones.front().matrix();
+	glm::mat4 parent_matrix = model_matrix * mBones.front().matrix();
 	for (const auto & child_index : mBones.front().mChildrenIndices)
-		debug_draw_rec(child_matrix, bone_position, child_index);
+		debug_draw_rec(parent_matrix, bone_position, child_index);
 }
 
 int Skeleton::find(const std::string & bone_name) const
@@ -99,13 +138,13 @@ void Skeleton::debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 &
 {
 	static glm::vec4 color{ 1.0f, 0.0f, 0.0f, 1.0f };
 	glm::vec4 bone_position = parent_matrix * glm::vec4{ mBones[index].mPosition, 1.0f };
-	glm::mat4 child_matrix = parent_matrix * mBones[index].matrix();
+	glm::mat4 next_parent_matrix = parent_matrix * mBones[index].matrix();
 
 	Graphics & graphics = application.graphics();
 	graphics.debug().draw_line(parent_position, bone_position, color);
 
 	for (const auto & child_index : mBones[index].mChildrenIndices)
-		debug_draw_rec(child_matrix, bone_position, child_index);
+		debug_draw_rec(next_parent_matrix, bone_position, child_index);
 }
 
 int Skeleton::bone_count() const { return mBones.size(); }

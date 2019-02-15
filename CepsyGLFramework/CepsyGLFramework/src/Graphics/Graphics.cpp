@@ -144,7 +144,7 @@ void Graphics::render() const
 			{
 				const Model * model = model_renderable.first;
 
-				if (model->type() == SkeletalModel::type())
+				if (model->type() == SkeletalModel::class_type())
 					std::copy(model_renderable.second.begin(), model_renderable.second.end(), std::back_inserter(renderables_with_skeleton));
 
 				// Draw all renderables

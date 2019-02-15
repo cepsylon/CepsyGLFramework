@@ -17,7 +17,7 @@ public:
 	template <typename T>
 	T * get(const std::string & name)
 	{
-		auto it = mResources.find(&T::type());
+		auto it = mResources.find(&T::class_type());
 		if (it != mResources.end())
 		{
 			auto it2 = it->second.find(name);
@@ -31,7 +31,7 @@ public:
 	template <typename T>
 	const std::unordered_map<std::string, std::unique_ptr<ResourceHandleBase>> & get() const
 	{
-		const auto & it = mResources.find(&T::type());
+		const auto & it = mResources.find(&T::class_type());
 		if (it != mResources.end())
 			return it->second;
 
@@ -41,7 +41,7 @@ public:
 	template <typename T>
 	std::unordered_map<std::string, std::unique_ptr<ResourceHandleBase>> & get()
 	{
-		const auto & it = mResources.find(&T::type());
+		const auto & it = mResources.find(&T::class_type());
 		if (it != mResources.end())
 			return it->second;
 
@@ -51,7 +51,7 @@ public:
 	template <typename T, typename... VA>
 	void create(const std::string & key, VA &&... arguments)
 	{
-		auto & resources = mResources[&T::type()];
+		auto & resources = mResources[&T::class_type()];
 		std::unique_ptr<ResourceHandle<T>> value = std::make_unique<ResourceHandle<T>>(std::forward<VA>(arguments)...);
 		resources.insert(std::make_pair(key, std::move(value)));
 	}

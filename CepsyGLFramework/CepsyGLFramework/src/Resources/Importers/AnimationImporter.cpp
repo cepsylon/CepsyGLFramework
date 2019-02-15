@@ -46,20 +46,37 @@ void AnimationImporter::import_fbx_layer(FbxAnimLayer * layer, fbxsdk::FbxNode *
 
 void AnimationImporter::import_fbx_channel(FbxNode * node, FbxAnimLayer * layer)
 {
+	// Rotation
 	FbxAnimCurve * curve_x = node->LclRotation.GetCurve(layer, FBXSDK_CURVENODE_COMPONENT_X);
 	FbxAnimCurve * curve_y = node->LclRotation.GetCurve(layer, FBXSDK_CURVENODE_COMPONENT_Y);
 	FbxAnimCurve * curve_z = node->LclRotation.GetCurve(layer, FBXSDK_CURVENODE_COMPONENT_Z);
-
 	if (curve_x && curve_y && curve_z)
 	{
-		std::vector<Animation::Keyframe> rotation = merge_rotation(import_fbx_curve(curve_x), import_fbx_curve(curve_y), import_fbx_curve(curve_z));
+		std::vector<Animation::KeyframeRotation> rotation = merge_rotation(import_fbx_curve(curve_x), import_fbx_curve(curve_y), import_fbx_curve(curve_z));
 
 		if (rotation.size() > 1)
 		{
 			std::string name = node->GetName();
 			int bone_index = mSkeleton.find(name);
 			if (bone_index != -1)
-				mAnimation[bone_index] = std::move(rotation);
+				mAnimation[bone_index].mRotation = std::move(rotation);
+		}
+	}
+
+	// Translation
+	curve_x = node->LclTranslation.GetCurve(layer, FBXSDK_CURVENODE_COMPONENT_X);
+	curve_y = node->LclTranslation.GetCurve(layer, FBXSDK_CURVENODE_COMPONENT_Y);
+	curve_z = node->LclTranslation.GetCurve(layer, FBXSDK_CURVENODE_COMPONENT_Z);
+	if (curve_x && curve_y && curve_z)
+	{
+		std::vector<Animation::KeyframeTranslation> translation = merge_translation(import_fbx_curve(curve_x), import_fbx_curve(curve_y), import_fbx_curve(curve_z));
+
+		if (translation.size() > 1)
+		{
+			std::string name = node->GetName();
+			int bone_index = mSkeleton.find(name);
+			if (bone_index != -1)
+				mAnimation[bone_index].mTranslation = std::move(translation);
 		}
 	}
 }
@@ -70,7 +87,6 @@ std::vector<AnimationImporter::KeyFloat> AnimationImporter::import_fbx_curve(fbx
 		return std::vector<KeyFloat>{};
 
 	std::vector<KeyFloat> channel(curve->KeyGetCount());
-	FbxTime time = curve->KeyGetTime(0);
 	for (unsigned i = 0; i < channel.size(); ++i)
 		channel[i] = KeyFloat{ static_cast<float>(curve->KeyGetTime(i).GetSecondDouble()), static_cast<float>(curve->KeyGetValue(i)) };
 
@@ -78,10 +94,18 @@ std::vector<AnimationImporter::KeyFloat> AnimationImporter::import_fbx_curve(fbx
 }
 
 // For now, we assume that the sizes and times always match
-std::vector<Animation::Keyframe> AnimationImporter::merge_rotation(const std::vector<KeyFloat> & x_rotation, const std::vector<KeyFloat> & y_rotation, const std::vector<KeyFloat> & z_rotation)
+std::vector<Animation::KeyframeRotation> AnimationImporter::merge_rotation(const std::vector<KeyFloat> & x_rotation, const std::vector<KeyFloat> & y_rotation, const std::vector<KeyFloat> & z_rotation)
 {
-	std::vector<Animation::Keyframe> rotation(x_rotation.size());
+	std::vector<Animation::KeyframeRotation> rotation(x_rotation.size());
 	for (unsigned i = 0; i < x_rotation.size(); ++i)
-		rotation[0] = Animation::Keyframe{ glm::vec3{ x_rotation[i].mValue, y_rotation[i].mValue, z_rotation[i].mValue }, x_rotation[i].mT };
+		rotation[i] = Animation::KeyframeRotation{ glm::vec3{ glm::radians(x_rotation[i].mValue), glm::radians(y_rotation[i].mValue), glm::radians(z_rotation[i].mValue) }, x_rotation[i].mT };
 	return rotation;
+}
+
+std::vector<Animation::KeyframeTranslation> AnimationImporter::merge_translation(const std::vector<KeyFloat> & x, const std::vector<KeyFloat> & y, const std::vector<KeyFloat> & z)
+{
+	std::vector<Animation::KeyframeTranslation> translation(x.size());
+	for (unsigned i = 0; i < x.size(); ++i)
+		translation[i] = Animation::KeyframeTranslation{ glm::vec3{ x[i].mValue, y[i].mValue, z[i].mValue }, x[i].mT };
+	return translation;
 }

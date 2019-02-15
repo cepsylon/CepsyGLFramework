@@ -2,6 +2,7 @@
 
 #include "Program.h"
 #include "Model.h"
+#include "SkeletalModel.h"
 #include "Application/Application.h"
 
 #include <imgui/imgui.h>
@@ -54,6 +55,6 @@ void Renderable::set_program(const std::string & name)
 void Renderable::set_model(const std::string & name)
 {
 	application.graphics().remove(this);
-	mModel = application.resources().get<Model>(name);
+	mModel = application.resources().get<SkeletalModel>(name);
 	application.graphics().add(this);
 }

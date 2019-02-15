@@ -31,21 +31,21 @@ Model & Model::operator=(Model && rhs)
 
 void Model::to_gui()
 {
-	const auto & models = application.resources().get<Model>();
-	std::string model_names;
-	int index = 0;
-	bool found = false;
-	for (auto it = models.begin(); it != models.end(); ++it)
-	{
-		if (it->second.get()->get() == this)
-			found = true;
-		if(found == false)
-			index++;
-
-		model_names += it->first + '\0';
-	}
-
-	ImGui::Combo("Model", &index, model_names.c_str());	
+	//const auto & models = application.resources().get<Model>();
+	//std::string model_names;
+	//int index = 0;
+	//bool found = false;
+	//for (auto it = models.begin(); it != models.end(); ++it)
+	//{
+	//	if (it->second.get()->get() == this)
+	//		found = true;
+	//	if(found == false)
+	//		index++;
+	//
+	//	model_names += it->first + '\0';
+	//}
+	//
+	//ImGui::Combo("Model", &index, model_names.c_str());	
 }
 
 void Model::draw(const Program * program) const

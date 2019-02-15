@@ -10,9 +10,18 @@ Animation::Animation(Animation && rhs)
 	: mKeyframes(std::move(rhs.mKeyframes))
 { }
 
-std::vector<Animation::Keyframe> & Animation::operator[](unsigned index)
+Animation::Keyframe & Animation::operator[](unsigned index)
 { 
 	if (mKeyframes.size() <= index)
 		throw "Index out of range\n";
 	return mKeyframes[index];
 }
+
+const Animation::Keyframe & Animation::operator[](unsigned index) const
+{
+	if (mKeyframes.size() <= index)
+		throw "Index out of range\n";
+	return mKeyframes[index];
+}
+
+float Animation::duration() const { return mKeyframes.front().mTranslation.back().mTime; }
