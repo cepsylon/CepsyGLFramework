@@ -77,6 +77,8 @@ void Graphics::initialize()
 	// we pass data to it. We use dummy data, will be overwritten later
 	mCameraMatrixBuffer.generate(&mCameraMatrixBuffer, sizeof(float));
 	mCameraMatrixBuffer.bind_base(0);
+	mSkeletonBuffer.generate(&mSkeletonBuffer, sizeof(float));
+	mSkeletonBuffer.bind_base(1);
 
 	// Create framebuffer
 	mFramebuffer.attach_layer(GL_TEXTURE_2D, GL_RGBA, application.window().width(), application.window().height());
@@ -139,7 +141,7 @@ void Graphics::render() const
 			// Bind program
 			const Program * program = program_model.first;
 			program->bind();
-			program->set_uniform("light_direction", glm::vec3{ 0.0f, 1.0f, 1.0f });
+			program->set_uniform("light_direction", glm::vec3{ 0.0f, 0.0f, 1.0f });
 
 			for (const auto & model_renderable : program_model.second)
 			{
@@ -254,4 +256,5 @@ void Graphics::set_dimension(const glm::ivec2 & dimension)
 	mFramebuffer.resize(dimension);
 }
 const glm::ivec2 & Graphics::dimension() const { return mDimension; }
-bool Graphics::IsDimensionClientSize() const { return mDimensionIsClientSize; }
+bool Graphics::is_dimension_client_size() const { return mDimensionIsClientSize; }
+BufferF32 & Graphics::skeleton_buffer() { return mSkeletonBuffer; }

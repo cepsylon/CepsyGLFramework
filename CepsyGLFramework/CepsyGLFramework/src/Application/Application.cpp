@@ -72,7 +72,7 @@ namespace
 		{
 			int width = LOWORD(lParam), height = HIWORD(lParam);
 			application.window().set_client_size(width, height);
-			if (application.graphics().IsDimensionClientSize())
+			if (application.graphics().is_dimension_client_size())
 				application.graphics().set_dimension(glm::ivec2{ width, height });
 			return 0;
 		}

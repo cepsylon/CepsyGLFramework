@@ -17,15 +17,9 @@ glm::mat4 Bone::matrix() const
 	return matrix;
 }
 
-Skeleton::Skeleton(std::vector<Bone> && bones)
-	: mBones(std::move(bones))
-{
-	mBuffer.generate();
-}
-
 Skeleton::Skeleton(Skeleton && rhs)
 	: mBones(std::move(rhs.mBones))
-	, mBuffer(std::move(rhs.mBuffer))
+	, mSkinMatrices(std::move(rhs.mSkinMatrices))
 { }
 
 Skeleton & Skeleton::operator=(Skeleton && rhs)
@@ -33,7 +27,7 @@ Skeleton & Skeleton::operator=(Skeleton && rhs)
 	if (this != &rhs)
 	{
 		mBones = std::move(rhs.mBones);
-		mBuffer = std::move(rhs.mBuffer);
+		mSkinMatrices = std::move(rhs.mSkinMatrices);
 	}
 
 	return *this;
@@ -78,14 +72,13 @@ void Skeleton::update()
 			mBones[i].mRotation = glm::slerp(animation[i].mRotation[prev_index].mRotation, animation[i].mRotation[index].mRotation, t);
 	}
 
-	// Update buffer
-	std::vector<glm::mat4> bone_matrices = get_bone_matrices();
-	mBuffer.update(bone_matrices.data(), bone_matrices.size() * sizeof(glm::mat4));
 }
 
 void Skeleton::bind() const
 {
-	mBuffer.bind_base(1);
+	// Update buffer
+	std::vector<glm::mat4> bone_matrices = get_bone_matrices();
+	application.graphics().skeleton_buffer().update(bone_matrices.data(), bone_matrices.size() * sizeof(glm::mat4));
 }
 
 void Skeleton::debug_draw(const glm::mat4 & model_matrix) const
@@ -115,7 +108,7 @@ std::vector<glm::mat4> Skeleton::get_bone_matrices() const
 	// Parent matrix
 	std::vector<glm::mat4> bone_matrices(mBones.size());
 	glm::mat4 parent_matrix = mBones.front().matrix();
-	bone_matrices.front() = parent_matrix * mBones.front().mBindMatrix;
+	bone_matrices.front() = parent_matrix * mSkinMatrices.front();
 
 	// Call recursion on children
 	for (const int & child_index : mBones.front().mChildrenIndices)
@@ -128,7 +121,7 @@ void Skeleton::get_bone_matrices(std::vector<glm::mat4> & matrices, int index, c
 {
 	// Parent matrix * bone matrix * bind matrix
 	glm::mat4 bone_matrix = parent_matrix * mBones[index].matrix();
-	matrices[index] = bone_matrix * mBones[index].mBindMatrix;
+	matrices[index] = bone_matrix * mSkinMatrices[index];
 
 	for (const int & child_index : mBones[index].mChildrenIndices)
 		get_bone_matrices(matrices, child_index, bone_matrix);
@@ -147,4 +140,5 @@ void Skeleton::debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 &
 		debug_draw_rec(next_parent_matrix, bone_position, child_index);
 }
 
+const std::vector<glm::mat4> & Skeleton::skin_matrices() const { return mSkinMatrices; }
 int Skeleton::bone_count() const { return mBones.size(); }

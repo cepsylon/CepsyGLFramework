@@ -13,7 +13,6 @@ struct Bone
 {
 	glm::mat4 matrix() const;
 
-	glm::mat4 mBindMatrix;
 	std::vector<unsigned> mChildrenIndices;
 	std::string mName;
 	glm::quat mRotation;
@@ -25,12 +24,13 @@ class Skeleton : public Base
 public:
 	RTTI_H;
 
+	friend class SkeletonImporter;
+
 	Skeleton() = default;
-	Skeleton(std::vector<Bone> && bones);
 
 	// No copy
-	Skeleton(const Skeleton &) = delete;
-	Skeleton & operator=(const Skeleton &) = delete;
+	Skeleton(const Skeleton &) = default;
+	Skeleton & operator=(const Skeleton &) = default;
 
 	// Move only
 	Skeleton(Skeleton && rhs);
@@ -54,6 +54,9 @@ public:
 	// Get bone matrices
 	std::vector<glm::mat4> get_bone_matrices() const;
 
+	// Get bind matrices
+	const std::vector<glm::mat4> & skin_matrices() const;
+
 	// Get bone count
 	int bone_count() const;
 
@@ -65,5 +68,5 @@ private:
 	void debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 & parent_position, int index) const;
 
 	std::vector<Bone> mBones;
-	BufferF32 mBuffer{GL_SHADER_STORAGE_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
+	std::vector<glm::mat4> mSkinMatrices;
 };

@@ -34,6 +34,6 @@ void main()
 		matrices[v_indices.w] * v_weights.w;
 	
 	gl_Position = projection * view * model * skinning_matrix * vec4(v_position, 1.0f);
-	f_normal = (transpose(inverse(model)) * vec4(v_normal, 0.0f)).xyz;
+	f_normal = (transpose(inverse(model)) * skinning_matrix * vec4(v_normal, 0.0f)).xyz;
 	f_uv = v_uv;
 }

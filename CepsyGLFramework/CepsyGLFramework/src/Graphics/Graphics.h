@@ -46,7 +46,9 @@ public:
 	const glm::ivec2 & dimension() const;
 
 	// Tells if the dimension of the render texture is the same size as the window
-	bool IsDimensionClientSize() const;
+	bool is_dimension_client_size() const;
+
+	BufferF32 & skeleton_buffer();
 
 private:
 	std::vector<Camera *> mCameras;
@@ -54,6 +56,7 @@ private:
 	std::unordered_map<Program *, std::unordered_map<Model *, std::vector<Renderable *>>> mRenderables;
 	Framebuffer mFramebuffer;
 	BufferF32 mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
+	BufferF32 mSkeletonBuffer{ GL_SHADER_STORAGE_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
 	HGLRC__ * mGLContext = nullptr;
 	mutable Program * mPostProcess = nullptr;
 	std::unique_ptr<Mesh> mPlane = nullptr;
