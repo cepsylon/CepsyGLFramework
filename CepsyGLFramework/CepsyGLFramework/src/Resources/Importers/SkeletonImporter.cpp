@@ -7,6 +7,17 @@
 
 Skeleton * SkeletonImporter::load(const std::string & key, fbxsdk::FbxSkeleton * skeleton_node)
 {
+	// Check if already importer
+	// TODO: check that all bones are named the same before not importing
+	auto & skeleton_map = application.resources().get<Skeleton>();
+	for (auto & pair : skeleton_map)
+	{
+		Skeleton * skeleton = static_cast<Skeleton *>(pair.second->get());
+		if (skeleton->root().mName == skeleton_node->GetNode()->GetName())
+			return skeleton;
+	}
+
+	// Import skeleton
 	Skeleton skeleton;
 	import_bones_rec(skeleton_node, -1, skeleton);
 	for (auto & matrix : skeleton.mSkinMatrices)

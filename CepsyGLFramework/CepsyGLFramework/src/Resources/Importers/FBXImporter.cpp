@@ -37,6 +37,11 @@ void FBXImporter::load(const std::string & path)
 	FbxScene * scene = FbxScene::Create(fbx_manager, "Scene");
 	importer->Import(scene);
 
+	// Get name
+	unsigned start = path.find_last_of("/") + 1;
+	unsigned end = path.find_last_of(".");
+	mName = path.substr(start, end - start);
+
 	// Import all nodes
 	FbxNode * root = scene->GetRootNode();
 	if (root)
@@ -47,20 +52,17 @@ void FBXImporter::load(const std::string & path)
 
 	// Animation importing
 	AnimationImporter anim_importer(*mSkeleton);
-	anim_importer.load(scene);
+	anim_importer.load(mName, scene);
 
 	// Free everything
 	importer->Destroy();
 	fbx_manager->Destroy();
 
 	// Create the model
-	unsigned start = path.find_last_of("/") + 1;
-	unsigned end = path.find_last_of(".");
-	std::string name = path.substr(start, end - start);
 	if ((*mSkeleton).empty())
-		application.resources().create<Model>(name, std::move(mMeshes), std::move(mMaterials));
+		application.resources().create<Model>(mName, std::move(mMeshes), std::move(mMaterials));
 	else
-		application.resources().create<SkeletalModel>(name, std::move(mMeshes), std::move(mMaterials), mSkeleton);
+		application.resources().create<SkeletalModel>(mName, std::move(mMeshes), std::move(mMaterials), mSkeleton);
 }
 
 void FBXImporter::import(FbxNode * node)
@@ -90,7 +92,7 @@ void FBXImporter::import(FbxNodeAttribute * attribute)
 	{
 		FbxSkeleton * skeleton = static_cast<FbxSkeleton *>(attribute);
 		if (skeleton->IsSkeletonRoot())
-			mSkeleton = SkeletonImporter::load("xbot", skeleton);
+			mSkeleton = SkeletonImporter::load(mName, skeleton);
 	}
 		break;
 	default:

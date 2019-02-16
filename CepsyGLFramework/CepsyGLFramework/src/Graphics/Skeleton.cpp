@@ -40,9 +40,9 @@ void Skeleton::update()
 	static float time = 0.0f;
 	static int prev_index = 0;
 	static int index = 1;
-	const Animation & animation = *application.resources().get<Animation>("idle");
+	const Animation & animation = *application.resources().get<Animation>("foot_idle_no_skin");
 
-	time += ImGui::GetIO().DeltaTime;
+	time += ImGui::GetIO().DeltaTime / 2.0f;
 
 	if (animation.duration() < time)
 	{
@@ -142,3 +142,4 @@ void Skeleton::debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 &
 
 const std::vector<glm::mat4> & Skeleton::skin_matrices() const { return mSkinMatrices; }
 int Skeleton::bone_count() const { return mBones.size(); }
+const Bone & Skeleton::root() const { return mBones.front(); }

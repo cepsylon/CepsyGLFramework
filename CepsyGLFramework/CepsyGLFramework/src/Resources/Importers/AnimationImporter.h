@@ -5,6 +5,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include <vector>
+#include <string>
 
 namespace fbxsdk
 {
@@ -21,7 +22,7 @@ class AnimationImporter
 {
 public:
 	AnimationImporter(const Skeleton & skeleton);
-	void load(fbxsdk::FbxScene * scene);
+	void load(const std::string & key, fbxsdk::FbxScene * scene);
 
 	struct KeyFloat
 	{

@@ -60,6 +60,9 @@ public:
 	// Get bone count
 	int bone_count() const;
 
+	// Get root
+	const Bone & root() const;
+
 private:
 	// Assumes the index has a parent index
 	void get_bone_matrices(std::vector<glm::mat4> & matrices, int index, const glm::mat4 & parent_matrix) const;

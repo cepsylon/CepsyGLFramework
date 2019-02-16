@@ -12,7 +12,7 @@ AnimationImporter::AnimationImporter(const Skeleton & skeleton)
 	, mAnimation(skeleton.bone_count())
 { }
 
-void AnimationImporter::load(FbxScene * scene)
+void AnimationImporter::load(const std::string & key, FbxScene * scene)
 {
 	int stack_count = scene->GetSrcObjectCount<FbxAnimStack>();
 	for (int i = 0; i < stack_count; ++i)
@@ -21,7 +21,7 @@ void AnimationImporter::load(FbxScene * scene)
 		import_fbx_stack(stack, scene->GetRootNode());
 	}
 
-	application.resources().create<Animation>("idle", std::move(mAnimation));
+	application.resources().create<Animation>(key, std::move(mAnimation));
 }
 
 void AnimationImporter::import_fbx_stack(FbxAnimStack * stack, fbxsdk::FbxNode * node)

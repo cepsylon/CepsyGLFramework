@@ -117,6 +117,7 @@ void Graphics::update()
 {
 	debug().update();
 
+	// TODO change this
 	auto & skeletal_meshes = application.resources().get<SkeletalModel>();
 	for (auto & pair : skeletal_meshes)
 		static_cast<SkeletalModel *>(pair.second->get())->skeleton().update();

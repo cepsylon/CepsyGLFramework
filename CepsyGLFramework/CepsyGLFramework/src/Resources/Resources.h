@@ -35,7 +35,7 @@ public:
 		if (it != mResources.end())
 			return it->second;
 
-		throw "Resource map not found\n";
+		return mResources[nullptr];
 	}
 
 	template <typename T>
@@ -45,7 +45,7 @@ public:
 		if (it != mResources.end())
 			return it->second;
 
-		throw "Resource map not found\n";
+		return mResources[nullptr];
 	}
 
 	template <typename T, typename... VA>
