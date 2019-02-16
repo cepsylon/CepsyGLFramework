@@ -9,21 +9,21 @@
 #include <vector>
 #include <string>
 
+struct Bone
+{
+	glm::mat4 matrix() const;
+
+	glm::mat4 mBindMatrix;
+	std::vector<unsigned> mChildrenIndices;
+	std::string mName;
+	glm::quat mRotation;
+	glm::vec3 mPosition;
+};
+
 class Skeleton : public Base
 {
 public:
 	RTTI_H;
-
-	struct Bone
-	{
-		glm::mat4 matrix() const;
-
-		glm::mat4 mBindMatrix;
-		std::vector<unsigned> mChildrenIndices;
-		std::string mName;
-		glm::quat mRotation;
-		glm::vec3 mPosition;
-	};
 
 	Skeleton() = default;
 	Skeleton(std::vector<Bone> && bones);

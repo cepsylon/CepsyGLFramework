@@ -2,14 +2,14 @@
 
 #include "Model.h"
 
-#include "Skeleton.h"
+class Skeleton;
 
 class SkeletalModel : public Model
 {
 public:
 	RTTI_H;
 
-	SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, Skeleton && skeleton);
+	SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, Skeleton * skeleton);
 
 	// No copies
 	SkeletalModel(const SkeletalModel &) = delete;
@@ -26,5 +26,5 @@ public:
 	Skeleton & skeleton();
 
 private:
-	Skeleton mSkeleton;
+	Skeleton * mSkeleton = nullptr;
 };

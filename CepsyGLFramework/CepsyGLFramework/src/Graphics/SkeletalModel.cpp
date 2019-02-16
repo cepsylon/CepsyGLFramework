@@ -1,10 +1,12 @@
 #include "SkeletalModel.h"
 
+#include "Skeleton.h"
+
 RTTI_I(SkeletalModel, Model);
 
-SkeletalModel::SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, Skeleton && skeleton)
+SkeletalModel::SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, Skeleton * skeleton)
 	: Model(std::move(meshes), std::move(materials))
-	, mSkeleton(std::move(skeleton))
+	, mSkeleton(skeleton)
 { }
 
 SkeletalModel::SkeletalModel(SkeletalModel && rhs)
@@ -25,9 +27,9 @@ SkeletalModel & SkeletalModel::operator=(SkeletalModel && rhs)
 
 void SkeletalModel::draw(const Program * program) const
 {
-	mSkeleton.bind();
+	(*mSkeleton).bind();
 	Model::draw(program);
 }
 
-const Skeleton & SkeletalModel::skeleton() const { return mSkeleton; }
-Skeleton & SkeletalModel::skeleton() { return mSkeleton; }
+const Skeleton & SkeletalModel::skeleton() const { return *mSkeleton; }
+Skeleton & SkeletalModel::skeleton() { return *mSkeleton; }

@@ -49,11 +49,11 @@ public:
 	}
 
 	template <typename T, typename... VA>
-	void create(const std::string & key, VA &&... arguments)
+	T * create(const std::string & key, VA &&... arguments)
 	{
 		auto & resources = mResources[&T::class_type()];
 		std::unique_ptr<ResourceHandle<T>> value = std::make_unique<ResourceHandle<T>>(std::forward<VA>(arguments)...);
-		resources.insert(std::make_pair(key, std::move(value)));
+		return static_cast<T *>(resources.insert(std::make_pair(key, std::move(value))).first->second.get()->get());
 	}
 
 private:

@@ -8,7 +8,7 @@
 
 RTTI_I(Skeleton, Base);
 
-glm::mat4 Skeleton::Bone::matrix() const
+glm::mat4 Bone::matrix() const
 {
 	glm::mat4 matrix = glm::mat4_cast(mRotation);
 	matrix[3][0] = mPosition.x;

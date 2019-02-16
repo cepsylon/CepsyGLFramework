@@ -4,6 +4,7 @@
 #include "Program.h"
 #include "Model.h"
 #include "SkeletalModel.h"
+#include "Skeleton.h"
 #include "Renderable.h"
 #include "Application/Application.h"
 #include "Common/Entity.h"
