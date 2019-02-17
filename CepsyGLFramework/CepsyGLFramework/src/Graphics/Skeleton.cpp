@@ -42,7 +42,7 @@ void Skeleton::update()
 	static int index = 1;
 	const Animation & animation = *application.resources().get<Animation>("foot_idle_no_skin");
 
-	time += ImGui::GetIO().DeltaTime / 2.0f;
+	time += ImGui::GetIO().DeltaTime;
 
 	if (animation.duration() < time)
 	{
