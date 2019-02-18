@@ -15,7 +15,7 @@ public:
 	virtual void initialize() = 0;
 
 	// Update
-	virtual void update() = 0;
+	virtual void update(float dt) = 0;
 
 	// Shutdown
 	virtual void shutdown() = 0;

@@ -16,7 +16,7 @@ public:
 	// Initialize
 	void initialize() override;
 	// Update
-	void update() override;
+	void update(float dt) override;
 	// Shutdown
 	void shutdown() override;
 	// GUI

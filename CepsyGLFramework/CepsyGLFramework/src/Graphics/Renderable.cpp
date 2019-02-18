@@ -24,7 +24,7 @@ void Renderable::initialize()
 
 }
 
-void Renderable::update()
+void Renderable::update(float dt)
 {
 
 }

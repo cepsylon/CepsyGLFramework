@@ -14,7 +14,7 @@ class SkeletalRenderable : public Renderable
 public:
 
 	// Update animation if any
-	void update() override;
+	void update(float dt) override;
 
 	// Binds needed data for rendering
 	void bind() const override;

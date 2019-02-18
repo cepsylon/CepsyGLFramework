@@ -8,7 +8,7 @@ class EditorCamera : public Camera
 {
 public:
 	void initialize() override;
-	void update() override;
+	void update(float dt) override;
 
 private:
 	glm::vec2 mRotation{ 0.0f };

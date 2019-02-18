@@ -1,10 +1,8 @@
 #include "SkeletalRenderable.h"
 
-#include <imgui/imgui.h>
-
-void SkeletalRenderable::update()
+void SkeletalRenderable::update(float dt)
 {
-	mAnimationData.update(ImGui::GetIO().DeltaTime);
+	mAnimationData.update(dt);
 }
 
 void SkeletalRenderable::bind() const

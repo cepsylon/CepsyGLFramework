@@ -15,15 +15,13 @@ void EditorCamera::initialize()
 	mRotation.y = angles.y;
 }
 
-void EditorCamera::update()
+void EditorCamera::update(float dt)
 {
-	Camera::update();
+	Camera::update(dt);
 
 	// Don't mess while editing GUI
 	if (ImGui::IsAnyItemActive())
 		return;
-
-	float dt = ImGui::GetIO().DeltaTime;
 
 	// Compute axes
 	if (ImGui::IsKeyDown('J'))

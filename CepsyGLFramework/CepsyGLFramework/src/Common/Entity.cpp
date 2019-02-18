@@ -13,11 +13,11 @@ void Entity::initialize()
 		component->initialize();
 }
 
-void Entity::update()
+void Entity::update(float dt)
 {
 	// Update all components
 	for (auto & component : mComponents)
-		component->update();
+		component->update(dt);
 }
 
 void Entity::shutdown()

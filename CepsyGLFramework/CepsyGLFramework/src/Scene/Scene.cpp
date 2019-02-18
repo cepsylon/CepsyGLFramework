@@ -51,7 +51,7 @@ void Scene::update()
 {
 	// Update spaces
 	for (auto & space : mSpaces)
-		space->update();
+		space->update(ImGui::GetIO().DeltaTime);
 }
 
 void Scene::shutdown()

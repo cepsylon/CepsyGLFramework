@@ -12,7 +12,7 @@ public:
 	// Initialize all entities
 	void initialize();
 	// Update all entities
-	void update();
+	void update(float dt);
 	// Shutdown all entities
 	void shutdown();
 

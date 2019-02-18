@@ -8,10 +8,10 @@ void Space::initialize()
 		entity->initialize();
 }
 
-void Space::update()
+void Space::update(float dt)
 {
 	for (auto & entity : mEntities)
-		entity->update();
+		entity->update(dt);
 }
 
 void Space::shutdown()

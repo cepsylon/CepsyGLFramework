@@ -29,7 +29,7 @@ void Camera::initialize()
 
 }
 
-void Camera::update()
+void Camera::update(float dt)
 {
 
 }

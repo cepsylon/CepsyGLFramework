@@ -18,7 +18,7 @@ public:
 	void initialize();
 
 	// Updates all components
-	void update();
+	void update(float dt);
 
 	// Shutdowns all components
 	void shutdown();
