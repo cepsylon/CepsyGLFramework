@@ -41,6 +41,11 @@ void Renderable::to_gui()
 	mModel->to_gui();
 }
 
+void Renderable::bind() const
+{
+
+}
+
 Program * Renderable::program() const { return mProgram; }
 Model * Renderable::model() const { return mModel; }
 bool Renderable::is_visible() const { return mVisible; }

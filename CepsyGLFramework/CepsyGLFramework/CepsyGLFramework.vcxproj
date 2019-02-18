@@ -40,6 +40,7 @@
     <ClCompile Include="src\Graphics\Program.cpp" />
     <ClCompile Include="src\Graphics\Renderable.cpp" />
     <ClCompile Include="src\Graphics\SkeletalModel.cpp" />
+    <ClCompile Include="src\Graphics\SkeletalRenderable.cpp" />
     <ClCompile Include="src\Graphics\Skeleton.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\Viewport.cpp" />
@@ -82,6 +83,7 @@
     <ClInclude Include="src\Graphics\Program.h" />
     <ClInclude Include="src\Graphics\Renderable.h" />
     <ClInclude Include="src\Graphics\SkeletalModel.h" />
+    <ClInclude Include="src\Graphics\SkeletalRenderable.h" />
     <ClInclude Include="src\Graphics\Skeleton.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Viewport.h" />

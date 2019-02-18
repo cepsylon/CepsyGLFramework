@@ -7,6 +7,8 @@
 
 #include <vector>
 
+class Skeleton;
+
 class Animation : public Base
 {
 public:
@@ -30,14 +32,20 @@ public:
 		std::vector<KeyframeTranslation> mTranslation;
 	};
 
-	Animation(int bone_count);
+	Animation(const Skeleton & skeleton);
 	Animation(Animation && rhs);
 
 	Keyframe & operator[](unsigned index);
 	const Keyframe & operator[](unsigned index) const;
 
+	std::vector<glm::mat4> get_matrices_at(float t, unsigned prev_index, unsigned index) const;
+
+	// Get skeleton
+	const Skeleton & skeleton() const;
+
 	float duration() const;
 
 private:
 	std::vector<Keyframe> mKeyframes;
+	const Skeleton & mSkeleton;
 };

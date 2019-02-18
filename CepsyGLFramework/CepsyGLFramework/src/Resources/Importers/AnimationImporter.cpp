@@ -8,8 +8,7 @@
 #include <string>
 
 AnimationImporter::AnimationImporter(const Skeleton & skeleton)
-	: mSkeleton(skeleton)
-	, mAnimation(skeleton.bone_count())
+	: mAnimation(skeleton)
 { }
 
 void AnimationImporter::load(const std::string & key, FbxScene * scene)
@@ -57,7 +56,7 @@ void AnimationImporter::import_fbx_channel(FbxNode * node, FbxAnimLayer * layer)
 		if (rotation.size() > 1)
 		{
 			std::string name = node->GetName();
-			int bone_index = mSkeleton.find(name);
+			int bone_index = mAnimation.skeleton().find(name);
 			if (bone_index != -1)
 				mAnimation[bone_index].mRotation = std::move(rotation);
 		}
@@ -74,7 +73,7 @@ void AnimationImporter::import_fbx_channel(FbxNode * node, FbxAnimLayer * layer)
 		if (translation.size() > 1)
 		{
 			std::string name = node->GetName();
-			int bone_index = mSkeleton.find(name);
+			int bone_index = mAnimation.skeleton().find(name);
 			if (bone_index != -1)
 				mAnimation[bone_index].mTranslation = std::move(translation);
 		}

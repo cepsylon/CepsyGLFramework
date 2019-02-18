@@ -9,7 +9,8 @@ void Resources::initialize()
 {
 	FBXImporter importer;
 	importer.load("./data/meshes/xbot.fbx");
-	importer.load("./data/meshes/foot_idle_no_skin.fbx");
+	importer.load("./data/animations/idle_foot.fbx");
+	importer.load("./data/animations/idle_look_around.fbx");
 
 	// Basic
 	std::vector<Shader> shaders(2);

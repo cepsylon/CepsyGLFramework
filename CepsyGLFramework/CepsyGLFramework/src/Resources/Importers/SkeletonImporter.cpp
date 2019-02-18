@@ -48,7 +48,8 @@ void SkeletonImporter::import_bones_rec(fbxsdk::FbxSkeleton * skeleton_node, int
 	skeleton.mBones.emplace_back(Bone{
 		{}, node->GetName(),
 		quaternion,
-		glm::vec3{ position[0], position[1], position[2] }
+		glm::vec3{ position[0], position[1], position[2] },
+		parent_index
 		});
 	skeleton.mSkinMatrices.emplace_back(bind_matrix);
 

@@ -59,7 +59,7 @@ void FBXImporter::load(const std::string & path)
 	fbx_manager->Destroy();
 
 	// Create the model
-	if ((*mSkeleton).empty())
+	if (mSkeleton == nullptr)
 		application.resources().create<Model>(mName, std::move(mMeshes), std::move(mMaterials));
 	else
 		application.resources().create<SkeletalModel>(mName, std::move(mMeshes), std::move(mMaterials), mSkeleton);

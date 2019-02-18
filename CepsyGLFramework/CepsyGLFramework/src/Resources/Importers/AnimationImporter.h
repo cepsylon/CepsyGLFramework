@@ -38,6 +38,5 @@ private:
 	static std::vector<Animation::KeyframeRotation> merge_rotation(const std::vector<KeyFloat> & x_rotation, const std::vector<KeyFloat> & y_rotation, const std::vector<KeyFloat> & z_rotation);
 	static std::vector<Animation::KeyframeTranslation> merge_translation(const std::vector<KeyFloat> & x, const std::vector<KeyFloat> & y, const std::vector<KeyFloat> & z);
 
-	const Skeleton & mSkeleton;
 	Animation mAnimation;
 };

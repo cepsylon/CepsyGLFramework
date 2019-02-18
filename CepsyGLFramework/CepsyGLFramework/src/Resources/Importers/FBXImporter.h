@@ -3,12 +3,16 @@
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
 
-#include <fbxsdk/fbxsdk.h>
-
 #include <vector>
 #include <string>
 
 class Skeleton;
+
+namespace fbxsdk
+{
+	class FbxNode;
+	class FbxNodeAttribute;
+}
 
 class Importer
 {
@@ -24,9 +28,9 @@ public:
 	void load(const std::string & path) override;
 
 private:
-	void import(FbxNode * node);
-	void import(FbxNodeAttribute * attribute);
-	void import_mesh(FbxNodeAttribute * attribute);
+	void import(fbxsdk::FbxNode * node);
+	void import(fbxsdk::FbxNodeAttribute * attribute);
+	void import_mesh(fbxsdk::FbxNodeAttribute * attribute);
 
 	std::vector<Mesh> mMeshes;
 	std::vector<Material> mMaterials;

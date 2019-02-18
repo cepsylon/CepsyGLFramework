@@ -9,7 +9,7 @@ class SkeletalModel : public Model
 public:
 	RTTI_H;
 
-	SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, Skeleton * skeleton);
+	SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, const Skeleton * skeleton);
 
 	// No copies
 	SkeletalModel(const SkeletalModel &) = delete;
@@ -23,8 +23,7 @@ public:
 
 	// Gettors
 	const Skeleton & skeleton() const;
-	Skeleton & skeleton();
 
 private:
-	Skeleton * mSkeleton = nullptr;
+	 const Skeleton * mSkeleton = nullptr;
 };

@@ -17,6 +17,7 @@ struct Bone
 	std::string mName;
 	glm::quat mRotation;
 	glm::vec3 mPosition;
+	int mParent = -1;
 };
 
 class Skeleton : public Base
@@ -59,6 +60,9 @@ public:
 
 	// Get bone count
 	int bone_count() const;
+
+	// Get bone at index
+	const Bone & bone(unsigned i) const;
 
 	// Get root
 	const Bone & root() const;

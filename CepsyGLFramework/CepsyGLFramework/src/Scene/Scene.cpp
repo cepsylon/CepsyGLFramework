@@ -3,7 +3,7 @@
 #include <imgui/imgui.h>
 
 // This will be removed soon
-#include "Graphics/Renderable.h"
+#include "Graphics/SkeletalRenderable.h"
 #include "Graphics/Program.h"
 #include "Graphics/Model.h"
 #include "Editor/EditorCamera.h"
@@ -28,9 +28,22 @@ void Scene::initialize()
 	std::unique_ptr<Entity> xbot = std::make_unique<Entity>();
 	xbot->set_name("XBot");
 	xbot->transform().set_scale(glm::vec3{ 0.01f });
-	Renderable * renderable = xbot->add<Renderable>();
+	SkeletalRenderable * renderable = xbot->add<SkeletalRenderable>();
 	renderable->set_program("skinning");
 	renderable->set_model("xbot");
+	renderable->set_animation("idle_foot");
+	mSpaces.back()->add(std::move(xbot));
+
+
+	xbot = std::make_unique<Entity>();
+	xbot->set_name("XBot2");
+	xbot->transform().set_scale(glm::vec3{ 0.01f });
+	xbot->transform().set_position(glm::vec3{ 1.0f, 0.0f, 0.0f });
+	renderable = xbot->add<SkeletalRenderable>();
+	renderable->set_program("skinning");
+	renderable->set_model("xbot");
+	renderable->set_animation("idle_look_around");
+	//renderable->animation_data().mTime = 1.5f;
 	mSpaces.back()->add(std::move(xbot));
 }
 

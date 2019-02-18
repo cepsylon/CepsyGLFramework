@@ -142,4 +142,10 @@ void Skeleton::debug_draw_rec(const glm::mat4 & parent_matrix, const glm::vec3 &
 
 const std::vector<glm::mat4> & Skeleton::skin_matrices() const { return mSkinMatrices; }
 int Skeleton::bone_count() const { return mBones.size(); }
+const Bone & Skeleton::bone(unsigned i) const
+{
+	if (mBones.size() <= i)
+		throw "Index out of range\n";
+	return mBones[i];
+}
 const Bone & Skeleton::root() const { return mBones.front(); }

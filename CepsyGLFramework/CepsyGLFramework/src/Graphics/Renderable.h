@@ -22,6 +22,9 @@ public:
 	// GUI
 	void to_gui() override;
 
+	// Binds needed data for rendering
+	virtual void bind() const;
+
 	// Gettors
 	Program * program() const;
 	Model * model() const;
@@ -31,7 +34,7 @@ public:
 	void set_program(const std::string & name);
 	void set_model(const std::string & name);
 
-private:
+protected:
 	Model * mModel = nullptr;
 	Program * mProgram = nullptr;
 	bool mVisible = true;

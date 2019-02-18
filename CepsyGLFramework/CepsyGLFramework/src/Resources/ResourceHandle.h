@@ -34,7 +34,7 @@ public:
 		: mResource(std::forward<VA>(arguments)...)
 	{ }
 
-	ResourceHandle & operator==(const ResourceHandle<T> & rhs)
+	ResourceHandle & operator=(const ResourceHandle<T> & rhs)
 	{
 		if (this != &rhs)
 			mResource = rhs.mResource;
@@ -42,7 +42,7 @@ public:
 		return *this;
 	}
 
-	ResourceHandle & operator==(ResourceHandle<T> && rhs)
+	ResourceHandle & operator=(ResourceHandle<T> && rhs)
 	{
 		if (this != &rhs)
 			mResource = std::move(rhs.mResource);
@@ -60,7 +60,7 @@ public:
 		return &mResource;
 	}
 
-	void * get()
+	void * get() override
 	{
 		return static_cast<void *>(&mResource);
 	}
