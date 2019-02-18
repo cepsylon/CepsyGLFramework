@@ -116,11 +116,6 @@ void Graphics::initialize()
 void Graphics::update()
 {
 	debug().update();
-
-	// TODO change this
-	//auto & skeletons = application.resources().get<Skeleton>();
-	//for (auto & pair : skeletons)
-	//	static_cast<Skeleton *>(pair.second->get())->update();
 }
 
 void Graphics::render() const
@@ -164,10 +159,6 @@ void Graphics::render() const
 			}
 		}
 	}
-
-	// Debug rendering for skeletons
-	//for (const auto & renderable : renderables_with_skeleton)
-	//	static_cast<SkeletalModel *>(renderable->model())->skeleton().debug_draw(renderable->owner().transform().model());
 
 	debug().render();
 
