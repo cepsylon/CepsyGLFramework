@@ -35,14 +35,17 @@ public:
 	Animation(const Skeleton & skeleton);
 	Animation(Animation && rhs);
 
+	// Get keyframe at index
 	Keyframe & operator[](unsigned index);
 	const Keyframe & operator[](unsigned index) const;
 
+	// Get current skinning matrices
 	std::vector<glm::mat4> get_matrices_at(float t, unsigned prev_index, unsigned index) const;
 
 	// Get skeleton
 	const Skeleton & skeleton() const;
 
+	// Animation duration
 	float duration() const;
 
 private:

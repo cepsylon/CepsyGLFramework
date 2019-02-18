@@ -29,6 +29,7 @@
     <ClCompile Include="src\Common\Transform.cpp" />
     <ClCompile Include="src\Editor\EditorCamera.cpp" />
     <ClCompile Include="src\Graphics\Animation.cpp" />
+    <ClCompile Include="src\Graphics\AnimationData.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="src\Common\Transform.h" />
     <ClInclude Include="src\Editor\EditorCamera.h" />
     <ClInclude Include="src\Graphics\Animation.h" />
+    <ClInclude Include="src\Graphics\AnimationData.h" />
     <ClInclude Include="src\Graphics\Buffer.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
     <ClInclude Include="src\Graphics\Framebuffer.h" />

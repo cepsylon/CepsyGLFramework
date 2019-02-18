@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderable.h"
+#include "AnimationData.h"
 
 #include <glm/mat4x4.hpp>
 
@@ -11,18 +12,6 @@ class Animation;
 class SkeletalRenderable : public Renderable
 {
 public:
-
-	struct AnimationData
-	{
-		void update();
-		void upload() const;
-		std::vector<glm::mat4> get_matrices() const;
-
-		const Animation * mAnimation = nullptr;
-		float mTime = 0.0f;
-		unsigned mIndex = 1u;
-		unsigned mPrevIndex = 0u;
-	};
 
 	// Update animation if any
 	void update() override;

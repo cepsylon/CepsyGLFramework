@@ -59,7 +59,7 @@ public:
 	const std::vector<glm::mat4> & skin_matrices() const;
 
 	// Get bone count
-	int bone_count() const;
+	unsigned bone_count() const;
 
 	// Get bone at index
 	const Bone & bone(unsigned i) const;
