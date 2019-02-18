@@ -25,6 +25,16 @@ void AnimationData::update(float dt)
 	}
 }
 
+void AnimationData::to_gui()
+{
+	if (mAnimation.to_gui())
+	{
+		mTime = 0.0f;
+		mPrevIndex = 0u;
+		mIndex = 1u;
+	}
+}
+
 void AnimationData::upload_to_gpu() const
 {
 	if (mAnimation)

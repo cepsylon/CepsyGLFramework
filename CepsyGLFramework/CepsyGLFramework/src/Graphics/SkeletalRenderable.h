@@ -12,9 +12,12 @@ class Animation;
 class SkeletalRenderable : public Renderable
 {
 public:
+	RTTI_H;
 
 	// Update animation if any
 	void update(float dt) override;
+	// GUI
+	void to_gui() override;
 
 	// Binds needed data for rendering
 	void bind() const override;

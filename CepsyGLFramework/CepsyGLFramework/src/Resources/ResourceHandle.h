@@ -2,6 +2,12 @@
 
 #include "ResourceStorage.h"
 
+#include "Resources.h"
+
+#include <imgui/imgui.h>
+
+#include <string>
+
 template <typename T>
 class ResourceHandle
 {
@@ -32,7 +38,7 @@ public:
 		return *mResource;
 	}
 
-	bool operator==(T * rhs) const
+	bool operator==(const T * rhs) const
 	{
 		return mResource == rhs;
 	}
@@ -40,6 +46,36 @@ public:
 	operator bool() const
 	{
 		return mResource;
+	}
+
+	bool to_gui()
+	{
+		std::string names;
+		int index = 0;
+		auto & map = resources().get<T>();
+		int i = 0;
+		for (auto it = map.begin(); it != map.end(); ++it, ++i)
+		{
+			ResourceHandle<T> handle = static_cast<ResourceStorage<T> *>(it->second.get());
+
+			// Get index
+			if (handle == mResource)
+				index = i;
+
+			// Names
+			names += handle->name();
+			names += '\0';
+		}
+
+		if (ImGui::Combo("TestResource", &index, names.c_str()))
+		{
+			auto it = map.begin();
+			for (i = 0; i < index; ++it, ++i);
+			*this = static_cast<ResourceStorage<T> *>(it->second.get());
+			return true;
+		}
+
+		return false;
 	}
 
 private:

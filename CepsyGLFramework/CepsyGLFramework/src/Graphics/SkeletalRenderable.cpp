@@ -1,8 +1,16 @@
 #include "SkeletalRenderable.h"
 
+RTTI_I(SkeletalRenderable, Renderable);
+
 void SkeletalRenderable::update(float dt)
 {
 	mAnimationData.update(dt);
+}
+
+void SkeletalRenderable::to_gui()
+{
+	Renderable::to_gui();
+	mAnimationData.to_gui();
 }
 
 void SkeletalRenderable::bind() const

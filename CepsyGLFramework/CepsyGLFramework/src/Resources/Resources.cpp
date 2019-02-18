@@ -33,3 +33,5 @@ void Resources::shutdown()
 {
 	mResources.clear();
 }
+
+Resources & resources() { return application.resources(); }

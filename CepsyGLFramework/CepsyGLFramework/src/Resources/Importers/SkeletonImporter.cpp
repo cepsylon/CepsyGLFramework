@@ -23,6 +23,7 @@ ResourceHandle<Skeleton> SkeletonImporter::load(const std::string & key, fbxsdk:
 	import_bones_rec(skeleton_node, -1, skeleton);
 	for (auto & matrix : skeleton.mSkinMatrices)
 		matrix = glm::inverse(matrix);
+	skeleton.set_name(key);
 	return application.resources().create<Skeleton>(key, std::move(skeleton));
 }
 

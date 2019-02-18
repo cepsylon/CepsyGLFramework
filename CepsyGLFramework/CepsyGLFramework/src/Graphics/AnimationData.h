@@ -14,6 +14,8 @@ class AnimationData
 public:
 	// Update animation
 	void update(float dt);
+	// GUI
+	void to_gui();
 
 	// Upload data to GPU
 	void upload_to_gpu() const;

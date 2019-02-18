@@ -10,7 +10,8 @@ Animation::Animation(const Skeleton & skeleton)
 { }
 
 Animation::Animation(Animation && rhs)
-	: mKeyframes(std::move(rhs.mKeyframes))
+	: Base(std::move(rhs.mName))
+	, mKeyframes(std::move(rhs.mKeyframes))
 	, mSkeleton(rhs.mSkeleton)
 { }
 

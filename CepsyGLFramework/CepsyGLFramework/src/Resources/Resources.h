@@ -60,3 +60,5 @@ public:
 private:
 	std::map<const RTTI *, std::unordered_map<std::string, std::unique_ptr<ResourceStorageBase>>> mResources;
 };
+
+Resources & resources();

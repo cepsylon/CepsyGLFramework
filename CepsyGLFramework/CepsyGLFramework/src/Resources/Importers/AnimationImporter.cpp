@@ -20,6 +20,7 @@ void AnimationImporter::load(const std::string & key, FbxScene * scene)
 		import_fbx_stack(stack, scene->GetRootNode());
 	}
 
+	mAnimation.set_name(key);
 	application.resources().create<Animation>(key, std::move(mAnimation));
 }
 
