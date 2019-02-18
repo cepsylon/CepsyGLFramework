@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Model.h"
+#include "Resources/ResourceHandle.h"
 
 class Skeleton;
 
@@ -9,7 +10,7 @@ class SkeletalModel : public Model
 public:
 	RTTI_H;
 
-	SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, const Skeleton * skeleton);
+	SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, ResourceHandle<Skeleton> skeleton);
 
 	// No copies
 	SkeletalModel(const SkeletalModel &) = delete;
@@ -25,5 +26,5 @@ public:
 	const Skeleton & skeleton() const;
 
 private:
-	 const Skeleton * mSkeleton = nullptr;
+	 ResourceHandle<Skeleton> mSkeleton;
 };

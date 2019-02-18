@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Resources/ResourceHandle.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/Material.h"
 
@@ -35,5 +36,5 @@ private:
 	std::vector<Mesh> mMeshes;
 	std::vector<Material> mMaterials;
 	std::string mName;
-	Skeleton * mSkeleton = nullptr;
+	ResourceHandle<Skeleton> mSkeleton;
 };

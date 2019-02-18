@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common/Component.h"
+#include "Resources/ResourceHandle.h"
 
 class Model;
 class Program;
@@ -26,8 +27,8 @@ public:
 	virtual void bind() const;
 
 	// Gettors
-	Program * program() const;
-	Model * model() const;
+	const Program * program() const;
+	const Model * model() const;
 	bool is_visible() const;
 
 	// Settors
@@ -35,7 +36,7 @@ public:
 	void set_model(const std::string & name);
 
 protected:
-	Model * mModel = nullptr;
-	Program * mProgram = nullptr;
+	ResourceHandle<Model> mModel;
+	ResourceHandle<Program> mProgram;
 	bool mVisible = true;
 };

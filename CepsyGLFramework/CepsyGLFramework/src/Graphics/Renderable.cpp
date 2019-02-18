@@ -38,7 +38,7 @@ void Renderable::to_gui()
 {
 	ImGui::Checkbox("Visible", &mVisible);
 	//mProgram->to_gui();
-	mModel->to_gui();
+	//mModel->to_gui();
 }
 
 void Renderable::bind() const
@@ -46,8 +46,8 @@ void Renderable::bind() const
 
 }
 
-Program * Renderable::program() const { return mProgram; }
-Model * Renderable::model() const { return mModel; }
+const Program * Renderable::program() const { return mProgram.get(); }
+const Model * Renderable::model() const { return mModel.get(); }
 bool Renderable::is_visible() const { return mVisible; }
 
 void Renderable::set_program(const std::string & name)

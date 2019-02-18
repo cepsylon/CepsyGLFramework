@@ -1,70 +1,47 @@
 #pragma once
 
-#include <memory>
-
-struct ResourceHandleBase
-{
-	virtual ~ResourceHandleBase() {}
-
-	virtual void * get() = 0;
-};
+#include "ResourceStorage.h"
 
 template <typename T>
-class ResourceHandle : public ResourceHandleBase
+class ResourceHandle
 {
 public:
-	ResourceHandle(const T & resource)
-		: mResource(resource)
+	ResourceHandle() = default;
+
+	ResourceHandle(const ResourceStorage<T> * storage)
+		: mResource(&storage->mResource)
 	{ }
 
-	ResourceHandle(const ResourceHandle<T> & rhs)
-		: mResource(rhs.mResource)
+	template <typename U>
+	ResourceHandle(const ResourceStorage<U> * storage)
+		: mResource(&storage->mResource)
 	{ }
 
-	ResourceHandle(T && resource)
-		: mResource(std::move(resource))
-	{ }
-
-	ResourceHandle(ResourceHandle<T> && rhs)
-		: mResource(std::move(rhs.mResource))
-	{ }
-
-	template <typename... VA>
-	ResourceHandle(VA &&... arguments)
-		: mResource(std::forward<VA>(arguments)...)
-	{ }
-
-	ResourceHandle & operator=(const ResourceHandle<T> & rhs)
+	const T * get() const
 	{
-		if (this != &rhs)
-			mResource = rhs.mResource;
-
-		return *this;
-	}
-
-	ResourceHandle & operator=(ResourceHandle<T> && rhs)
-	{
-		if (this != &rhs)
-			mResource = std::move(rhs.mResource);
-
-		return *this;
+		return mResource;
 	}
 
 	const T * operator->() const
 	{
-		return &mResource;
+		return mResource;
 	}
 
-	T * operator->()
+	const T & operator*() const
 	{
-		return &mResource;
+		return *mResource;
 	}
 
-	void * get() override
+	bool operator==(T * rhs) const
 	{
-		return static_cast<void *>(&mResource);
+		return mResource == rhs;
+	}
+
+	operator bool() const
+	{
+		return mResource;
 	}
 
 private:
-	T mResource;
+	const T * mResource = nullptr;
 };

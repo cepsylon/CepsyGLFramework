@@ -93,6 +93,7 @@
     <ClInclude Include="src\Resources\Importers\AnimationImporter.h" />
     <ClInclude Include="src\Resources\Importers\SkeletonImporter.h" />
     <ClInclude Include="src\Resources\ResourceHandle.h" />
+    <ClInclude Include="src\Resources\ResourceStorage.h" />
     <ClInclude Include="src\Resources\Importers\FBXImporter.h" />
     <ClInclude Include="src\Resources\Importers\MaterialImporter.h" />
     <ClInclude Include="src\Resources\Importers\MeshImporter.h" />

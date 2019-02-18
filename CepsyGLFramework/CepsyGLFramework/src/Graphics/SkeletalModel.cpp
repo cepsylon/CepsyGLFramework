@@ -4,7 +4,7 @@
 
 RTTI_I(SkeletalModel, Model);
 
-SkeletalModel::SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, const Skeleton * skeleton)
+SkeletalModel::SkeletalModel(std::vector<Mesh> && meshes, std::vector<Material> && materials, ResourceHandle<Skeleton> skeleton)
 	: Model(std::move(meshes), std::move(materials))
 	, mSkeleton(skeleton)
 { }

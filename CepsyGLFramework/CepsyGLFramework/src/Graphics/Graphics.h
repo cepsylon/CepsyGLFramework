@@ -4,7 +4,7 @@
 #include "Mesh.h"
 #include "Framebuffer.h"
 #include "GraphicsDebug.h"
-
+#include "Resources/ResourceHandle.h"
 
 #include <glm/vec2.hpp>
 #include <glm/mat4x4.hpp>
@@ -53,12 +53,12 @@ public:
 private:
 	std::vector<Camera *> mCameras;
 	std::vector<Renderable *> mUnableToDrawRenderables;
-	std::unordered_map<Program *, std::unordered_map<Model *, std::vector<Renderable *>>> mRenderables;
+	std::unordered_map<const Program *, std::unordered_map<const Model *, std::vector<Renderable *>>> mRenderables;
 	Framebuffer mFramebuffer;
 	BufferF32 mCameraMatrixBuffer{ GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
 	BufferF32 mSkeletonBuffer{ GL_SHADER_STORAGE_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT };
 	HGLRC__ * mGLContext = nullptr;
-	mutable Program * mPostProcess = nullptr;
+	mutable ResourceHandle<Program> mPostProcess;
 	std::unique_ptr<Mesh> mPlane = nullptr;
 	glm::ivec2 mDimension{ 1280, 720 };
 	bool mDimensionIsClientSize = true;
