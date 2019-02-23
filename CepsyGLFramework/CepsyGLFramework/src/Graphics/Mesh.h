@@ -12,7 +12,7 @@ public:
 	{
 		struct SizeOffset
 		{
-			unsigned mSize = 0, mOffset = 0; // Size in element count, offset in bytes
+			size_t mSize = 0, mOffset = 0; // Size in element count, offset in bytes
 		};
 		unsigned mStride = 0; // In bytes
 		std::vector<SizeOffset> mIndexOffset;

@@ -18,7 +18,7 @@ Material MaterialImporter::load(FbxSurfaceMaterial * material)
 		new_material.set_osr(glm::vec3{ phong->TransparencyFactor, phong->Shininess, phong->ReflectionFactor });
 
 		// Need to figure out what this is for
-		float factor = phong->AmbientFactor;
+		double factor = phong->AmbientFactor;
 		factor = phong->DiffuseFactor;
 		factor = phong->SpecularFactor;
 

@@ -50,9 +50,13 @@ void FBXImporter::load(const std::string & path)
 			import(root->GetChild(i));
 	}
 
-	// Animation importing
-	AnimationImporter anim_importer(*mSkeleton);
-	anim_importer.load(mName, scene);
+	// TODO: dirty fix to avoid importing garbage animation inside mesh only fbx
+	if (mMeshes.empty())
+	{
+		// Animation importing
+		AnimationImporter anim_importer(*mSkeleton);
+		anim_importer.load(mName, scene);
+	}
 
 	// Free everything
 	importer->Destroy();

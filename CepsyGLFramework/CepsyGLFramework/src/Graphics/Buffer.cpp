@@ -85,7 +85,7 @@ GLenum BufferBase::type() const { return mType; }
 
 unsigned BufferBase::count() const
 {
-	static std::map<GLenum, unsigned> types{
+	static std::map<GLenum, size_t> types{
 		{ GL_FLOAT, sizeof(float) },
 		{ GL_UNSIGNED_INT, sizeof(unsigned) }
 	};
